@@ -8,39 +8,20 @@
 import SwiftUI
 import Combine
 
-class Auth: ObservableObject {
-    
-    let didChange = PassthroughSubject<Auth,Never>()
-
-    let willChange = PassthroughSubject<Auth,Never>()
-
-    @Published var isLoggedIn = false {
-        didSet {
-            didChange.send(self)
-        }
-    }
-
-    func login(){
-        self.isLoggedIn = true
-    }
-}
 
 struct ContentView: View {
     @EnvironmentObject var auth: Auth
     
     var body: some View {
-//        if( !auth.isLoggedIn ) {
-//            LoginView()
-//        } else {
-            HomeView().environmentObject(Dashboard())
-//        }
+        LoginView().environmentObject(Auth())
     }
 }
 
 struct HomeView: View {
     @EnvironmentObject var dashboard: Dashboard
+    @EnvironmentObject var auth: Auth
     var body: some View {
-        DashboardView(charts: sample_charts)
+        DashboardView(charts: sample_charts, auth: auth)
     }
 }
 
@@ -49,6 +30,13 @@ struct LoginView: View {
     var body: some View {
         VStack {
             Button("Log in to Strava", action: auth.login)
+        }
+
+        if(auth.isLoggedIn){
+            HomeView()
+                .transition(.slide)
+                .environmentObject(Dashboard())
+                .environmentObject(auth)
         }
     }
 }

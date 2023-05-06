@@ -9,9 +9,10 @@ import SwiftUI
 import Charts
 
 struct AnimatedChart: View {
+    @EnvironmentObject var auth: Auth
     @State var chartItem: ChartItem
-    @State var animate: Bool = false
     var chartWidth: CGFloat
+    @State var animate: Bool = false
     
     var body: some View {
         VStack {
@@ -21,14 +22,18 @@ struct AnimatedChart: View {
                     if(chartItem.type == "BAR") {
                         BarMark(
                             x: .value("x", content.key),
-                            y: .value("y", animate ? content.value : 0)
+                            y: .value("y", animate && auth.isLoggedIn ? content.value : 0)
                         )
                     }else if(chartItem.type == "AREA") {
                         AreaMark(
                             x: .value("x", content.key),
                             y: .value("y", animate ? content.value: 0)
                         )
-                        }
+                    }else if(chartItem.type == "LINE") {
+                        LineMark(
+                            x: .value("x", content.key),
+                            y: .value("y", animate && auth.isLoggedIn ? content.value: 0))
+                    }
                 }
             }
             .drawingGroup()
@@ -36,7 +41,7 @@ struct AnimatedChart: View {
                 response: 0.55,
                 dampingFraction: 0.30,
                 blendDuration: 0.0
-            ), value: animate)
+            ), value: animate && auth.isLoggedIn)
             .chartYScale(domain: 0...250)
             .frame(width: chartWidth, height: chartWidth)
             .onAppear {

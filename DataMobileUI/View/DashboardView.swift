@@ -10,8 +10,7 @@ import Charts
 
 struct DashboardView: View {
     var charts: [ChartItem]
-    
-    
+    var auth: Auth
     
     
     @ViewBuilder
@@ -23,7 +22,7 @@ struct DashboardView: View {
                 GridRow {
                     ForEach(Array(chartRow.enumerated()), id: \.element) { jndex, chartItem in
                         AnimatedChart(chartItem: chartItem, chartWidth: chartWidth)
-                        
+                            .environmentObject(auth)
                         }
                     }
                 }
@@ -42,6 +41,6 @@ extension Array {
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
         let dashboard = Dashboard()
-        return DashboardView(charts: sample_charts)
+        return DashboardView(charts: sample_charts, auth: Auth())
     }
 }
