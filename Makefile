@@ -7,7 +7,7 @@ APP_PATH        :=  $(DIR)/build/Debug-iphonesimulator/DataMobileUI.app
 IOS_BUNDLE_ID   :=  pl.szyorz.DataMobileUI
 SRC             :=  $(shell find . -name "*.swift")
 
-.PHONY: all clean install build
+.PHONY: clean install build
 
 all: install boot
 	xcrun simctl launch booted $(IOS_BUNDLE_ID)
