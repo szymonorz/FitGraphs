@@ -19,9 +19,8 @@ struct ContentView: View {
 
 struct HomeView: View {
     @EnvironmentObject var dashboard: Dashboard
-    @EnvironmentObject var auth: Auth
     var body: some View {
-        DashboardView(charts: sample_charts, auth: auth)
+        DashboardView(charts: sample_charts)
     }
 }
 
@@ -36,7 +35,6 @@ struct LoginView: View {
             HomeView()
                 .transition(.slide)
                 .environmentObject(Dashboard())
-                .environmentObject(auth)
         }
     }
 }
