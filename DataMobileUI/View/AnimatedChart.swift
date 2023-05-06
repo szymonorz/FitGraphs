@@ -10,6 +10,7 @@ import Charts
 
 struct AnimatedChart: View {
     @State var chartItem: ChartItem
+    @State var animate: Bool = false
     var chartWidth: CGFloat
     
     var body: some View {
@@ -20,12 +21,12 @@ struct AnimatedChart: View {
                     if(chartItem.type == "BAR") {
                         BarMark(
                             x: .value("x", content.key),
-                            y: .value("y", chartItem.contents[index].animate ? content.value : 0)
+                            y: .value("y", animate ? content.value : 0)
                         )
                     }else if(chartItem.type == "AREA") {
                         AreaMark(
                             x: .value("x", content.key),
-                            y: .value("y", chartItem.contents[index].animate ? content.value : 0)
+                            y: .value("y", animate ? content.value: 0)
                         )
                         }
                 }
@@ -33,21 +34,13 @@ struct AnimatedChart: View {
             .drawingGroup()
             .animation(.interactiveSpring(
                 response: 0.55,
-                dampingFraction: 0.50,
+                dampingFraction: 0.30,
                 blendDuration: 0.0
-            ), value: true)
+            ), value: animate)
             .chartYScale(domain: 0...250)
             .frame(width: chartWidth, height: chartWidth)
             .onAppear {
-                for (i, _) in chartItem.contents.enumerated() {
-                    withAnimation(.interactiveSpring(
-                        response: 0.55,
-                        dampingFraction: 0.75,
-                        blendDuration: 0.0
-                    ).delay((Double(i) * 0.05))) {
-                        chartItem.contents[i].animate = true
-                    }
-                }
+                animate.toggle()
             }
 
         }

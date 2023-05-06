@@ -13,7 +13,6 @@ struct ChartItem: Hashable {
         var id = UUID().uuidString
         var key: String
         var value: Double
-        var animate: Bool = false
     }
     
     var name: String

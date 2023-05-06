@@ -10,9 +10,9 @@ import Charts
 
 struct DashboardView: View {
     var charts: [ChartItem]
-    @State private var bools: [Bool] = Array(sample_charts.map({ $0.contents })).flatMap({ $0 }).map({ $0.animate })
     
-    @State private var whocares: Bool = false
+    
+    
     
     @ViewBuilder
     var body: some View {
