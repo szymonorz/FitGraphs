@@ -13,13 +13,12 @@ class StravaService {
     let base = URL(string: "https://strava.com/api/v3")
     
     let oauth2 = OAuth2CodeGrant(settings: [
-        "client_id": "my_swift_app",
-        "client_secret": "C7447242",
-        "authorize_uri": "https://github.com/login/oauth/authorize",
-        "token_uri": "https://github.com/login/oauth/access_token",   // code grant only
-        "redirect_uris": ["myapp://oauth/callback"],   // register your own "myapp" scheme in Info.plist
-        "scope": "user repo:status",
-        "secret_in_body": true,    // Github needs this
+        "client_id": "changeme",
+        "client_secret": "changeme",
+        "authorize_uri": "https://www.strava.com/oauth/authorize",
+        "token_uri": "https://www.strava.com/oauth/token",   // code grant only
+        "redirect_uris": ["datamobileui://oauth/callback"],   // register your own "myapp" scheme in Info.plist
+        "scope": "read,activity:read,profile:read_all",
         "keychain": false,         // if you DON'T want keychain integration
     ] as OAuth2JSON)
 }
