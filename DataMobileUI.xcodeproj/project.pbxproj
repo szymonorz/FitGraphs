@@ -8,10 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		0116AE872A06A9E500E1749C /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0116AE862A06A9E500E1749C /* Auth.swift */; };
+		012902ED2A3DE92400DC5712 /* StravaAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012902EC2A3DE92400DC5712 /* StravaAuth.swift */; };
+		012902F02A3DE9D700DC5712 /* OAuth2 in Frameworks */ = {isa = PBXBuildFile; productRef = 012902EF2A3DE9D700DC5712 /* OAuth2 */; };
+		012902F32A3DEA0A00DC5712 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 012902F22A3DEA0A00DC5712 /* Alamofire */; };
 		013C51E329F5A7EF006AF055 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013C51E229F5A7EF006AF055 /* DashboardView.swift */; };
 		013C51E729F5A811006AF055 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013C51E629F5A811006AF055 /* Dashboard.swift */; };
 		01A0E7F629F9224E0080E576 /* AnimatedChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F529F9224E0080E576 /* AnimatedChart.swift */; };
 		01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F729F922D20080E576 /* ChartItem.swift */; };
+		01DAB4F22A3D048500752073 /* DuckDB in Frameworks */ = {isa = PBXBuildFile; productRef = 01DAB4F12A3D048500752073 /* DuckDB */; };
 		01DF42FC29F545790066F88F /* DataMobileUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DF42FB29F545790066F88F /* DataMobileUIApp.swift */; };
 		01DF42FE29F545790066F88F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DF42FD29F545790066F88F /* ContentView.swift */; };
 		01DF430029F5457B0066F88F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01DF42FF29F5457B0066F88F /* Assets.xcassets */; };
@@ -20,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		0116AE862A06A9E500E1749C /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
+		012902EC2A3DE92400DC5712 /* StravaAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaAuth.swift; sourceTree = "<group>"; };
 		013C51E229F5A7EF006AF055 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		013C51E629F5A811006AF055 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
 		01A0E7F529F9224E0080E576 /* AnimatedChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedChart.swift; sourceTree = "<group>"; };
@@ -37,12 +42,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				012902F32A3DEA0A00DC5712 /* Alamofire in Frameworks */,
+				01DAB4F22A3D048500752073 /* DuckDB in Frameworks */,
+				012902F02A3DE9D700DC5712 /* OAuth2 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		012902EA2A3DE8F000DC5712 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				012902EB2A3DE8FC00DC5712 /* Strava */,
+			);
+			path = Api;
+			sourceTree = "<group>";
+		};
+		012902EB2A3DE8FC00DC5712 /* Strava */ = {
+			isa = PBXGroup;
+			children = (
+				012902EC2A3DE92400DC5712 /* StravaAuth.swift */,
+			);
+			path = Strava;
+			sourceTree = "<group>";
+		};
 		013C51E129F5A7DE006AF055 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +105,7 @@
 		01DF42FA29F545790066F88F /* DataMobileUI */ = {
 			isa = PBXGroup;
 			children = (
+				012902EA2A3DE8F000DC5712 /* Api */,
 				01AC30DB2A0B0E3600AE01BE /* Info.plist */,
 				013C51E529F5A801006AF055 /* Model */,
 				013C51E129F5A7DE006AF055 /* View */,
@@ -116,6 +141,11 @@
 			dependencies = (
 			);
 			name = DataMobileUI;
+			packageProductDependencies = (
+				01DAB4F12A3D048500752073 /* DuckDB */,
+				012902EF2A3DE9D700DC5712 /* OAuth2 */,
+				012902F22A3DEA0A00DC5712 /* Alamofire */,
+			);
 			productName = DataMobileUI;
 			productReference = 01DF42F829F545790066F88F /* DataMobileUI.app */;
 			productType = "com.apple.product-type.application";
@@ -144,6 +174,11 @@
 				Base,
 			);
 			mainGroup = 01DF42EF29F545790066F88F;
+			packageReferences = (
+				01DAB4F02A3D048400752073 /* XCRemoteSwiftPackageReference "duckdb-swift" */,
+				012902EE2A3DE9D700DC5712 /* XCRemoteSwiftPackageReference "OAuth2" */,
+				012902F12A3DEA0A00DC5712 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = 01DF42F929F545790066F88F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -176,6 +211,7 @@
 				01A0E7F629F9224E0080E576 /* AnimatedChart.swift in Sources */,
 				0116AE872A06A9E500E1749C /* Auth.swift in Sources */,
 				013C51E729F5A811006AF055 /* Dashboard.swift in Sources */,
+				012902ED2A3DE92400DC5712 /* StravaAuth.swift in Sources */,
 				01DF42FC29F545790066F88F /* DataMobileUIApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -379,6 +415,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		012902EE2A3DE9D700DC5712 /* XCRemoteSwiftPackageReference "OAuth2" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/p2/OAuth2.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.3.2;
+			};
+		};
+		012902F12A3DEA0A00DC5712 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		01DAB4F02A3D048400752073 /* XCRemoteSwiftPackageReference "duckdb-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/duckdb/duckdb-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.8.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		012902EF2A3DE9D700DC5712 /* OAuth2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 012902EE2A3DE9D700DC5712 /* XCRemoteSwiftPackageReference "OAuth2" */;
+			productName = OAuth2;
+		};
+		012902F22A3DEA0A00DC5712 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 012902F12A3DEA0A00DC5712 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		01DAB4F12A3D048500752073 /* DuckDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01DAB4F02A3D048400752073 /* XCRemoteSwiftPackageReference "duckdb-swift" */;
+			productName = DuckDB;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 01DF42F029F545790066F88F /* Project object */;
 }
