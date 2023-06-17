@@ -33,6 +33,11 @@ struct AnimatedChart: View {
                             x: .value("x", content.key),
                             y: .value("y", content.value)
                         )
+                    }else if(chartItem.type == "PIE") {
+                        SectorMark(
+                            angle: .value("value", content.value)
+//                            innerRadius: .ratio(0.35)
+                        ).foregroundStyle(by: .value("k", content.key))
                     }
                     
                 }

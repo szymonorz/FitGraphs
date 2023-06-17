@@ -38,7 +38,7 @@ extension Array {
 
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
-        let dashboard = Dashboard()
+        //let dashboard = Dashboard()
         return DashboardView(charts: sample_charts)
     }
 }
