@@ -12,7 +12,15 @@ import Combine
 struct ContentView: View {
     @EnvironmentObject var stravaAuth: StravaAuth
     var body: some View {
-        LoginView()
+        NavigationView {
+            ZStack {
+                if(stravaAuth.oauth.hasUnexpiredAccessToken()) {
+                    HomeView()
+                }else {
+                    LoginView()
+                }
+            }
+        }
     }
 }
 
@@ -28,12 +36,6 @@ struct LoginView: View {
     var body: some View {
         VStack {
             Button("Log in to Strava", action: stravaAuth.authorize)
-        }
-        Text(String(stravaAuth.oauth.hasUnexpiredAccessToken()))
-        if(stravaAuth.oauth.hasUnexpiredAccessToken()){
-            HomeView()
-                .transition(.slide)
-                .environmentObject(Dashboard())
         }
     }
 }
