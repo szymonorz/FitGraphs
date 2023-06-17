@@ -10,10 +10,9 @@ import Combine
 
 
 struct ContentView: View {
-    @EnvironmentObject var auth: Auth
-    
+    @EnvironmentObject var stravaAuth: StravaAuth
     var body: some View {
-        LoginView().environmentObject(Auth())
+        LoginView()
     }
 }
 
@@ -25,13 +24,13 @@ struct HomeView: View {
 }
 
 struct LoginView: View {
-    @EnvironmentObject  var  auth: Auth
+    @EnvironmentObject  var stravaAuth: StravaAuth
     var body: some View {
         VStack {
-            Button("Log in to Strava", action: auth.login)
+            Button("Log in to Strava", action: stravaAuth.authorize)
         }
-
-        if(auth.isLoggedIn){
+        Text(String(stravaAuth.oauth.hasUnexpiredAccessToken()))
+        if(stravaAuth.oauth.hasUnexpiredAccessToken()){
             HomeView()
                 .transition(.slide)
                 .environmentObject(Dashboard())
