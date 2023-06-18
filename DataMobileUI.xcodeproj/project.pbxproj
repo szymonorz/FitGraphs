@@ -20,11 +20,7 @@
 		01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CA2A3F2013004AF3F0 /* LoginView.swift */; };
 		01D046CD2A3F2F3D004AF3F0 /* ChartEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */; };
 		01D046CF2A3F5E3D004AF3F0 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CE2A3F5E3D004AF3F0 /* Activity.swift */; };
-		01D046D22A3F6E1C004AF3F0 /* CSVParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046D12A3F6E1C004AF3F0 /* CSVParser.swift */; };
-		01D046D42A3F6E4B004AF3F0 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046D32A3F6E4B004AF3F0 /* Errors.swift */; };
-		01D046D62A3F6E6E004AF3F0 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046D52A3F6E6E004AF3F0 /* Parser.swift */; };
-		01D046D82A3F6E8E004AF3F0 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046D72A3F6E8E004AF3F0 /* String+Extensions.swift */; };
-		01D046DA2A3F7050004AF3F0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 01D046D92A3F7050004AF3F0 /* LICENSE */; };
+		01D046DE2A3F7A77004AF3F0 /* CSVParser in Frameworks */ = {isa = PBXBuildFile; productRef = 01D046DD2A3F7A77004AF3F0 /* CSVParser */; };
 		01DAB4F22A3D048500752073 /* DuckDB in Frameworks */ = {isa = PBXBuildFile; productRef = 01DAB4F12A3D048500752073 /* DuckDB */; };
 		01DF42FC29F545790066F88F /* DataMobileUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DF42FB29F545790066F88F /* DataMobileUIApp.swift */; };
 		01DF42FE29F545790066F88F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DF42FD29F545790066F88F /* ContentView.swift */; };
@@ -58,11 +54,6 @@
 		01D046CA2A3F2013004AF3F0 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartEditorView.swift; sourceTree = "<group>"; };
 		01D046CE2A3F5E3D004AF3F0 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
-		01D046D12A3F6E1C004AF3F0 /* CSVParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVParser.swift; sourceTree = "<group>"; };
-		01D046D32A3F6E4B004AF3F0 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
-		01D046D52A3F6E6E004AF3F0 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
-		01D046D72A3F6E8E004AF3F0 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
-		01D046D92A3F7050004AF3F0 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		01DF42F829F545790066F88F /* DataMobileUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DataMobileUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01DF42FB29F545790066F88F /* DataMobileUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMobileUIApp.swift; sourceTree = "<group>"; };
 		01DF42FD29F545790066F88F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -77,6 +68,7 @@
 			files = (
 				012903222A3E3DF600DC5712 /* OAuth2 in Frameworks */,
 				012902F32A3DEA0A00DC5712 /* Alamofire in Frameworks */,
+				01D046DE2A3F7A77004AF3F0 /* CSVParser in Frameworks */,
 				01DAB4F22A3D048500752073 /* DuckDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,18 +132,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		01D046D02A3F6DF3004AF3F0 /* CSVParser */ = {
-			isa = PBXGroup;
-			children = (
-				01D046D92A3F7050004AF3F0 /* LICENSE */,
-				01D046D12A3F6E1C004AF3F0 /* CSVParser.swift */,
-				01D046D32A3F6E4B004AF3F0 /* Errors.swift */,
-				01D046D52A3F6E6E004AF3F0 /* Parser.swift */,
-				01D046D72A3F6E8E004AF3F0 /* String+Extensions.swift */,
-			);
-			path = CSVParser;
-			sourceTree = "<group>";
-		};
 		01DF42EF29F545790066F88F = {
 			isa = PBXGroup;
 			children = (
@@ -172,7 +152,6 @@
 		01DF42FA29F545790066F88F /* DataMobileUI */ = {
 			isa = PBXGroup;
 			children = (
-				01D046D02A3F6DF3004AF3F0 /* CSVParser */,
 				012902EA2A3DE8F000DC5712 /* Api */,
 				01AC30DB2A0B0E3600AE01BE /* Info.plist */,
 				013C51E529F5A801006AF055 /* Model */,
@@ -213,6 +192,7 @@
 				01DAB4F12A3D048500752073 /* DuckDB */,
 				012902F22A3DEA0A00DC5712 /* Alamofire */,
 				012903212A3E3DF600DC5712 /* OAuth2 */,
+				01D046DD2A3F7A77004AF3F0 /* CSVParser */,
 			);
 			productName = DataMobileUI;
 			productReference = 01DF42F829F545790066F88F /* DataMobileUI.app */;
@@ -246,6 +226,7 @@
 				01DAB4F02A3D048400752073 /* XCRemoteSwiftPackageReference "duckdb-swift" */,
 				012902F12A3DEA0A00DC5712 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				012903202A3E3DF600DC5712 /* XCRemoteSwiftPackageReference "OAuth2" */,
+				01D046DC2A3F7A77004AF3F0 /* XCRemoteSwiftPackageReference "CSVParser" */,
 			);
 			productRefGroup = 01DF42F929F545790066F88F /* Products */;
 			projectDirPath = "";
@@ -261,7 +242,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01D046DA2A3F7050004AF3F0 /* LICENSE in Resources */,
 				01DF430329F5457B0066F88F /* Preview Assets.xcassets in Resources */,
 				01DF430029F5457B0066F88F /* Assets.xcassets in Resources */,
 			);
@@ -275,18 +255,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				01DF42FE29F545790066F88F /* ContentView.swift in Sources */,
-				01D046D42A3F6E4B004AF3F0 /* Errors.swift in Sources */,
 				01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */,
 				013C51E329F5A7EF006AF055 /* DashboardView.swift in Sources */,
-				01D046D62A3F6E6E004AF3F0 /* Parser.swift in Sources */,
 				01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */,
 				0116AE872A06A9E500E1749C /* Auth.swift in Sources */,
-				01D046D22A3F6E1C004AF3F0 /* CSVParser.swift in Sources */,
 				012902F82A3E062D00DC5712 /* StravaApi.swift in Sources */,
 				013C51E729F5A811006AF055 /* Dashboard.swift in Sources */,
 				012902ED2A3DE92400DC5712 /* StravaAuth.swift in Sources */,
 				01D046CD2A3F2F3D004AF3F0 /* ChartEditorView.swift in Sources */,
-				01D046D82A3F6E8E004AF3F0 /* String+Extensions.swift in Sources */,
 				01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */,
 				012903242A3E3FB900DC5712 /* OAuth2RetryHandler.swift in Sources */,
 				01D046CF2A3F5E3D004AF3F0 /* Activity.swift in Sources */,
@@ -517,6 +493,14 @@
 				minimumVersion = 5.3.2;
 			};
 		};
+		01D046DC2A3F7A77004AF3F0 /* XCRemoteSwiftPackageReference "CSVParser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/szymonorz/CSVParser/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.3;
+			};
+		};
 		01DAB4F02A3D048400752073 /* XCRemoteSwiftPackageReference "duckdb-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/duckdb/duckdb-swift";
@@ -537,6 +521,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 012903202A3E3DF600DC5712 /* XCRemoteSwiftPackageReference "OAuth2" */;
 			productName = OAuth2;
+		};
+		01D046DD2A3F7A77004AF3F0 /* CSVParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01D046DC2A3F7A77004AF3F0 /* XCRemoteSwiftPackageReference "CSVParser" */;
+			productName = CSVParser;
 		};
 		01DAB4F12A3D048500752073 /* DuckDB */ = {
 			isa = XCSwiftPackageProductDependency;
