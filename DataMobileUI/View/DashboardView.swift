@@ -11,21 +11,25 @@ import Charts
 struct DashboardView: View {
     var charts: [ChartItem]
     @State var item: Int? = 0
+    @EnvironmentObject var api: StravaApi
     
     
     @ViewBuilder
     var body: some View {
         let chartWidth = (UIScreen.main.bounds.width - 40) / 2 // Width of each chart, with some padding
         NavigationView {
-            LazyVGrid(columns: [
-                GridItem(.flexible()),
-                GridItem(.flexible())
-            ], spacing: 20) {
-                ForEach(Array(sample_charts.enumerated()), id: \.element) { index, chartItem in
-                    NavigationLink(destination: ChartEditorView(chartItem: chartItem),
-                                    label: {
-                                        ChartView(chartItem: chartItem, chartWidth: chartWidth)
-                                    })
+            VStack{
+                Button("Fetch data from Strava", action: api.getUserActivities)
+                LazyVGrid(columns: [
+                    GridItem(.flexible()),
+                    GridItem(.flexible())
+                ], spacing: 20) {
+                    ForEach(Array(sample_charts.enumerated()), id: \.element) { index, chartItem in
+                        NavigationLink(destination: ChartEditorView(chartItem: chartItem),
+                                        label: {
+                                            ChartView(chartItem: chartItem, chartWidth: chartWidth)
+                                        })
+                    }
                 }
             }
         }

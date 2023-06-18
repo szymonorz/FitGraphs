@@ -15,6 +15,7 @@ struct ContentView: View {
         NavigationView {
             ZStack {
                 HomeView()
+                    .environmentObject(StravaApi(stravaAuth: stravaAuth))
             }
         }
     }

@@ -17,7 +17,6 @@ struct ChartEditorView: View {
             //Chart
             VStack {
                 Text("Editor view")
-                Spacer()
                 ChartView(chartItem: chartItem, chartWidth: 200)
             }
         }

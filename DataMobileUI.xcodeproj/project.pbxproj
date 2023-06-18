@@ -19,6 +19,12 @@
 		01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F729F922D20080E576 /* ChartItem.swift */; };
 		01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CA2A3F2013004AF3F0 /* LoginView.swift */; };
 		01D046CD2A3F2F3D004AF3F0 /* ChartEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */; };
+		01D046CF2A3F5E3D004AF3F0 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CE2A3F5E3D004AF3F0 /* Activity.swift */; };
+		01D046D22A3F6E1C004AF3F0 /* CSVParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046D12A3F6E1C004AF3F0 /* CSVParser.swift */; };
+		01D046D42A3F6E4B004AF3F0 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046D32A3F6E4B004AF3F0 /* Errors.swift */; };
+		01D046D62A3F6E6E004AF3F0 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046D52A3F6E6E004AF3F0 /* Parser.swift */; };
+		01D046D82A3F6E8E004AF3F0 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046D72A3F6E8E004AF3F0 /* String+Extensions.swift */; };
+		01D046DA2A3F7050004AF3F0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 01D046D92A3F7050004AF3F0 /* LICENSE */; };
 		01DAB4F22A3D048500752073 /* DuckDB in Frameworks */ = {isa = PBXBuildFile; productRef = 01DAB4F12A3D048500752073 /* DuckDB */; };
 		01DF42FC29F545790066F88F /* DataMobileUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DF42FB29F545790066F88F /* DataMobileUIApp.swift */; };
 		01DF42FE29F545790066F88F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DF42FD29F545790066F88F /* ContentView.swift */; };
@@ -51,6 +57,12 @@
 		01AC30DB2A0B0E3600AE01BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		01D046CA2A3F2013004AF3F0 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartEditorView.swift; sourceTree = "<group>"; };
+		01D046CE2A3F5E3D004AF3F0 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
+		01D046D12A3F6E1C004AF3F0 /* CSVParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVParser.swift; sourceTree = "<group>"; };
+		01D046D32A3F6E4B004AF3F0 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		01D046D52A3F6E6E004AF3F0 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		01D046D72A3F6E8E004AF3F0 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		01D046D92A3F7050004AF3F0 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		01DF42F829F545790066F88F /* DataMobileUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DataMobileUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01DF42FB29F545790066F88F /* DataMobileUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMobileUIApp.swift; sourceTree = "<group>"; };
 		01DF42FD29F545790066F88F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -85,6 +97,7 @@
 			children = (
 				012902F42A3E04FB00DC5712 /* OAuth */,
 				012902F72A3E062D00DC5712 /* StravaApi.swift */,
+				01D046CE2A3F5E3D004AF3F0 /* Activity.swift */,
 			);
 			path = Strava;
 			sourceTree = "<group>";
@@ -127,6 +140,18 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		01D046D02A3F6DF3004AF3F0 /* CSVParser */ = {
+			isa = PBXGroup;
+			children = (
+				01D046D92A3F7050004AF3F0 /* LICENSE */,
+				01D046D12A3F6E1C004AF3F0 /* CSVParser.swift */,
+				01D046D32A3F6E4B004AF3F0 /* Errors.swift */,
+				01D046D52A3F6E6E004AF3F0 /* Parser.swift */,
+				01D046D72A3F6E8E004AF3F0 /* String+Extensions.swift */,
+			);
+			path = CSVParser;
+			sourceTree = "<group>";
+		};
 		01DF42EF29F545790066F88F = {
 			isa = PBXGroup;
 			children = (
@@ -147,6 +172,7 @@
 		01DF42FA29F545790066F88F /* DataMobileUI */ = {
 			isa = PBXGroup;
 			children = (
+				01D046D02A3F6DF3004AF3F0 /* CSVParser */,
 				012902EA2A3DE8F000DC5712 /* Api */,
 				01AC30DB2A0B0E3600AE01BE /* Info.plist */,
 				013C51E529F5A801006AF055 /* Model */,
@@ -235,6 +261,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01D046DA2A3F7050004AF3F0 /* LICENSE in Resources */,
 				01DF430329F5457B0066F88F /* Preview Assets.xcassets in Resources */,
 				01DF430029F5457B0066F88F /* Assets.xcassets in Resources */,
 			);
@@ -248,16 +275,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				01DF42FE29F545790066F88F /* ContentView.swift in Sources */,
+				01D046D42A3F6E4B004AF3F0 /* Errors.swift in Sources */,
 				01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */,
 				013C51E329F5A7EF006AF055 /* DashboardView.swift in Sources */,
+				01D046D62A3F6E6E004AF3F0 /* Parser.swift in Sources */,
 				01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */,
 				0116AE872A06A9E500E1749C /* Auth.swift in Sources */,
+				01D046D22A3F6E1C004AF3F0 /* CSVParser.swift in Sources */,
 				012902F82A3E062D00DC5712 /* StravaApi.swift in Sources */,
 				013C51E729F5A811006AF055 /* Dashboard.swift in Sources */,
 				012902ED2A3DE92400DC5712 /* StravaAuth.swift in Sources */,
 				01D046CD2A3F2F3D004AF3F0 /* ChartEditorView.swift in Sources */,
+				01D046D82A3F6E8E004AF3F0 /* String+Extensions.swift in Sources */,
 				01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */,
 				012903242A3E3FB900DC5712 /* OAuth2RetryHandler.swift in Sources */,
+				01D046CF2A3F5E3D004AF3F0 /* Activity.swift in Sources */,
 				01DF42FC29F545790066F88F /* DataMobileUIApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
