@@ -15,12 +15,12 @@
 		012903242A3E3FB900DC5712 /* OAuth2RetryHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012903232A3E3FB900DC5712 /* OAuth2RetryHandler.swift */; };
 		013C51E329F5A7EF006AF055 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013C51E229F5A7EF006AF055 /* DashboardView.swift */; };
 		013C51E729F5A811006AF055 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013C51E629F5A811006AF055 /* Dashboard.swift */; };
+		0166005D2A3F810500E5E2F8 /* CSVParser in Frameworks */ = {isa = PBXBuildFile; productRef = 0166005C2A3F810500E5E2F8 /* CSVParser */; };
 		01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F529F9224E0080E576 /* ChartView.swift */; };
 		01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F729F922D20080E576 /* ChartItem.swift */; };
 		01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CA2A3F2013004AF3F0 /* LoginView.swift */; };
 		01D046CD2A3F2F3D004AF3F0 /* ChartEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */; };
 		01D046CF2A3F5E3D004AF3F0 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CE2A3F5E3D004AF3F0 /* Activity.swift */; };
-		01D046DE2A3F7A77004AF3F0 /* CSVParser in Frameworks */ = {isa = PBXBuildFile; productRef = 01D046DD2A3F7A77004AF3F0 /* CSVParser */; };
 		01DAB4F22A3D048500752073 /* DuckDB in Frameworks */ = {isa = PBXBuildFile; productRef = 01DAB4F12A3D048500752073 /* DuckDB */; };
 		01DF42FC29F545790066F88F /* DataMobileUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DF42FB29F545790066F88F /* DataMobileUIApp.swift */; };
 		01DF42FE29F545790066F88F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DF42FD29F545790066F88F /* ContentView.swift */; };
@@ -68,7 +68,7 @@
 			files = (
 				012903222A3E3DF600DC5712 /* OAuth2 in Frameworks */,
 				012902F32A3DEA0A00DC5712 /* Alamofire in Frameworks */,
-				01D046DE2A3F7A77004AF3F0 /* CSVParser in Frameworks */,
+				0166005D2A3F810500E5E2F8 /* CSVParser in Frameworks */,
 				01DAB4F22A3D048500752073 /* DuckDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -192,7 +192,7 @@
 				01DAB4F12A3D048500752073 /* DuckDB */,
 				012902F22A3DEA0A00DC5712 /* Alamofire */,
 				012903212A3E3DF600DC5712 /* OAuth2 */,
-				01D046DD2A3F7A77004AF3F0 /* CSVParser */,
+				0166005C2A3F810500E5E2F8 /* CSVParser */,
 			);
 			productName = DataMobileUI;
 			productReference = 01DF42F829F545790066F88F /* DataMobileUI.app */;
@@ -226,7 +226,7 @@
 				01DAB4F02A3D048400752073 /* XCRemoteSwiftPackageReference "duckdb-swift" */,
 				012902F12A3DEA0A00DC5712 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				012903202A3E3DF600DC5712 /* XCRemoteSwiftPackageReference "OAuth2" */,
-				01D046DC2A3F7A77004AF3F0 /* XCRemoteSwiftPackageReference "CSVParser" */,
+				0166005B2A3F810500E5E2F8 /* XCRemoteSwiftPackageReference "CSVParser" */,
 			);
 			productRefGroup = 01DF42F929F545790066F88F /* Products */;
 			projectDirPath = "";
@@ -493,12 +493,12 @@
 				minimumVersion = 5.3.2;
 			};
 		};
-		01D046DC2A3F7A77004AF3F0 /* XCRemoteSwiftPackageReference "CSVParser" */ = {
+		0166005B2A3F810500E5E2F8 /* XCRemoteSwiftPackageReference "CSVParser" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/szymonorz/CSVParser/";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.3;
+				kind = exactVersion;
+				version = 1.0.0;
 			};
 		};
 		01DAB4F02A3D048400752073 /* XCRemoteSwiftPackageReference "duckdb-swift" */ = {
@@ -522,9 +522,9 @@
 			package = 012903202A3E3DF600DC5712 /* XCRemoteSwiftPackageReference "OAuth2" */;
 			productName = OAuth2;
 		};
-		01D046DD2A3F7A77004AF3F0 /* CSVParser */ = {
+		0166005C2A3F810500E5E2F8 /* CSVParser */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 01D046DC2A3F7A77004AF3F0 /* XCRemoteSwiftPackageReference "CSVParser" */;
+			package = 0166005B2A3F810500E5E2F8 /* XCRemoteSwiftPackageReference "CSVParser" */;
 			productName = CSVParser;
 		};
 		01DAB4F12A3D048500752073 /* DuckDB */ = {
