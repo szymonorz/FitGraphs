@@ -14,11 +14,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                if(stravaAuth.oauth.hasUnexpiredAccessToken()) {
-                    HomeView()
-                }else {
-                    LoginView()
-                }
+                HomeView()
             }
         }
     }
@@ -28,14 +24,5 @@ struct HomeView: View {
     @EnvironmentObject var dashboard: Dashboard
     var body: some View {
         DashboardView(charts: sample_charts)
-    }
-}
-
-struct LoginView: View {
-    @EnvironmentObject  var stravaAuth: StravaAuth
-    var body: some View {
-        VStack {
-            Button("Log in to Strava", action: stravaAuth.authorize)
-        }
     }
 }
