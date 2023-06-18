@@ -15,7 +15,8 @@
 		012903242A3E3FB900DC5712 /* OAuth2RetryHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012903232A3E3FB900DC5712 /* OAuth2RetryHandler.swift */; };
 		013C51E329F5A7EF006AF055 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013C51E229F5A7EF006AF055 /* DashboardView.swift */; };
 		013C51E729F5A811006AF055 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013C51E629F5A811006AF055 /* Dashboard.swift */; };
-		0166005D2A3F810500E5E2F8 /* CSVParser in Frameworks */ = {isa = PBXBuildFile; productRef = 0166005C2A3F810500E5E2F8 /* CSVParser */; };
+		0166005F2A3F9A1300E5E2F8 /* EditHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0166005E2A3F9A1300E5E2F8 /* EditHub.swift */; };
+		016600612A3F9A2A00E5E2F8 /* Selector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016600602A3F9A2A00E5E2F8 /* Selector.swift */; };
 		01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F529F9224E0080E576 /* ChartView.swift */; };
 		01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F729F922D20080E576 /* ChartItem.swift */; };
 		01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CA2A3F2013004AF3F0 /* LoginView.swift */; };
@@ -48,6 +49,8 @@
 		012903232A3E3FB900DC5712 /* OAuth2RetryHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2RetryHandler.swift; sourceTree = "<group>"; };
 		013C51E229F5A7EF006AF055 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		013C51E629F5A811006AF055 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
+		0166005E2A3F9A1300E5E2F8 /* EditHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHub.swift; sourceTree = "<group>"; };
+		016600602A3F9A2A00E5E2F8 /* Selector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selector.swift; sourceTree = "<group>"; };
 		01A0E7F529F9224E0080E576 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		01A0E7F729F922D20080E576 /* ChartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartItem.swift; sourceTree = "<group>"; };
 		01AC30DB2A0B0E3600AE01BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -68,7 +71,6 @@
 			files = (
 				012903222A3E3DF600DC5712 /* OAuth2 in Frameworks */,
 				012902F32A3DEA0A00DC5712 /* Alamofire in Frameworks */,
-				0166005D2A3F810500E5E2F8 /* CSVParser in Frameworks */,
 				01DAB4F22A3D048500752073 /* DuckDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,6 +120,8 @@
 				01A0E7F529F9224E0080E576 /* ChartView.swift */,
 				01D046CA2A3F2013004AF3F0 /* LoginView.swift */,
 				01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */,
+				0166005E2A3F9A1300E5E2F8 /* EditHub.swift */,
+				016600602A3F9A2A00E5E2F8 /* Selector.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -192,7 +196,6 @@
 				01DAB4F12A3D048500752073 /* DuckDB */,
 				012902F22A3DEA0A00DC5712 /* Alamofire */,
 				012903212A3E3DF600DC5712 /* OAuth2 */,
-				0166005C2A3F810500E5E2F8 /* CSVParser */,
 			);
 			productName = DataMobileUI;
 			productReference = 01DF42F829F545790066F88F /* DataMobileUI.app */;
@@ -226,7 +229,6 @@
 				01DAB4F02A3D048400752073 /* XCRemoteSwiftPackageReference "duckdb-swift" */,
 				012902F12A3DEA0A00DC5712 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				012903202A3E3DF600DC5712 /* XCRemoteSwiftPackageReference "OAuth2" */,
-				0166005B2A3F810500E5E2F8 /* XCRemoteSwiftPackageReference "CSVParser" */,
 			);
 			productRefGroup = 01DF42F929F545790066F88F /* Products */;
 			projectDirPath = "";
@@ -255,6 +257,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				01DF42FE29F545790066F88F /* ContentView.swift in Sources */,
+				0166005F2A3F9A1300E5E2F8 /* EditHub.swift in Sources */,
+				016600612A3F9A2A00E5E2F8 /* Selector.swift in Sources */,
 				01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */,
 				013C51E329F5A7EF006AF055 /* DashboardView.swift in Sources */,
 				01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */,
@@ -493,14 +497,6 @@
 				minimumVersion = 5.3.2;
 			};
 		};
-		0166005B2A3F810500E5E2F8 /* XCRemoteSwiftPackageReference "CSVParser" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/szymonorz/CSVParser/";
-			requirement = {
-				kind = exactVersion;
-				version = 1.0.0;
-			};
-		};
 		01DAB4F02A3D048400752073 /* XCRemoteSwiftPackageReference "duckdb-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/duckdb/duckdb-swift";
@@ -521,11 +517,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 012903202A3E3DF600DC5712 /* XCRemoteSwiftPackageReference "OAuth2" */;
 			productName = OAuth2;
-		};
-		0166005C2A3F810500E5E2F8 /* CSVParser */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0166005B2A3F810500E5E2F8 /* XCRemoteSwiftPackageReference "CSVParser" */;
-			productName = CSVParser;
 		};
 		01DAB4F12A3D048500752073 /* DuckDB */ = {
 			isa = XCSwiftPackageProductDependency;

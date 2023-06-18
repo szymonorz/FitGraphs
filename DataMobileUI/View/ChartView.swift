@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 
 struct ChartView: View {
-    @State var chartItem: ChartItem
+    @ObservedObject var chartItem: ChartItem
     var chartWidth: CGFloat
     
     var body: some View {
@@ -47,8 +47,7 @@ struct ChartView: View {
         }
     }
     
-    struct ChartView_Previews: PreviewProvider {
-        static var previews: some View {
+    #Preview {
             ChartView(chartItem: ChartItem(name: "UWU", type: "BAR",
                                                contents: [
                                                 ChartItem._ChartContent(key:"0", value: 123),
@@ -58,5 +57,4 @@ struct ChartView: View {
                                                ]),
                           chartWidth: 120)
         }
-    }
 }

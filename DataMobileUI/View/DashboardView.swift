@@ -17,7 +17,7 @@ struct DashboardView: View {
     @ViewBuilder
     var body: some View {
         let chartWidth = (UIScreen.main.bounds.width - 40) / 2 // Width of each chart, with some padding
-        NavigationView {
+        NavigationStack {
             VStack{
                 Button("Fetch data from Strava", action: api.getUserActivities)
                 LazyVGrid(columns: [
