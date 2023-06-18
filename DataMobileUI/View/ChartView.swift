@@ -8,10 +8,9 @@
 import SwiftUI
 import Charts
 
-struct AnimatedChart: View {
+struct ChartView: View {
     @State var chartItem: ChartItem
     var chartWidth: CGFloat
-    @State var animate: Bool = false
     
     var body: some View {
         VStack {
@@ -36,7 +35,6 @@ struct AnimatedChart: View {
                     }else if(chartItem.type == "PIE") {
                         SectorMark(
                             angle: .value("value", content.value)
-//                            innerRadius: .ratio(0.35)
                         ).foregroundStyle(by: .value("k", content.key))
                     }
                     
@@ -49,9 +47,9 @@ struct AnimatedChart: View {
         }
     }
     
-    struct AnimatedChart_Previews: PreviewProvider {
+    struct ChartView_Previews: PreviewProvider {
         static var previews: some View {
-            AnimatedChart(chartItem: ChartItem(name: "UWU", type: "BAR",
+            ChartView(chartItem: ChartItem(name: "UWU", type: "BAR",
                                                contents: [
                                                 ChartItem._ChartContent(key:"0", value: 123),
                                                 ChartItem._ChartContent(key:"1", value: 125),

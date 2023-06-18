@@ -10,23 +10,27 @@ import Charts
 
 struct DashboardView: View {
     var charts: [ChartItem]
+    @State var item: Int? = 0
     
     
     @ViewBuilder
     var body: some View {
         let chartWidth = (UIScreen.main.bounds.width - 40) / 2 // Width of each chart, with some padding
-        
-        Grid {
-            ForEach(sample_charts.chunked(into: 2), id: \.self) { chartRow in
-                GridRow {
-                    ForEach(Array(chartRow.enumerated()), id: \.element) { jndex, chartItem in
-                        AnimatedChart(chartItem: chartItem, chartWidth: chartWidth)
-                        }
-                    }
+        NavigationView {
+            LazyVGrid(columns: [
+                GridItem(.flexible()),
+                GridItem(.flexible())
+            ], spacing: 20) {
+                ForEach(Array(sample_charts.enumerated()), id: \.element) { index, chartItem in
+                    NavigationLink(destination: ChartEditorView(chartItem: chartItem),
+                                    label: {
+                                        ChartView(chartItem: chartItem, chartWidth: chartWidth)
+                                    })
                 }
             }
         }
     }
+}
 
 extension Array {
     func chunked(into size: Int) -> [[Element]] {

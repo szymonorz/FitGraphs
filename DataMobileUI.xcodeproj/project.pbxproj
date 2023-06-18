@@ -15,9 +15,10 @@
 		012903242A3E3FB900DC5712 /* OAuth2RetryHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012903232A3E3FB900DC5712 /* OAuth2RetryHandler.swift */; };
 		013C51E329F5A7EF006AF055 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013C51E229F5A7EF006AF055 /* DashboardView.swift */; };
 		013C51E729F5A811006AF055 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013C51E629F5A811006AF055 /* Dashboard.swift */; };
-		01A0E7F629F9224E0080E576 /* AnimatedChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F529F9224E0080E576 /* AnimatedChart.swift */; };
+		01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F529F9224E0080E576 /* ChartView.swift */; };
 		01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F729F922D20080E576 /* ChartItem.swift */; };
 		01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CA2A3F2013004AF3F0 /* LoginView.swift */; };
+		01D046CD2A3F2F3D004AF3F0 /* ChartEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */; };
 		01DAB4F22A3D048500752073 /* DuckDB in Frameworks */ = {isa = PBXBuildFile; productRef = 01DAB4F12A3D048500752073 /* DuckDB */; };
 		01DF42FC29F545790066F88F /* DataMobileUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DF42FB29F545790066F88F /* DataMobileUIApp.swift */; };
 		01DF42FE29F545790066F88F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DF42FD29F545790066F88F /* ContentView.swift */; };
@@ -45,10 +46,11 @@
 		012903232A3E3FB900DC5712 /* OAuth2RetryHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2RetryHandler.swift; sourceTree = "<group>"; };
 		013C51E229F5A7EF006AF055 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		013C51E629F5A811006AF055 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
-		01A0E7F529F9224E0080E576 /* AnimatedChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedChart.swift; sourceTree = "<group>"; };
+		01A0E7F529F9224E0080E576 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		01A0E7F729F922D20080E576 /* ChartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartItem.swift; sourceTree = "<group>"; };
 		01AC30DB2A0B0E3600AE01BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		01D046CA2A3F2013004AF3F0 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartEditorView.swift; sourceTree = "<group>"; };
 		01DF42F829F545790066F88F /* DataMobileUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DataMobileUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01DF42FB29F545790066F88F /* DataMobileUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMobileUIApp.swift; sourceTree = "<group>"; };
 		01DF42FD29F545790066F88F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -108,8 +110,9 @@
 			children = (
 				01DF42FD29F545790066F88F /* ContentView.swift */,
 				013C51E229F5A7EF006AF055 /* DashboardView.swift */,
-				01A0E7F529F9224E0080E576 /* AnimatedChart.swift */,
+				01A0E7F529F9224E0080E576 /* ChartView.swift */,
 				01D046CA2A3F2013004AF3F0 /* LoginView.swift */,
+				01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -247,11 +250,12 @@
 				01DF42FE29F545790066F88F /* ContentView.swift in Sources */,
 				01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */,
 				013C51E329F5A7EF006AF055 /* DashboardView.swift in Sources */,
-				01A0E7F629F9224E0080E576 /* AnimatedChart.swift in Sources */,
+				01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */,
 				0116AE872A06A9E500E1749C /* Auth.swift in Sources */,
 				012902F82A3E062D00DC5712 /* StravaApi.swift in Sources */,
 				013C51E729F5A811006AF055 /* Dashboard.swift in Sources */,
 				012902ED2A3DE92400DC5712 /* StravaAuth.swift in Sources */,
+				01D046CD2A3F2F3D004AF3F0 /* ChartEditorView.swift in Sources */,
 				01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */,
 				012903242A3E3FB900DC5712 /* OAuth2RetryHandler.swift in Sources */,
 				01DF42FC29F545790066F88F /* DataMobileUIApp.swift in Sources */,
