@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "csvparser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/szymonorz/CSVParser/",
+      "state" : {
+        "revision" : "9daa70d56b981fdde11ddea00b23cb040c89599d",
+        "version" : "2.0.3"
+      }
+    },
+    {
       "identity" : "duckdb-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/duckdb/duckdb-swift",
