@@ -11,11 +11,16 @@ import Combine
 
 struct ContentView: View {
     @EnvironmentObject var stravaAuth: StravaAuth
+    @State var isLoggedIn: Bool = false
     var body: some View {
         NavigationView {
             ZStack {
-                HomeView()
-                    .environmentObject(StravaApi(stravaAuth: stravaAuth))
+                if stravaAuth.oauth.hasUnexpiredAccessToken() {
+                    HomeView()
+                        .environmentObject(StravaApi(stravaAuth: stravaAuth))
+                } else {
+                    LoginView()
+                }
             }
         }
     }
@@ -23,7 +28,11 @@ struct ContentView: View {
 
 struct HomeView: View {
     @EnvironmentObject var dashboard: Dashboard
+    @EnvironmentObject var stravaAuth: StravaAuth
     var body: some View {
-        DashboardView(charts: sample_charts)
+        VStack(spacing: 0){
+            Button("Deauth", action: stravaAuth.logout)
+            DashboardView(charts: sample_charts)
+        }
     }
 }

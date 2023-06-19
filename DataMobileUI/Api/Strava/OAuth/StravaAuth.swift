@@ -10,6 +10,7 @@ import OAuth2
 
 class StravaAuth: ObservableObject {
     var oauth: OAuth2CodeGrant
+    @Published var isLoggedIn: Bool = false
     
     init() {
         let clientId     = Bundle.main.object(forInfoDictionaryKey:"STRAVA_CLIENT_ID") ?? "2"
@@ -38,11 +39,18 @@ class StravaAuth: ObservableObject {
             if let params = authParameters {
                 print("Authorized! Access token is in `oauth.accessToken`")
                 print("Authorized! Additional parameters: \(params)")
+                self.isLoggedIn = true
             }
             else {
                 print("Authorization was canceled or went wrong: \(error)")   // error will not be nil
+                self.isLoggedIn = false
             }
         }
+    }
+    
+    func logout() {
+        oauth.forgetTokens()
+        self.isLoggedIn = false
     }
     
 }

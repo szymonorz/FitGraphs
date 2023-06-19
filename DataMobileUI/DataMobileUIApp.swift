@@ -13,11 +13,7 @@ struct DataMobileUIApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if(stravaAuth.oauth.hasUnexpiredAccessToken()) {
                 ContentView()
-                    .environmentObject(stravaAuth)
-            } else {
-                LoginView()
                     .environmentObject(stravaAuth)
                     .onOpenURL(perform: { url in
                         debugPrint(url)
@@ -35,7 +31,6 @@ struct DataMobileUIApp: App {
                         stravaAuth.oauth.handleRedirectURL(url)
                         
                     })
-            }
         }
     }
 }
