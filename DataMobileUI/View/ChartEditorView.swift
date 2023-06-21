@@ -14,9 +14,10 @@ struct ChartCreatorView: View {
     @Binding var present: Bool
     
     var didAddChart: (ChartItem) -> ()
+    var dataChange: (ChartItem) -> ()
     
     var body: some View {
-        ChartEditorView(chartItem: newChart)
+        ChartEditorView(chartItem: newChart, dataChange: dataChange)
         HStack {
             Button("Save", action: {
                 self.didAddChart(newChart)
@@ -31,6 +32,7 @@ struct ChartCreatorView: View {
 
 struct ChartEditorView: View {
     @StateObject var chartItem: ChartItem
+    var dataChange: (ChartItem) -> ()
     var body: some View {
         HStack {
             // Field Selector
@@ -39,8 +41,8 @@ struct ChartEditorView: View {
             //Chart
             VStack {
                 Text("Editor view")
-                EditHub()
                 ChartView(chartItem: chartItem, chartWidth: 200)
+                EditHub(chart: chartItem, dataChange: dataChange)
                 ChartMenu(chartItem: chartItem)
             }.padding()
         }
@@ -83,6 +85,5 @@ struct ChartMenu: View {
                                     ChartItem._ChartContent(key:"1", value: 125),
                                     ChartItem._ChartContent(key:"2", value: 127),
                                     ChartItem._ChartContent(key:"3", value: 12)
-                                    ])
-    )
+                        ]), dataChange: { chart in })
 }

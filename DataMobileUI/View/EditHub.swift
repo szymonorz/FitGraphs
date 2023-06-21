@@ -8,15 +8,21 @@
 import SwiftUI
 
 struct EditHub: View {
+    @StateObject var chart: ChartItem
+    var dataChange: (ChartItem) -> ()
+    
+    
     var body: some View {
         VStack(spacing: 0) {
-            Selector(name: "Filters")
-            Selector(name: "Dimensions")
-            Selector(name: "Measures")
+            Selector(name: "Filters", type: "filters", chart: chart, callback: { chart in dataChange(chart) })
+            Selector(name: "Dimensions", type: "dimensions", chart: chart, callback: { chart in dataChange(chart) })
+            Selector(name: "Measures", type: "measures", chart: chart, callback: { chart in dataChange(chart) })
         }
     }
 }
 
 #Preview {
-    EditHub()
+    EditHub(chart: ChartItem(name: "name", type: "BAR", contents: []), dataChange: {
+        chart in
+    })
 }

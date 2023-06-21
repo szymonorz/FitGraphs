@@ -29,9 +29,8 @@ class DataSource: ObservableObject {
         return DataSource(db: db, conn: conn)
     }
     
-    func getCount(measure: String, dimensions: String) throws -> DataFrame {
+    func query(measure: String, dimensions: String) throws -> DataFrame {
         let queryString = "SELECT \(dimensions), \(measure) as count FROM activities GROUP BY \(dimensions)"
-        
         let result = try conn.query(queryString);
         
         let dimensionColumn = result[0].cast(to: String.self)

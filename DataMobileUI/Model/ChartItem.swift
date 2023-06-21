@@ -20,9 +20,12 @@ class ChartItem: Hashable, ObservableObject, Equatable, Identifiable {
     @Published var type: String
     @Published var contents: [_ChartContent]
     
+    @Published var dimensions: [String] = ["sport_type"]
+    @Published var measures: [String] = ["COUNT(sport_type)"]
+    @Published var filters: [String] = []
+    
     init(name: String, type: String, contents: [_ChartContent]) {
         self.id = UUID().uuidString
-        print(self.id)
         self.name = name
         self.type = type
         self.contents = contents

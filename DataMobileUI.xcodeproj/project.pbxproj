@@ -20,6 +20,7 @@
 		016600642A40F5D900E5E2F8 /* CSVParser in Frameworks */ = {isa = PBXBuildFile; productRef = 016600632A40F5D900E5E2F8 /* CSVParser */; };
 		016600672A424F4300E5E2F8 /* DataTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016600662A424F4300E5E2F8 /* DataTransformer.swift */; };
 		0166006B2A42630D00E5E2F8 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0166006A2A42630D00E5E2F8 /* DataSource.swift */; };
+		0166006E2A42EBEC00E5E2F8 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 0166006D2A42EBEC00E5E2F8 /* WrappingHStack */; };
 		01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F529F9224E0080E576 /* ChartView.swift */; };
 		01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F729F922D20080E576 /* ChartItem.swift */; };
 		01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CA2A3F2013004AF3F0 /* LoginView.swift */; };
@@ -78,6 +79,7 @@
 				012902F32A3DEA0A00DC5712 /* Alamofire in Frameworks */,
 				016600642A40F5D900E5E2F8 /* CSVParser in Frameworks */,
 				01DAB4F22A3D048500752073 /* DuckDB in Frameworks */,
+				0166006E2A42EBEC00E5E2F8 /* WrappingHStack in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +215,7 @@
 				012902F22A3DEA0A00DC5712 /* Alamofire */,
 				012903212A3E3DF600DC5712 /* OAuth2 */,
 				016600632A40F5D900E5E2F8 /* CSVParser */,
+				0166006D2A42EBEC00E5E2F8 /* WrappingHStack */,
 			);
 			productName = DataMobileUI;
 			productReference = 01DF42F829F545790066F88F /* DataMobileUI.app */;
@@ -247,6 +250,7 @@
 				012902F12A3DEA0A00DC5712 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				012903202A3E3DF600DC5712 /* XCRemoteSwiftPackageReference "OAuth2" */,
 				016600622A40F5D900E5E2F8 /* XCRemoteSwiftPackageReference "CSVParser" */,
+				0166006C2A42EBEC00E5E2F8 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 			);
 			productRefGroup = 01DF42F929F545790066F88F /* Products */;
 			projectDirPath = "";
@@ -525,6 +529,14 @@
 				minimumVersion = 2.0.3;
 			};
 		};
+		0166006C2A42EBEC00E5E2F8 /* XCRemoteSwiftPackageReference "WrappingHStack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dkk/WrappingHStack";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.10;
+			};
+		};
 		01DAB4F02A3D048400752073 /* XCRemoteSwiftPackageReference "duckdb-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/duckdb/duckdb-swift";
@@ -550,6 +562,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 016600622A40F5D900E5E2F8 /* XCRemoteSwiftPackageReference "CSVParser" */;
 			productName = CSVParser;
+		};
+		0166006D2A42EBEC00E5E2F8 /* WrappingHStack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0166006C2A42EBEC00E5E2F8 /* XCRemoteSwiftPackageReference "WrappingHStack" */;
+			productName = WrappingHStack;
 		};
 		01DAB4F12A3D048500752073 /* DuckDB */ = {
 			isa = XCSwiftPackageProductDependency;
