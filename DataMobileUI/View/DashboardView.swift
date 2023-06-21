@@ -9,9 +9,11 @@ import SwiftUI
 import Charts
 
 struct DashboardView: View {
-    var charts: [ChartItem]
+    @State var charts: [ChartItem]
     @State var item: Int? = 0
-    @EnvironmentObject var api: StravaApi
+    @EnvironmentObject var dt: DataTransformer
+    
+    @State var presentModal: Bool = false
     
     
     @ViewBuilder
@@ -19,16 +21,32 @@ struct DashboardView: View {
         let chartWidth = (UIScreen.main.bounds.width - 40) / 2 // Width of each chart, with some padding
         NavigationStack {
             VStack{
-                Button("Fetch data from Strava", action: api.getUserActivities)
+                Button("Fetch data from Strava", action: dt.fetchFromStrava)
                 LazyVGrid(columns: [
                     GridItem(.flexible()),
                     GridItem(.flexible())
                 ], spacing: 20) {
-                    ForEach(Array(sample_charts.enumerated()), id: \.element) { index, chartItem in
+                    ForEach(Array(charts.enumerated()), id: \.element) { index, chartItem in
                         NavigationLink(destination: ChartEditorView(chartItem: chartItem),
                                         label: {
                                             ChartView(chartItem: chartItem, chartWidth: chartWidth)
                                         })
+                    }
+                    
+                    Button("+", action: {
+                        self.presentModal.toggle()
+                    })
+                    .sheet(isPresented: $presentModal) {
+                        ChartCreatorView(
+                            present: $presentModal,
+                            didAddChart: {
+                                chartItem in
+                                
+                                print(chartItem)
+                                
+                                charts.append(chartItem)
+                            }
+                        )
                     }
                 }
             }

@@ -7,15 +7,30 @@
 
 import SwiftUI
 
+struct ChartCreatorView: View {
+    @State var changed: Bool = false
+    @State var newChart: ChartItem  = ChartItem(name: "new", type: "BAR", contents: [])
+    
+    @Binding var present: Bool
+    
+    var didAddChart: (ChartItem) -> ()
+    
+    var body: some View {
+        ChartEditorView(chartItem: newChart)
+        HStack {
+            Button("Save", action: {
+                self.didAddChart(newChart)
+                self.present = false
+            })
+            Button("Cancel", action: {
+                self.present = false
+            })
+        }
+    }
+}
+
 struct ChartEditorView: View {
     @StateObject var chartItem: ChartItem
-//    var labels: [ChartMenuItem] = [
-//        ChartMenuItem(label: "PIE", imageName: "chart.pie.fill"),
-//        ChartMenuItem(label: "BAR", imageName: "chart.bar.fill"),
-//        ChartMenuItem(label: "LINE", imageName: "waveform.path.ecg"),
-//        ChartMenuItem(label: "AREA", imageName: "square.fill")
-//        
-//    ]
     var body: some View {
         HStack {
             // Field Selector
@@ -27,17 +42,6 @@ struct ChartEditorView: View {
                 EditHub()
                 ChartView(chartItem: chartItem, chartWidth: 200)
                 ChartMenu(chartItem: chartItem)
-//                HStack {
-//                    ForEach(labels) { item in
-//                        Button(action: {
-//                            chartItem.type = item.label
-//                        }) {
-//                            Label(item.label, systemImage: item.imageName)
-//                        }
-//                        
-//                    }
-//                }
-//                .labelStyle(.iconOnly)
             }.padding()
         }
     }

@@ -35,7 +35,7 @@ struct Activity: Codable {
     let hasKudoed: Bool?
     let sufferScore: Int?
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey, CaseIterable {
         case name, distance
         case movingTime = "moving_time"
         case elapsedTime = "elapsed_time"

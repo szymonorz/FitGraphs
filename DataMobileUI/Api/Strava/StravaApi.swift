@@ -15,14 +15,14 @@ class StravaApi: ObservableObject {
     
     var stravaAuth: StravaAuth
     
-    init(stravaAuth: StravaAuth) {
+    init(stravaAuth: StravaAuth){
         self.stravaAuth = stravaAuth
     }
     
-    func getUserActivities(){
+    func getUserActivities(with completionBlock: @escaping ([Activity]) -> ()) -> Void{
         AF.request(StravaApi.STRAVA_ACTIVITIES_URL,
-                   interceptor: OAuth2RetryHandler(oauth2: stravaAuth.oauth),
-                   requestModifier: {$0.timeoutInterval = 5}).validate().response { response in
+                           interceptor: OAuth2RetryHandler(oauth2: stravaAuth.oauth),
+                       requestModifier: {$0.timeoutInterval = 5}).validate().response { response in
             
             let data = response.data
             if let statusCode = response.response?.statusCode, statusCode >= 400 {
@@ -32,9 +32,9 @@ class StravaApi: ObservableObject {
             
             
             switch response.result {
-            case .success(let value):
+            case .success(let _):
                 let activities = try! JSONDecoder().decode([Activity].self, from: data!)
-                debugPrint(activities)
+                completionBlock(activities)
             case .failure(let error):
                 debugPrint("[ERROR]: \(error.localizedDescription)")
             }

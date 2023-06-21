@@ -18,6 +18,8 @@
 		0166005F2A3F9A1300E5E2F8 /* EditHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0166005E2A3F9A1300E5E2F8 /* EditHub.swift */; };
 		016600612A3F9A2A00E5E2F8 /* Selector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016600602A3F9A2A00E5E2F8 /* Selector.swift */; };
 		016600642A40F5D900E5E2F8 /* CSVParser in Frameworks */ = {isa = PBXBuildFile; productRef = 016600632A40F5D900E5E2F8 /* CSVParser */; };
+		016600672A424F4300E5E2F8 /* DataTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016600662A424F4300E5E2F8 /* DataTransformer.swift */; };
+		0166006B2A42630D00E5E2F8 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0166006A2A42630D00E5E2F8 /* DataSource.swift */; };
 		01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F529F9224E0080E576 /* ChartView.swift */; };
 		01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F729F922D20080E576 /* ChartItem.swift */; };
 		01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CA2A3F2013004AF3F0 /* LoginView.swift */; };
@@ -52,6 +54,8 @@
 		013C51E629F5A811006AF055 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
 		0166005E2A3F9A1300E5E2F8 /* EditHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHub.swift; sourceTree = "<group>"; };
 		016600602A3F9A2A00E5E2F8 /* Selector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selector.swift; sourceTree = "<group>"; };
+		016600662A424F4300E5E2F8 /* DataTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTransformer.swift; sourceTree = "<group>"; };
+		0166006A2A42630D00E5E2F8 /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		01A0E7F529F9224E0080E576 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		01A0E7F729F922D20080E576 /* ChartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartItem.swift; sourceTree = "<group>"; };
 		01AC30DB2A0B0E3600AE01BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -138,6 +142,15 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		016600652A424F1700E5E2F8 /* DataTransformer */ = {
+			isa = PBXGroup;
+			children = (
+				016600662A424F4300E5E2F8 /* DataTransformer.swift */,
+				0166006A2A42630D00E5E2F8 /* DataSource.swift */,
+			);
+			path = DataTransformer;
+			sourceTree = "<group>";
+		};
 		01DF42EF29F545790066F88F = {
 			isa = PBXGroup;
 			children = (
@@ -158,6 +171,7 @@
 		01DF42FA29F545790066F88F /* DataMobileUI */ = {
 			isa = PBXGroup;
 			children = (
+				016600652A424F1700E5E2F8 /* DataTransformer */,
 				012902EA2A3DE8F000DC5712 /* Api */,
 				01AC30DB2A0B0E3600AE01BE /* Info.plist */,
 				013C51E529F5A801006AF055 /* Model */,
@@ -261,6 +275,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01DF42FE29F545790066F88F /* ContentView.swift in Sources */,
+				0166006B2A42630D00E5E2F8 /* DataSource.swift in Sources */,
 				0166005F2A3F9A1300E5E2F8 /* EditHub.swift in Sources */,
 				016600612A3F9A2A00E5E2F8 /* Selector.swift in Sources */,
 				01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */,
@@ -273,6 +288,7 @@
 				01D046CD2A3F2F3D004AF3F0 /* ChartEditorView.swift in Sources */,
 				01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */,
 				012903242A3E3FB900DC5712 /* OAuth2RetryHandler.swift in Sources */,
+				016600672A424F4300E5E2F8 /* DataTransformer.swift in Sources */,
 				01D046CF2A3F5E3D004AF3F0 /* Activity.swift in Sources */,
 				01DF42FC29F545790066F88F /* DataMobileUIApp.swift in Sources */,
 			);
