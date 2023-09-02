@@ -52,20 +52,4 @@ class DataTransformer: ObservableObject {
             }
         }
     }
-    
-    func loadDataFromFile() {
-        if let dir = fileManager!.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let filePath = dir.appendingPathComponent("data").appendingPathComponent("activities.csv")
-            
-            do {
-                let csv = try CSVParser(filePath: filePath.path)
-                //csv[0] = Activity.CodingKeys.allCases.map { $0.stringValue }
-                for row in csv {
-                    debugPrint(row)
-                }
-            } catch {
-                debugPrint("Error reading file. \(error.localizedDescription)")
-            }
-        }
-    }
 }
