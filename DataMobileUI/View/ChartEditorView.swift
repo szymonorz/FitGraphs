@@ -34,18 +34,13 @@ struct ChartEditorView: View {
     @StateObject var chartItem: ChartItem
     var dataChange: (ChartItem) -> ()
     var body: some View {
-        HStack {
-            // Field Selector
-            
-            
             //Chart
             VStack {
                 Text("Editor view")
                 ChartView(chartItem: chartItem, chartWidth: 200)
                 EditHub(chart: chartItem, dataChange: dataChange)
                 ChartMenu(chartItem: chartItem)
-            }.padding()
-        }
+            }
     }
 }
 
@@ -77,13 +72,4 @@ struct ChartMenu: View {
         }
         .labelStyle(.iconOnly)
     }
-}
-
-#Preview {
-    ChartEditorView(chartItem: ChartItem(name: "3",type: "PIE", contents: [
-                                    ChartItem._ChartContent(key:"0", value: 123),
-                                    ChartItem._ChartContent(key:"1", value: 125),
-                                    ChartItem._ChartContent(key:"2", value: 127),
-                                    ChartItem._ChartContent(key:"3", value: 12)
-                        ]), dataChange: { chart in })
 }

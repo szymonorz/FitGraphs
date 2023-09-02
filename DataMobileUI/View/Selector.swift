@@ -110,7 +110,7 @@ struct FieldPicker: View {
     
     //var toChose: [String] = Activity.CodingKeys.allCases.map { $0.stringValue }.filter { $0.typ}
     var dimsToChose: [String] = ["name", "sport_type"]
-    var measuresToChose: [String] = ["COUNT(sport_type)", "AVG(distance)"]
+    var measuresToChose: [String] = ["COUNT(sport_type)"]
     
     var body: some View {
         VStack {
@@ -180,14 +180,4 @@ struct FieldPicker: View {
             }
         }
     }
-}
-
-#Preview {
-    Selector(name: "Cringe",
-             type: "dimensions",
-             chart: ChartItem(name: "cringe", type: "BAR", contents: []),
-             callback: {
-                chart in
-            }
-    )
 }

@@ -35,15 +35,54 @@ struct DashboardView: View {
         }
     }
     
+    func updateCharts() {
+        var _charts = [ChartItem]()
+        
+        for c in sample_charts {
+            var chartContents = [ChartItem._ChartContent]()
+            let chart = ChartItem(name: c.name,
+                                  type: c.type,
+                                  contents: [])
+            do {
+                let df = try ds.query(measure: c.measures.joined(separator: ","),
+                                      dimensions: c.dimensions.joined(separator: ","))
+                
+                let activityTypeColumn = df.columns[0].assumingType(String.self).filled(with: "b.d")
+                let countColumn = df.columns[1].assumingType(Int.self).filled(with: 0)
+                
+                for (activity, count) in zip(activityTypeColumn, countColumn) {
+                    chartContents.append(ChartItem._ChartContent(key: String(activity), value: Double(count)))
+                }
+                chart.contents = chartContents
+                _charts.append(chart)
+            } catch {
+                debugPrint(error.localizedDescription)
+                break
+            }
+        }
+        
+        charts.removeAll()
+        charts.append(contentsOf: _charts)
+        
+    }
     
     @ViewBuilder
     var body: some View {
         let chartWidth = (UIScreen.main.bounds.width - 40) / 2 // Width of each chart, with some padding
-       
+    
+        
         NavigationStack {
             ScrollView {
                 VStack{
-                    Button("Fetch data from Strava", action: dt.fetchFromStrava)
+                    Button("Fetch data from Strava", action: {
+                        dt.fetchFromStrava {
+                            try! ds.reload { update in
+                                if update {
+                                    updateCharts()
+                                }
+                            }
+                        }
+                    })
                     LazyVGrid(columns: [
                         GridItem(.flexible()),
                         GridItem(.flexible())
@@ -88,12 +127,5 @@ extension Array {
         return stride(from: 0, to: count, by: size).map {
             Array(self[$0..<Swift.min($0 + size, count)])
         }
-    }
-}
-
-struct DashboardView_Previews: PreviewProvider {
-    static var previews: some View {
-        //let dashboard = Dashboard()
-        return DashboardView(charts: sample_charts)
     }
 }

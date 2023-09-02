@@ -15,10 +15,15 @@ struct ChartView: View {
     var body: some View {
         VStack {
             Text(chartItem.name)
-            if chartItem.dimensions.isEmpty {
+            if chartItem.contents.isEmpty {
+                Text("No data to show")
+                    .padding(.top, CGFloat(40))
+            } else if chartItem.dimensions.isEmpty {
                 Text("Need at least one dimension")
+                    .padding(.top, CGFloat(40))
             } else if chartItem.measures.isEmpty {
                 Text("Need at least one measure")
+                    .padding(.top, CGFloat(40))
             } else {
                 let maxElement = chartItem.contents.max { $0.value < $1.value}
                 Chart {
@@ -43,25 +48,11 @@ struct ChartView: View {
                                 angle: .value("value", content.value)
                             ).foregroundStyle(by: .value("k", content.key))
                         }
-                        
                     }
                 }
                 .drawingGroup()
                 .chartYScale(domain: 0...maxElement!.value)
-                .frame(width: chartWidth, height: chartWidth)
             }
-
-        }
+        }.frame(width: chartWidth, height: chartWidth)
     }
-    
-    #Preview {
-            ChartView(chartItem: ChartItem(name: "UWU", type: "BAR",
-                                               contents: [
-                                                ChartItem._ChartContent(key:"0", value: 123),
-                                                ChartItem._ChartContent(key:"1", value: 125),
-                                                ChartItem._ChartContent(key:"2", value: 127),
-                                                ChartItem._ChartContent(key:"3", value: 12)
-                                               ]),
-                          chartWidth: 120)
-        }
 }

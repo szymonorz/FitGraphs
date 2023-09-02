@@ -20,9 +20,3 @@ struct EditHub: View {
         }
     }
 }
-
-#Preview {
-    EditHub(chart: ChartItem(name: "name", type: "BAR", contents: []), dataChange: {
-        chart in
-    })
-}

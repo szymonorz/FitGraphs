@@ -42,14 +42,18 @@ class StravaAuth: ObservableObject {
                 self.isLoggedIn = true
             }
             else {
-                print("Authorization was canceled or went wrong: \(error)")   // error will not be nil
+                print("Authorization was canceled or went wrong: \(error!.localizedDescription)")   // error will not be nil
                 self.isLoggedIn = false
+                if self.oauth.isAuthorizing {
+                    self.oauth.forgetTokens()
+                }
             }
         }
     }
     
     func logout() {
         oauth.forgetTokens()
+        oauth.forgetClient()
         self.isLoggedIn = false
     }
     

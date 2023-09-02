@@ -34,6 +34,9 @@ class StravaApi: ObservableObject {
             switch response.result {
             case .success(let _):
                 let activities = try! JSONDecoder().decode([Activity].self, from: data!)
+                for a in activities {
+                    debugPrint(a)
+                }
                 completionBlock(activities)
             case .failure(let error):
                 debugPrint("[ERROR]: \(error.localizedDescription)")

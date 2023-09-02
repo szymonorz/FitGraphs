@@ -17,7 +17,7 @@ class DataTransformer: ObservableObject {
         self.api = api
     }
     
-    func fetchFromStrava() {
+    func fetchFromStrava(with complectionBlock: @escaping () -> () ) {
         api.getUserActivities(with: { [weak self] activities in
             var json: Data
             do {
@@ -26,19 +26,12 @@ class DataTransformer: ObservableObject {
                 debugPrint("Encoding to JSON failed. \(error.localizedDescription) Aborting")
                 return
             }
-            var csv: String
-            do {
-                csv = try CSVParser.jsonToCSVString(jsonData: json)
-            } catch {
-                debugPrint("Parsing to CSV failed. \(error.localizedDescription) Aborting")
-                return
-            }
-            
-            self!.saveToDevice(data: csv)
+            self!.saveToDevice(data: json)
+            complectionBlock()
         })
     }
     
-    func saveToDevice(data: String) {
+    func saveToDevice(data: Data) {
         if let dir = fileManager!.urls(for: .documentDirectory, in: .userDomainMask).first {
             let dataPth = dir.appendingPathComponent("data")
             
@@ -49,10 +42,11 @@ class DataTransformer: ObservableObject {
                 return
             }
             
-            let fileUrl = dataPth.appendingPathComponent("activities.csv")
+            let fileUrl = dataPth.appendingPathComponent("activities.json")
             
             do {
-                try data.write(toFile: fileUrl.path, atomically: false, encoding: .utf8)
+                debugPrint(data)
+                try data.write(to: fileUrl)
             } catch {
                 debugPrint("Failed to save file: \(error.localizedDescription)")
             }

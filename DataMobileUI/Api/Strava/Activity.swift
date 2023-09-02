@@ -10,19 +10,15 @@ import Foundation
 // MARK: - Activity
 struct Activity: Codable {
     let name: String
-    let distance: Decimal?
+    let distance: Double?
     let movingTime, elapsedTime, totalElevationGain: Decimal?
     let type, sportType: String?
-    let id: Int
+    let id: Decimal
     let startDate, startDateLocal: String?
     let timezone: String?
     let utcOffset: Int?
     let startLatlng, endLatlng: [Decimal]?
     let locationCountry: String?
-    let achievementCount, kudosCount, commentCount, athleteCount: Int?
-    let photoCount: Int?
-    let trainer, commute, manual, activityPrivate: Bool?
-    let flagged, fromAcceptedTag: Bool?
     let averageSpeed: Decimal?
     let maxSpeed: Decimal?
     let averageCadence, averageWatts: Decimal?
@@ -31,12 +27,10 @@ struct Activity: Codable {
     let deviceWatts, hasHeartrate: Bool?
     let averageHeartrate: Decimal?
     let maxHeartrate, maxWatts: Decimal?
-    let prCount, totalPhotoCount: Int?
-    let hasKudoed: Bool?
-    let sufferScore: Int?
 
     enum CodingKeys: String, CodingKey, CaseIterable {
-        case name, distance
+        case name
+        case distance
         case movingTime = "moving_time"
         case elapsedTime = "elapsed_time"
         case totalElevationGain = "total_elevation_gain"
@@ -50,15 +44,6 @@ struct Activity: Codable {
         case startLatlng = "start_latlng"
         case endLatlng = "end_latlng"
         case locationCountry = "location_country"
-        case achievementCount = "achievement_count"
-        case kudosCount = "kudos_count"
-        case commentCount = "comment_count"
-        case athleteCount = "athlete_count"
-        case photoCount = "photo_count"
-        case trainer, commute, manual
-        case activityPrivate = "private"
-        case flagged
-        case fromAcceptedTag = "from_accepted_tag"
         case averageSpeed = "average_speed"
         case maxSpeed = "max_speed"
         case averageCadence = "average_cadence"
@@ -70,9 +55,47 @@ struct Activity: Codable {
         case averageHeartrate = "average_heartrate"
         case maxHeartrate = "max_heartrate"
         case maxWatts = "max_watts"
-        case prCount = "pr_count"
-        case totalPhotoCount = "total_photo_count"
-        case hasKudoed = "has_kudoed"
-        case sufferScore = "suffer_score"
+    }
+    
+    // When refactoring, let Charlie Gepetto handle this :^)
+    static func generateDuckDBSchema() -> String {
+        let schema: [String: String] = [
+                    "name": "VARCHAR",
+                    "distance": "DOUBLE",
+                    "moving_time": "DECIMAL",
+                    "elapsed_time": "DECIMAL",
+                    "total_elevation_gain": "DECIMAL",
+                    "type": "VARCHAR",
+                    "sport_type": "VARCHAR",
+                    "id": "DECIMAL",
+                    "start_date": "VARCHAR",
+                    "start_date_local": "VARCHAR",
+                    "timezone": "VARCHAR",
+                    "utc_offset": "INTEGER",
+                    "start_latlng": "DECIMAL[]",
+                    "end_latlng": "DECIMAL[]",
+                    "location_country": "VARCHAR",
+                    "average_speed": "DECIMAL",
+                    "max_speed": "DECIMAL",
+                    "average_cadence": "DECIMAL",
+                    "average_watts": "DECIMAL",
+                    "weighted_average_watts": "DECIMAL",
+                    "kilojoules": "DECIMAL",
+                    "device_watts": "BOOLEAN",
+                    "has_heartrate": "BOOLEAN",
+                    "average_heartrate": "DECIMAL",
+                    "max_heartrate": "DECIMAL",
+                    "max_watts": "DECIMAL"
+                ]
+                
+        var result = "{"
+        for (key, value) in schema {
+            result += "'\(key)':'\(value)', "
+        }
+        
+        result = String(result.dropLast(2))
+        result += "}"
+                
+        return result
     }
 }
