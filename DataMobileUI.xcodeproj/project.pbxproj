@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0116AE872A06A9E500E1749C /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0116AE862A06A9E500E1749C /* Auth.swift */; };
 		012902ED2A3DE92400DC5712 /* StravaAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012902EC2A3DE92400DC5712 /* StravaAuth.swift */; };
 		012902F32A3DEA0A00DC5712 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 012902F22A3DEA0A00DC5712 /* Alamofire */; };
 		012902F82A3E062D00DC5712 /* StravaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012902F72A3E062D00DC5712 /* StravaApi.swift */; };
@@ -22,6 +21,12 @@
 		0166006E2A42EBEC00E5E2F8 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 0166006D2A42EBEC00E5E2F8 /* WrappingHStack */; };
 		01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F529F9224E0080E576 /* ChartView.swift */; };
 		01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F729F922D20080E576 /* ChartItem.swift */; };
+		01B7CD472AAA741E007902AD /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 01B7CD462AAA741E007902AD /* ComposableArchitecture */; };
+		01BFC5942AACD35F00E4407C /* ChartItemsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BFC5932AACD35F00E4407C /* ChartItemsStore.swift */; };
+		01BFC5972AACD6AA00E4407C /* ChartItemsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BFC5962AACD6AA00E4407C /* ChartItemsClient.swift */; };
+		01BFC59B2AACF79300E4407C /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BFC59A2AACF79300E4407C /* CoreDataManager.swift */; };
+		01BFC5A12AACFA2900E4407C /* ChartItem.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01BFC59F2AACFA2900E4407C /* ChartItem.xcdatamodeld */; };
+		01BFC5A32AAD24D300E4407C /* ChartEditorStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BFC5A22AAD24D300E4407C /* ChartEditorStore.swift */; };
 		01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CA2A3F2013004AF3F0 /* LoginView.swift */; };
 		01D046CD2A3F2F3D004AF3F0 /* ChartEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */; };
 		01D046CF2A3F5E3D004AF3F0 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CE2A3F5E3D004AF3F0 /* Activity.swift */; };
@@ -46,7 +51,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0116AE862A06A9E500E1749C /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		012902EC2A3DE92400DC5712 /* StravaAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaAuth.swift; sourceTree = "<group>"; };
 		012902F72A3E062D00DC5712 /* StravaApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaApi.swift; sourceTree = "<group>"; };
 		012903232A3E3FB900DC5712 /* OAuth2RetryHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2RetryHandler.swift; sourceTree = "<group>"; };
@@ -59,6 +63,11 @@
 		01A0E7F529F9224E0080E576 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		01A0E7F729F922D20080E576 /* ChartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartItem.swift; sourceTree = "<group>"; };
 		01AC30DB2A0B0E3600AE01BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		01BFC5932AACD35F00E4407C /* ChartItemsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartItemsStore.swift; sourceTree = "<group>"; };
+		01BFC5962AACD6AA00E4407C /* ChartItemsClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartItemsClient.swift; sourceTree = "<group>"; };
+		01BFC59A2AACF79300E4407C /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		01BFC5A02AACFA2900E4407C /* ChartItemEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ChartItemEntity.xcdatamodel; sourceTree = "<group>"; };
+		01BFC5A22AAD24D300E4407C /* ChartEditorStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartEditorStore.swift; sourceTree = "<group>"; };
 		01D046CA2A3F2013004AF3F0 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartEditorView.swift; sourceTree = "<group>"; };
 		01D046CE2A3F5E3D004AF3F0 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
@@ -74,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01B7CD472AAA741E007902AD /* ComposableArchitecture in Frameworks */,
 				012903222A3E3DF600DC5712 /* OAuth2 in Frameworks */,
 				012902F32A3DEA0A00DC5712 /* Alamofire in Frameworks */,
 				01DAB4F22A3D048500752073 /* DuckDB in Frameworks */,
@@ -137,7 +147,6 @@
 			children = (
 				013C51E629F5A811006AF055 /* Dashboard.swift */,
 				01A0E7F729F922D20080E576 /* ChartItem.swift */,
-				0116AE862A06A9E500E1749C /* Auth.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -149,6 +158,40 @@
 				0166006A2A42630D00E5E2F8 /* DataSource.swift */,
 			);
 			path = DataTransformer;
+			sourceTree = "<group>";
+		};
+		01BFC5922AACD34C00E4407C /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				01BFC5932AACD35F00E4407C /* ChartItemsStore.swift */,
+				01BFC5A22AAD24D300E4407C /* ChartEditorStore.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		01BFC5952AACD69A00E4407C /* Dependency */ = {
+			isa = PBXGroup;
+			children = (
+				01BFC5962AACD6AA00E4407C /* ChartItemsClient.swift */,
+			);
+			path = Dependency;
+			sourceTree = "<group>";
+		};
+		01BFC5982AACF76800E4407C /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				01BFC5992AACF77600E4407C /* CoreData */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		01BFC5992AACF77600E4407C /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				01BFC59A2AACF79300E4407C /* CoreDataManager.swift */,
+				01BFC59F2AACFA2900E4407C /* ChartItem.xcdatamodeld */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		01DF42EF29F545790066F88F = {
@@ -171,6 +214,9 @@
 		01DF42FA29F545790066F88F /* DataMobileUI */ = {
 			isa = PBXGroup;
 			children = (
+				01BFC5982AACF76800E4407C /* Storage */,
+				01BFC5952AACD69A00E4407C /* Dependency */,
+				01BFC5922AACD34C00E4407C /* Store */,
 				016600652A424F1700E5E2F8 /* DataTransformer */,
 				012902EA2A3DE8F000DC5712 /* Api */,
 				01AC30DB2A0B0E3600AE01BE /* Info.plist */,
@@ -213,6 +259,7 @@
 				012902F22A3DEA0A00DC5712 /* Alamofire */,
 				012903212A3E3DF600DC5712 /* OAuth2 */,
 				0166006D2A42EBEC00E5E2F8 /* WrappingHStack */,
+				01B7CD462AAA741E007902AD /* ComposableArchitecture */,
 			);
 			productName = DataMobileUI;
 			productReference = 01DF42F829F545790066F88F /* DataMobileUI.app */;
@@ -247,6 +294,7 @@
 				012902F12A3DEA0A00DC5712 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				012903202A3E3DF600DC5712 /* XCRemoteSwiftPackageReference "OAuth2" */,
 				0166006C2A42EBEC00E5E2F8 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
+				01B7CD452AAA741E007902AD /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = 01DF42F929F545790066F88F /* Products */;
 			projectDirPath = "";
@@ -277,11 +325,12 @@
 				01DF42FE29F545790066F88F /* ContentView.swift in Sources */,
 				0166006B2A42630D00E5E2F8 /* DataSource.swift in Sources */,
 				0166005F2A3F9A1300E5E2F8 /* EditHub.swift in Sources */,
+				01BFC59B2AACF79300E4407C /* CoreDataManager.swift in Sources */,
 				016600612A3F9A2A00E5E2F8 /* Selector.swift in Sources */,
+				01BFC5972AACD6AA00E4407C /* ChartItemsClient.swift in Sources */,
 				01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */,
 				013C51E329F5A7EF006AF055 /* DashboardView.swift in Sources */,
 				01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */,
-				0116AE872A06A9E500E1749C /* Auth.swift in Sources */,
 				012902F82A3E062D00DC5712 /* StravaApi.swift in Sources */,
 				013C51E729F5A811006AF055 /* Dashboard.swift in Sources */,
 				012902ED2A3DE92400DC5712 /* StravaAuth.swift in Sources */,
@@ -289,8 +338,11 @@
 				01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */,
 				012903242A3E3FB900DC5712 /* OAuth2RetryHandler.swift in Sources */,
 				016600672A424F4300E5E2F8 /* DataTransformer.swift in Sources */,
+				01BFC5942AACD35F00E4407C /* ChartItemsStore.swift in Sources */,
+				01BFC5A12AACFA2900E4407C /* ChartItem.xcdatamodeld in Sources */,
 				01D046CF2A3F5E3D004AF3F0 /* Activity.swift in Sources */,
 				01DF42FC29F545790066F88F /* DataMobileUIApp.swift in Sources */,
+				01BFC5A32AAD24D300E4407C /* ChartEditorStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,6 +577,14 @@
 				minimumVersion = 2.2.10;
 			};
 		};
+		01B7CD452AAA741E007902AD /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
 		01DAB4F02A3D048400752073 /* XCRemoteSwiftPackageReference "duckdb-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/duckdb/duckdb-swift";
@@ -551,12 +611,30 @@
 			package = 0166006C2A42EBEC00E5E2F8 /* XCRemoteSwiftPackageReference "WrappingHStack" */;
 			productName = WrappingHStack;
 		};
+		01B7CD462AAA741E007902AD /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01B7CD452AAA741E007902AD /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
 		01DAB4F12A3D048500752073 /* DuckDB */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 01DAB4F02A3D048400752073 /* XCRemoteSwiftPackageReference "duckdb-swift" */;
 			productName = DuckDB;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		01BFC59F2AACFA2900E4407C /* ChartItem.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				01BFC5A02AACFA2900E4407C /* ChartItemEntity.xcdatamodel */,
+			);
+			currentVersion = 01BFC5A02AACFA2900E4407C /* ChartItemEntity.xcdatamodel */;
+			path = ChartItem.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 01DF42F029F545790066F88F /* Project object */;
 }

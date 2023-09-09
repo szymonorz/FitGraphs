@@ -7,29 +7,26 @@
 
 import SwiftUI
 import Charts
+import ComposableArchitecture
 
 struct DashboardView: View {
     @State var charts: [ChartItem]
     @State var item: Int? = 0
     @EnvironmentObject var dt: DataTransformer
-    @EnvironmentObject var ds: DataSource
     
     @State var presentModal: Bool = false
     
+    let store: StoreOf<Dashboard>
     
     func processChartData(chart: ChartItem) {
         var chartContents = [ChartItem._ChartContent]()
         do {
-            let df = try ds.query(measure: chart.measures.joined(separator: ","),
-                                  dimensions: chart.dimensions.joined(separator: ","))
-            
-            let activityTypeColumn = df.columns[0].assumingType(String.self).filled(with: "b.d")
-            let countColumn = df.columns[1].assumingType(Int.self).filled(with: 0)
-            
-            for (activity, count) in zip(activityTypeColumn, countColumn) {
-                chartContents.append(ChartItem._ChartContent(key: String(activity), value: Double(count)))
-            }
-            chart.contents = chartContents
+            let df = try DataSource.shared.query(
+                dimensions: chart.dimensions,
+                measures: chart.measures
+            )
+                                  
+            chart.contents = df
         } catch {
             debugPrint(error.localizedDescription)
         }
@@ -44,16 +41,12 @@ struct DashboardView: View {
                                   type: c.type,
                                   contents: [])
             do {
-                let df = try ds.query(measure: c.measures.joined(separator: ","),
-                                      dimensions: c.dimensions.joined(separator: ","))
+                let df = try DataSource.shared.query(
+                    dimensions: chart.dimensions,
+                    measures: chart.measures
+                )
                 
-                let activityTypeColumn = df.columns[0].assumingType(String.self).filled(with: "b.d")
-                let countColumn = df.columns[1].assumingType(Int.self).filled(with: 0)
-                
-                for (activity, count) in zip(activityTypeColumn, countColumn) {
-                    chartContents.append(ChartItem._ChartContent(key: String(activity), value: Double(count)))
-                }
-                chart.contents = chartContents
+                chart.contents = df
                 _charts.append(chart)
             } catch {
                 debugPrint(error.localizedDescription)
@@ -70,50 +63,51 @@ struct DashboardView: View {
     var body: some View {
         let chartWidth = (UIScreen.main.bounds.width - 40) / 2 // Width of each chart, with some padding
     
-        
-        NavigationStack {
-            ScrollView {
-                VStack{
-                    Button("Fetch data from Strava", action: {
-                        dt.fetchFromStrava {
-                            try! ds.reload { update in
-                                if update {
-                                    updateCharts()
+        WithViewStore(store, observe: { $0 }) { dashboardViewStore in
+            NavigationStack {
+                ScrollView {
+                    VStack{
+                        Button("Fetch data from Strava", action: {
+                            dt.fetchFromStrava {
+                                try! DataSource.shared.reload { update in
+                                    if update {
+                                        updateCharts()
+                                    }
                                 }
                             }
-                        }
-                    })
-                    LazyVGrid(columns: [
-                        GridItem(.flexible()),
-                        GridItem(.flexible())
-                    ], spacing: 20) {
-                        ForEach(Array(charts.enumerated()), id: \.element) { index, chartItem in
-                            NavigationLink(destination: ChartEditorView(chartItem: chartItem, dataChange: {
-                                chart in
-                                processChartData(chart: chart)
-                            }),
-                                           label: {
-                                ChartView(chartItem: chartItem, chartWidth: chartWidth)
-                            })
-                        }
-                        
-                        Button("+", action: {
-                            self.presentModal.toggle()
                         })
-                        .sheet(isPresented: $presentModal) {
-                            ChartCreatorView(
-                                present: $presentModal,
-                                didAddChart: {
-                                    chartItem in
-                                
-                                    processChartData(chart: chartItem)
-                                    charts.append(chartItem)
-                                },
-                                dataChange: {
+                        LazyVGrid(columns: [
+                            GridItem(.flexible()),
+                            GridItem(.flexible())
+                        ], spacing: 20) {
+                            ForEach(Array(charts.enumerated()), id: \.element) { index, chartItem in
+                                NavigationLink(destination: ChartEditorView(chartItem: chartItem, dataChange: {
                                     chart in
                                     processChartData(chart: chart)
-                                }
-                            )
+                                }),
+                                               label: {
+                                    ChartView(chartItem: chartItem, chartWidth: chartWidth)
+                                })
+                            }
+                            
+                            Button("+", action: {
+                                self.presentModal.toggle()
+                            })
+                            .sheet(isPresented: $presentModal) {
+                                ChartCreatorView(
+                                    present: $presentModal,
+                                    didAddChart: {
+                                        chartItem in
+                                    
+                                        processChartData(chart: chartItem)
+                                        charts.append(chartItem)
+                                    },
+                                    dataChange: {
+                                        chart in
+                                        processChartData(chart: chart)
+                                    }
+                                )
+                            }
                         }
                     }
                 }

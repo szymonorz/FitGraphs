@@ -7,8 +7,28 @@
 
 import Foundation
 import OAuth2
+import ComposableArchitecture
 
-class StravaAuth: ObservableObject {
+class StravaAuth: Reducer {
+    
+    var body: some ReducerOf<StravaAuth> {
+        Reduce { state, action in
+            switch action {
+            case .logout:
+                state.loggedIn = false
+                return .none
+            }
+        }
+    }
+    
+    enum Action: Equatable {
+        case logout
+    }
+    
+    struct State: Equatable {
+        var loggedIn = false
+    }
+    
     var oauth: OAuth2CodeGrant
     @Published var isLoggedIn: Bool = false
     
@@ -51,10 +71,10 @@ class StravaAuth: ObservableObject {
         }
     }
     
-    func logout() {
+    func logout(with completion: @escaping () -> ()) {
         oauth.forgetTokens()
         oauth.forgetClient()
-        self.isLoggedIn = false
+        completion()
     }
     
 }

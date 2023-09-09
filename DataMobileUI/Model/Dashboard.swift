@@ -6,9 +6,28 @@
 //
 
 import Foundation
+import ComposableArchitecture
 import Charts
 
-class Dashboard: ObservableObject {
+class Dashboard: Reducer {
+    
+    var body: some ReducerOf<Dashboard> {
+        Reduce { state, action in
+//            switch action {
+//                
+//            }
+            
+            return .none
+        }
+    }
+    
+    enum Action: Equatable {
+        
+    }
+    
+    struct State: Equatable {
+        
+    }
     
     @Published var charts: [ChartItem] //dont care
     

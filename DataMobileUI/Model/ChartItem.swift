@@ -10,25 +10,40 @@ import Foundation
 class ChartItem: Hashable, ObservableObject, Equatable, Identifiable {
     
     struct _ChartContent: Equatable, Hashable, Identifiable {
-        var id = UUID().uuidString
+        var id: UUID
         var key: String
-        var value: Double
+        var value: Decimal
+        
+        init(id: UUID = UUID(), key: String, value: Decimal) {
+            self.id = id
+            self.key = key
+            self.value = value
+        }
     }
     
-    var id: String
+    var id: UUID
     @Published var name: String
     @Published var type: String
     @Published var contents: [_ChartContent]
     
-    @Published var dimensions: [String] = ["sport_type"]
-    @Published var measures: [String] = ["COUNT(sport_type)"]
-    @Published var filters: [String] = []
+    @Published var dimensions: [String]
+    @Published var measures: [String]
+    @Published var filters: [String]
     
-    init(name: String, type: String, contents: [_ChartContent]) {
-        self.id = UUID().uuidString
+    init(id: UUID = UUID(),
+         name: String,
+         type: String,
+         contents: [_ChartContent],
+         dimensions: [String] = ["sport_type"],
+         measures: [String] = ["COUNT(sport_type)"],
+         filters: [String] = []) {
+        self.id = id
         self.name = name
         self.type = type
         self.contents = contents
+        self.dimensions = dimensions
+        self.measures = measures
+        self.filters = filters
     }
     
     func hash(into hasher: inout Hasher) {

@@ -7,34 +7,37 @@
 
 import SwiftUI
 import Combine
-
+import ComposableArchitecture
 
 struct ContentView: View {
-    @EnvironmentObject var stravaAuth: StravaAuth
     @State private var showAlert: Bool = false
     @State private var alertText: String = ""
     
+    let authStore: StoreOf<StravaAuth>
+    let store: Store
+    
     var body: some View {
-        NavigationView {
-            ZStack {
-                if stravaAuth.oauth.hasUnexpiredAccessToken() {
-                    HomeView()
-                        .environmentObject(DataTransformer(api: StravaApi(stravaAuth: stravaAuth)))
-                } else {
-                    LoginView()
-                        .alert(isPresented: $showAlert) {
-                            Alert(title: Text("Error"), message: Text(alertText))
-                        }
+        WithViewStore(authStore, observe: { $0 }) { store in
+            NavigationView {
+                ZStack {
+                    if store.loggedIn {
+                        HomeView(authStore: authStore)
+                            .environmentObject(DataTransformer(api: StravaApi(stravaAuth: authStore.)))
+                    } else {
+                        LoginView()
+                            .alert(isPresented: $showAlert) {
+                                Alert(title: Text("Error"), message: Text(alertText))
+                            }
+                    }
                 }
-            }
-        }.foregroundStyle(.black)
+            }.foregroundStyle(.black)
+        }
     }
 }
 
 struct HomeView: View {
-    @EnvironmentObject var dashboard: Dashboard
     @EnvironmentObject var dt: DataTransformer
-    @EnvironmentObject var stravaAuth: StravaAuth
+    let authStore: StoreOf<StravaAuth>
     
     var body: some View {
         let ds = try! DataSource.create()
@@ -69,11 +72,17 @@ struct HomeView: View {
             return charts
         }
         
-        
-        VStack(spacing: 0){
-            Button("Deauth", action: stravaAuth.logout)
-            DashboardView(charts: charts)
+        WithViewStore(authStore, observe: { $0 }) { authStore in
+            VStack(spacing: 0) {
+                Button("Deauth", action: {
+                    authStore.send(.logout)
+                })
+                DashboardView(charts: charts,
+                              store: .init(
+                                initialState: Dashboard.State(),
+                                reducer: Dashboard()))
                 .environmentObject(ds)
+            }
         }
     }
 }
