@@ -13,34 +13,28 @@ struct ContentView: View {
     @State private var showAlert: Bool = false
     @State private var alertText: String = ""
     
-    let authStore: StoreOf<StravaAuth>
-    let store: Store
+    let store: StoreOf<RootReducer>
     
     var body: some View {
-        WithViewStore(authStore, observe: { $0 }) { store in
-            NavigationView {
-                ZStack {
-                    if store.loggedIn {
-                        HomeView(authStore: authStore)
-                            .environmentObject(DataTransformer(api: StravaApi(stravaAuth: authStore.)))
-                    } else {
-                        LoginView()
-                            .alert(isPresented: $showAlert) {
-                                Alert(title: Text("Error"), message: Text(alertText))
-                            }
-                    }
-                }
-            }.foregroundStyle(.black)
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            
+            if StravaAuth.shared.oauth.hasUnexpiredAccessToken() {
+                HomeView(store: self.store)
+            } else {
+                LoginView(store: self.store.scope(
+                    state: \.stravaAuth,
+                    action: RootReducer.Action.stravaAuth
+                    )
+                )
+            }
         }
     }
 }
 
 struct HomeView: View {
-    @EnvironmentObject var dt: DataTransformer
-    let authStore: StoreOf<StravaAuth>
+    let store: StoreOf<RootReducer>
     
     var body: some View {
-        let ds = try! DataSource.create()
         
         var charts: [ChartItem] {
             var charts = [ChartItem]()
@@ -51,16 +45,11 @@ struct HomeView: View {
                                       type: c.type,
                                       contents: [])
                 do {
-                    let df = try ds.query(measure: c.measures.joined(separator: ","),
-                                          dimensions: c.dimensions.joined(separator: ","))
+                    let contents = try DataSource.shared.query(
+                                    dimensions: c.dimensions,
+                                    measures: c.measures)
                     
-                    let activityTypeColumn = df.columns[0].assumingType(String.self).filled(with: "b.d")
-                    let countColumn = df.columns[1].assumingType(Int.self).filled(with: 0)
-                    
-                    for (activity, count) in zip(activityTypeColumn, countColumn) {
-                        chartContents.append(ChartItem._ChartContent(key: String(activity), value: Double(count)))
-                    }
-                    chart.contents = chartContents
+                    chart.contents = contents
                     charts.append(chart)
                 } catch {
                     debugPrint(error.localizedDescription)
@@ -72,16 +61,15 @@ struct HomeView: View {
             return charts
         }
         
-        WithViewStore(authStore, observe: { $0 }) { authStore in
+        WithViewStore(store, observe: { $0 }) { viewStore in
             VStack(spacing: 0) {
                 Button("Deauth", action: {
-                    authStore.send(.logout)
+                    viewStore.send(RootReducer.Action.stravaAuth(.logout))
                 })
-                DashboardView(charts: charts,
-                              store: .init(
-                                initialState: Dashboard.State(),
-                                reducer: Dashboard()))
-                .environmentObject(ds)
+//                DashboardView(charts: charts,
+//                              store: .init(
+//                                initialState: Dashboard.State(),
+//                                reducer: Dashboard()))
             }
         }
     }

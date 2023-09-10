@@ -25,10 +25,10 @@ extension ChartItemsClient: DependencyKey {
         fetchChartItems: {
             let viewContext = CoreDataManager.shared.container.viewContext
             let fetchRequest: NSFetchRequest<ChartItemEntity> = ChartItemEntity.fetchRequest()
-            
+            var chartItems: [ChartItem] = []
             do {
                 let fetchedEntities = try viewContext.fetch(fetchRequest)
-                let chartItems = fetchedEntities.map { entity in
+                chartItems = fetchedEntities.map { entity in
                     let contentsEntity = entity.contents?.array as! [ChartContentEntity]
                     let chartItemContets = contentsEntity.map { ce in
                         return ChartItem._ChartContent(
@@ -48,10 +48,11 @@ extension ChartItemsClient: DependencyKey {
                     )
                 }
                 
-                return chartItems
+                
             } catch {
                 debugPrint("Encountered an error while fetching.... Reason: \(error.localizedDescription)")
             }
+            return chartItems
         },
         
         removeChartItem: { chartItem in

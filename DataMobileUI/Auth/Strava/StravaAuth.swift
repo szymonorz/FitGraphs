@@ -9,28 +9,9 @@ import Foundation
 import OAuth2
 import ComposableArchitecture
 
-class StravaAuth: Reducer {
-    
-    var body: some ReducerOf<StravaAuth> {
-        Reduce { state, action in
-            switch action {
-            case .logout:
-                state.loggedIn = false
-                return .none
-            }
-        }
-    }
-    
-    enum Action: Equatable {
-        case logout
-    }
-    
-    struct State: Equatable {
-        var loggedIn = false
-    }
-    
+struct StravaAuth {
+    static let shared = StravaAuth()
     var oauth: OAuth2CodeGrant
-    @Published var isLoggedIn: Bool = false
     
     init() {
         let clientId     = Bundle.main.object(forInfoDictionaryKey:"STRAVA_CLIENT_ID") ?? "2"
@@ -54,16 +35,14 @@ class StravaAuth: Reducer {
         oauth = OAuth2CodeGrant(settings: settings)
     }
     
-    func authorize() {
+    func authorize() async {
         oauth.authorize() { authParameters, error in
             if let params = authParameters {
                 print("Authorized! Access token is in `oauth.accessToken`")
                 print("Authorized! Additional parameters: \(params)")
-                self.isLoggedIn = true
             }
             else {
-                print("Authorization was canceled or went wrong: \(error!.localizedDescription)")   // error will not be nil
-                self.isLoggedIn = false
+                print("Authorization was canceled or went wrong: \(error!.localizedDescription) \(error)")   // error will not be nil
                 if self.oauth.isAuthorizing {
                     self.oauth.forgetTokens()
                 }
@@ -71,10 +50,9 @@ class StravaAuth: Reducer {
         }
     }
     
-    func logout(with completion: @escaping () -> ()) {
+    func logout() async {
         oauth.forgetTokens()
         oauth.forgetClient()
-        completion()
     }
     
 }

@@ -8,7 +8,7 @@
 import Foundation
 import ComposableArchitecture
 
-struct ChartEditorStore: Reducer {
+struct ChartEditorReducer: Reducer {
     
     @Dependency(\.chartItemsClient) var chartItemsClient
     

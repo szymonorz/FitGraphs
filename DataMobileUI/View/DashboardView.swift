@@ -12,9 +12,11 @@ import ComposableArchitecture
 struct DashboardView: View {
     @State var charts: [ChartItem]
     @State var item: Int? = 0
-    @EnvironmentObject var dt: DataTransformer
     
     @State var presentModal: Bool = false
+    
+    @Dependency(\.dataTransformer) var dataTransformer
+    @Dependency(\.stravaApi) var stravaApi
     
     let store: StoreOf<Dashboard>
     
@@ -56,7 +58,6 @@ struct DashboardView: View {
         
         charts.removeAll()
         charts.append(contentsOf: _charts)
-        
     }
     
     @ViewBuilder
@@ -68,13 +69,7 @@ struct DashboardView: View {
                 ScrollView {
                     VStack{
                         Button("Fetch data from Strava", action: {
-                            dt.fetchFromStrava {
-                                try! DataSource.shared.reload { update in
-                                    if update {
-                                        updateCharts()
-                                    }
-                                }
-                            }
+                            debugPrint("chuj")
                         })
                         LazyVGrid(columns: [
                             GridItem(.flexible()),

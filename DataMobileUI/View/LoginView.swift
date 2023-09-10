@@ -6,13 +6,18 @@
 //
 
 import SwiftUI
-import Combine
+import ComposableArchitecture
 
 struct LoginView: View {
-    @EnvironmentObject  var stravaAuth: StravaAuth
+    let store: StoreOf<StravaAuthReducer>
+    
     var body: some View {
-        VStack {
-            Button("Log in to Strava", action: stravaAuth.authorize)
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            VStack {
+                Button("Log in to Strava", action: {
+                    viewStore.send(StravaAuthReducer.Action.authorize)
+                })
+            }
         }
     }
 }

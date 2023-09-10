@@ -10,8 +10,8 @@ import DuckDB
 import TabularData
 
 class DataSource {
-    let db: Database
-    let conn: Connection
+    var db: Database? = nil
+    var conn: Connection? = nil
     
     static let shared = DataSource()
     
@@ -21,9 +21,11 @@ class DataSource {
     // probably a TODO: Refactor when I know what to do
     init() {
         let fileManager = FileManager.default
+       
         do {
-            let db = try Database(store: .inMemory)
-            let conn = try db.connect()
+            db = try? Database(store: .inMemory)
+            conn = try? db!.connect()
+            
             var filePath: URL
             let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
             filePath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json")
@@ -50,7 +52,7 @@ class DataSource {
             do {
                 let activityColumns: String = Activity.generateDuckDBSchema()
                 let dbArgs: String = "columns=\(activityColumns)"
-                try conn.query("""
+                try conn!.query("""
                     CREATE TABLE activities AS (
                             SELECT * FROM read_json('\(filePath.path)', \(dbArgs))
                     )
@@ -116,7 +118,7 @@ class DataSource {
             let dbArgs: String = "columns=\(activityColumns)"
             // conn.execute is useless since duckdb doesn't return reason in case it errors
             // so always use .query and just ignore the result if it isn't needed just like in this case
-            try conn.query("""
+            try conn!.query("""
                 DROP TABLE activities;
                 CREATE TABLE activities AS (
                         SELECT * FROM read_json('\(filePath.path)', \(dbArgs))
@@ -137,7 +139,7 @@ class DataSource {
         let queryString = "SELECT \(dimensionString), \(measuresString) as count FROM activities GROUP BY \(dimensionString)"
         let result: ResultSet
         do {
-            result = try conn.query(queryString);
+            result = try conn!.query(queryString);
         } catch {
             debugPrint("Encountered an error \(error)")
             throw error
@@ -163,10 +165,4 @@ class DataSource {
         
         return chartContents
     }
-    
-    private init(db: Database, conn: Connection){
-        self.db = db
-        self.conn = conn
-    }
-    
 }
