@@ -52,7 +52,6 @@ struct StravaAuth {
     
     func logout() async {
         oauth.forgetTokens()
-        oauth.forgetClient()
     }
     
 }

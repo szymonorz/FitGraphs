@@ -15,7 +15,19 @@ struct LoginView: View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             VStack {
                 Button("Log in to Strava", action: {
-                    viewStore.send(StravaAuthReducer.Action.authorize)
+                    StravaAuth.shared.oauth.authorize() { authParameters, error in
+                        if let params = authParameters {
+                            print("Authorized! Access token is in `oauth.accessToken`")
+                            print("Authorized! Additional parameters: \(params)")
+                            viewStore.send(StravaAuthReducer.Action.authorizedChanged)
+                        }
+                        else {
+                            print("Authorization was canceled or went wrong: \(error!.localizedDescription) \(error)")   // error will not be nil
+                            if StravaAuth.shared.oauth.isAuthorizing {
+                                StravaAuth.shared.oauth.forgetTokens()
+                            }
+                        }
+                    }
                 })
             }
         }
