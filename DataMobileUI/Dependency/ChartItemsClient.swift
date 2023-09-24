@@ -20,7 +20,6 @@ struct ChartItemsClient {
 }
 
 extension ChartItemsClient: DependencyKey {
-    
     static let liveValue = ChartItemsClient(
         fetchChartItems: {
             let viewContext = CoreDataManager.shared.container.viewContext
@@ -37,17 +36,19 @@ extension ChartItemsClient: DependencyKey {
                             value: ce.val! as Decimal
                         )
                     }
+                    let dimensions = entity.dimensions!.isEmpty ? [] : entity.dimensions!.components(separatedBy: ";")
+                    let measures = entity.measures!.isEmpty ? [] : entity.measures!.components(separatedBy: ";")
+                    let filters = entity.filters!.isEmpty ? [] : entity.filters!.components(separatedBy: ";")
                     return ChartItem(
                         id: entity.id!,
                         name: entity.name!,
                         type: entity.type!,
                         contents: chartItemContets,
-                        dimensions: entity.dimensions!.components(separatedBy: ";"),
-                        measures: entity.measures!.components(separatedBy: ";"),
-                        filters: entity.filters!.components(separatedBy: ";")
+                        dimensions: dimensions,
+                        measures: measures,
+                        filters: filters
                     )
                 }
-                
                 
             } catch {
                 debugPrint("Encountered an error while fetching.... Reason: \(error.localizedDescription)")
@@ -78,7 +79,7 @@ extension ChartItemsClient: DependencyKey {
             let viewContext = CoreDataManager.shared.container.viewContext
             let entity = ChartItemEntity(context: viewContext)
             
-            entity.id = UUID()
+            entity.id = chartItem.id
             entity.name = chartItem.name
             entity.type = chartItem.type
             entity.dimensions = chartItem.dimensions.joined(separator: ";")
@@ -86,8 +87,8 @@ extension ChartItemsClient: DependencyKey {
             entity.filters = chartItem.filters.joined(separator: ";")
             
             for content in chartItem.contents {
-                let contentEntity = ChartContentEntity()
-                contentEntity.id = UUID()
+                let contentEntity = ChartContentEntity(context: viewContext)
+                contentEntity.id = content.id
                 contentEntity.key = content.key
                 contentEntity.val = content.value as NSDecimalNumber
                 
@@ -118,19 +119,18 @@ extension ChartItemsClient: DependencyKey {
                     entity.filters = chartItem.filters.joined(separator: ";")
                     
                     if let chartContents = entity.contents {
-                        var chartContentArray = chartContents.array as! [ChartItem._ChartContent]
+                        debugPrint(chartContents.array)
+                        var chartContentArray = chartContents.array as! [ChartContentEntity]
                         
                         chartContentArray.enumerated().forEach { idx, _ in
                             let ci = chartItem.contents[idx]
                             chartContentArray[idx].key = ci.key
-                            chartContentArray[idx].value = ci.value
+                            chartContentArray[idx].val = ci.value as NSDecimalNumber
                         }
                         
                         let chartContentsArrayAsOrderedSet = NSOrderedSet(array: chartContentArray)
                         entity.contents = chartContentsArrayAsOrderedSet
                     }
-                    
-                    
                     
                     try viewContext.save()
                 } else {

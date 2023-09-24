@@ -6,17 +6,20 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct EditHub: View {
-    @StateObject var chart: ChartItem
-    var dataChange: (ChartItem) -> ()
     
+    var store: StoreOf<ChartEditorReducer>
     
     var body: some View {
-        VStack(spacing: 0) {
-            Selector(name: "Filters", type: "filters", chart: chart, callback: { chart in dataChange(chart) })
-            Selector(name: "Dimensions", type: "dimensions", chart: chart, callback: { chart in dataChange(chart) })
-            Selector(name: "Measures", type: "measures", chart: chart, callback: { chart in dataChange(chart) })
+        WithViewStore(store, observe: { $0.chartItemToEdit }) { viewStore in
+            VStack(spacing: 0) {
+                Selector(name: "Filters", type: "filters", store: self.store)
+                Selector(name: "Dimensions", type: "dimensions", store: self.store)
+                Selector(name: "Measures", type: "measures", store: self.store)
+            }
         }
+        
     }
 }

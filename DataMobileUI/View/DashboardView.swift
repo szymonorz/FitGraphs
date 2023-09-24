@@ -10,102 +10,65 @@ import Charts
 import ComposableArchitecture
 
 struct DashboardView: View {
-    @State var charts: [ChartItem]
-    @State var item: Int? = 0
     
     @State var presentModal: Bool = false
     
     @Dependency(\.dataTransformer) var dataTransformer
     @Dependency(\.stravaApi) var stravaApi
     
-    let store: StoreOf<Dashboard>
-    
-    func processChartData(chart: ChartItem) {
-        var chartContents = [ChartItem._ChartContent]()
-        do {
-            let df = try DataSource.shared.query(
-                dimensions: chart.dimensions,
-                measures: chart.measures
-            )
-                                  
-            chart.contents = df
-        } catch {
-            debugPrint(error.localizedDescription)
-        }
-    }
-    
-    func updateCharts() {
-        var _charts = [ChartItem]()
-        
-        for c in sample_charts {
-            var chartContents = [ChartItem._ChartContent]()
-            let chart = ChartItem(name: c.name,
-                                  type: c.type,
-                                  contents: [])
-            do {
-                let df = try DataSource.shared.query(
-                    dimensions: chart.dimensions,
-                    measures: chart.measures
-                )
-                
-                chart.contents = df
-                _charts.append(chart)
-            } catch {
-                debugPrint(error.localizedDescription)
-                break
-            }
-        }
-        
-        charts.removeAll()
-        charts.append(contentsOf: _charts)
-    }
+    let store: StoreOf<DashboardReducer>
     
     @ViewBuilder
     var body: some View {
         let chartWidth = (UIScreen.main.bounds.width - 40) / 2 // Width of each chart, with some padding
-    
-        WithViewStore(store, observe: { $0 }) { dashboardViewStore in
-            NavigationStack {
-                ScrollView {
-                    VStack{
-                        Button("Fetch data from Strava", action: {
-                            debugPrint("chuj")
+        
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            ScrollView {
+                VStack{
+                    Button("Fetch data from Strava", action: {
+                        viewStore.send(DashboardReducer.Action.fetchFromStrava)
+                    })
+                    LazyVGrid(columns: [
+                        GridItem(.flexible()),
+                        GridItem(.flexible())
+                    ], spacing: 20) {
+                        ForEach(Array(viewStore.state.charts.enumerated()), id: \.element) { index, chartItem in
+                            ChartView(chartItem: chartItem, chartWidth: chartWidth)
+                                .sheet(isPresented: viewStore.binding(
+                                    get: \.chartEditor.isEditorOpen,
+                                    send: { DashboardReducer.Action.chartEditor(.editorOpenChanged($0))})) {
+                                        ChartEditorView(
+                                            store: self.store.scope(state: \.chartEditor,
+                                                                    action: DashboardReducer.Action.chartEditor),
+                                            callback: {
+                                                viewStore.send(DashboardReducer.Action.loadCharts)
+                                            }
+                                        )
+                                    }.onTapGesture {
+                                        Task {
+                                            await viewStore.send(DashboardReducer.Action.chartItemTapped(chartItem)).finish()
+                                            viewStore.send(DashboardReducer.Action.chartEditor(.openEditor))
+                                        }
+                                    }
+                        }
+                        Button("+", action: {
+                            viewStore.send(DashboardReducer.Action.chartEditor(.openCreator))
                         })
-                        LazyVGrid(columns: [
-                            GridItem(.flexible()),
-                            GridItem(.flexible())
-                        ], spacing: 20) {
-                            ForEach(Array(charts.enumerated()), id: \.element) { index, chartItem in
-                                NavigationLink(destination: ChartEditorView(chartItem: chartItem, dataChange: {
-                                    chart in
-                                    processChartData(chart: chart)
-                                }),
-                                               label: {
-                                    ChartView(chartItem: chartItem, chartWidth: chartWidth)
-                                })
-                            }
-                            
-                            Button("+", action: {
-                                self.presentModal.toggle()
-                            })
-                            .sheet(isPresented: $presentModal) {
+                        .sheet(isPresented: viewStore.binding(
+                            get: \.chartEditor.isCreatorOpen,
+                            send: { DashboardReducer.Action.chartEditor(.creatorOpenChanged($0)) })){
                                 ChartCreatorView(
-                                    present: $presentModal,
-                                    didAddChart: {
-                                        chartItem in
-                                    
-                                        processChartData(chart: chartItem)
-                                        charts.append(chartItem)
-                                    },
-                                    dataChange: {
-                                        chart in
-                                        processChartData(chart: chart)
+                                    store: self.store.scope(state: \.chartEditor,
+                                                            action: DashboardReducer.Action.chartEditor),
+                                    callback: {
+                                        viewStore.send(DashboardReducer.Action.loadCharts)
                                     }
                                 )
                             }
                         }
                     }
-                }
+                }.onAppear {
+                    viewStore.send(DashboardReducer.Action.loadCharts)
             }
         }
     }

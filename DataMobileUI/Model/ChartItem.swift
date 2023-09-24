@@ -34,8 +34,8 @@ class ChartItem: Hashable, ObservableObject, Equatable, Identifiable {
          name: String,
          type: String,
          contents: [_ChartContent],
-         dimensions: [String] = ["sport_type"],
-         measures: [String] = ["COUNT(sport_type)"],
+         dimensions: [String] = [],
+         measures: [String] = [],
          filters: [String] = []) {
         self.id = id
         self.name = name
@@ -44,6 +44,16 @@ class ChartItem: Hashable, ObservableObject, Equatable, Identifiable {
         self.dimensions = dimensions
         self.measures = measures
         self.filters = filters
+    }
+    
+    init(chartItem: ChartItem) {
+        self.id = chartItem.id
+        self.name = chartItem.name
+        self.type = chartItem.type
+        self.contents = chartItem.contents
+        self.dimensions = chartItem.dimensions
+        self.measures = chartItem.measures
+        self.filters = chartItem.filters
     }
     
     func hash(into hasher: inout Hasher) {
@@ -56,5 +66,13 @@ extension ChartItem {
         return lhs.name == rhs.name &&
                 lhs.type == rhs.type &&
                 lhs.contents == rhs.contents
+    }
+}
+
+extension ChartItem._ChartContent {
+    init(record: ChartContentEntity) {
+        self.id = record.id!
+        self.key = record.key!
+        self.value = record.val! as Decimal
     }
 }

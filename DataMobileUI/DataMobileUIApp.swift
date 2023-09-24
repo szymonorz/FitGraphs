@@ -14,7 +14,7 @@ struct DataMobileUIApp: App {
     
     init(){
         self.store = Store(initialState: RootReducer.State()){
-            RootReducer()
+            RootReducer()._printChanges()
         }
     }
     

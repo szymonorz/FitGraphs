@@ -36,40 +36,15 @@ struct HomeView: View {
     
     var body: some View {
         
-        var charts: [ChartItem] {
-            var charts = [ChartItem]()
-            
-            for c in sample_charts {
-                var chartContents = [ChartItem._ChartContent]()
-                let chart = ChartItem(name: c.name,
-                                      type: c.type,
-                                      contents: [])
-                do {
-                    let contents = try DataSource.shared.query(
-                                    dimensions: c.dimensions,
-                                    measures: c.measures)
-                    
-                    chart.contents = contents
-                    charts.append(chart)
-                } catch {
-                    debugPrint(error.localizedDescription)
-                    break
-                }
-            }
-            
-            
-            return charts
-        }
-        
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack(spacing: 0) {
                 Button("Deauth", action: {
                     viewStore.send(RootReducer.Action.stravaAuth(.logout))
                 })
-//                DashboardView(charts: charts,
-//                              store: .init(
-//                                initialState: Dashboard.State(),
-//                                reducer: Dashboard()))
+                DashboardView(
+                    store: self.store.scope(state: \.dashboard,
+                                            action: RootReducer.Action.dashboard)
+                    )
             }
         }
     }

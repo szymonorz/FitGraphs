@@ -14,8 +14,7 @@ class ChartItemsReducer: Reducer {
     @Dependency(\.chartItemsClient) var chartItemsClient
     
     enum Action: Equatable {
-        case onAddButtonTapped
-        case onDeleteButtonTapped
+        case onDeleteButtonTapped(ChartItem)
     }
     
     struct State: Equatable {
@@ -24,7 +23,12 @@ class ChartItemsReducer: Reducer {
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .onDeleteButtonTapped(let chartItem):
+                return .run { send in
+                    await self.chartItemsClient.removeChartItem(chartItem)
+                }
+            }
         }
     }
 }

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CSVParser
 import Dependencies
 
 
@@ -15,7 +14,6 @@ struct DataTransformer {
 }
 
 extension DataTransformer: DependencyKey {
-    
     static let liveValue = DataTransformer(
         saveToDevice: { data in
             let fileManager = FileManager.default
@@ -38,7 +36,6 @@ extension DataTransformer: DependencyKey {
                     debugPrint("Failed to save file: \(error.localizedDescription)")
                 }
             }
-            
         }
     )
 }

@@ -6,41 +6,62 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct ChartCreatorView: View {
-    @State var changed: Bool = false
-    @State var newChart: ChartItem  = ChartItem(name: "new", type: "BAR", contents: [])
-    
-    @Binding var present: Bool
-    
-    var didAddChart: (ChartItem) -> ()
-    var dataChange: (ChartItem) -> ()
+    var store: StoreOf<ChartEditorReducer>
+    var callback: () -> ()
     
     var body: some View {
-        ChartEditorView(chartItem: newChart, dataChange: dataChange)
-        HStack {
-            Button("Save", action: {
-                self.didAddChart(newChart)
-                self.present = false
-            })
-            Button("Cancel", action: {
-                self.present = false
-            })
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            VStack {
+                Text("Creator view")
+                ChartView(chartItem: viewStore.state.chartItemToEdit, chartWidth: 200)
+                EditHub(store: self.store)
+                ChartMenu(store: self.store)
+            }
+            HStack {
+                Button("Save", action: {
+                    Task {
+                        await viewStore.send(ChartEditorReducer.Action.saveChartItem).finish()
+                        viewStore.send(ChartEditorReducer.Action.closeCreator)
+                        callback()
+                    }
+                }).disabled(!viewStore.queryCorrect)
+                
+                Button("Cancel", action: {
+                    viewStore.send(ChartEditorReducer.Action.closeCreator)
+                })
+            }
         }
     }
 }
 
 struct ChartEditorView: View {
-    @StateObject var chartItem: ChartItem
-    var dataChange: (ChartItem) -> ()
+    var store: StoreOf<ChartEditorReducer>
+    var callback: () -> ()
+    
     var body: some View {
-            //Chart
+        WithViewStore(store, observe: {$0}) { viewStore in
             VStack {
                 Text("Editor view")
-                ChartView(chartItem: chartItem, chartWidth: 200)
-                EditHub(chart: chartItem, dataChange: dataChange)
-                ChartMenu(chartItem: chartItem)
+                ChartView(chartItem: viewStore.state.chartItemToEdit, chartWidth: 200)
+                EditHub(store: self.store)
+                ChartMenu(store: self.store)
             }
+            HStack {
+                Button("Save", action: {
+                    Task {
+                        await viewStore.send(ChartEditorReducer.Action.updateChartItem).finish()
+                        viewStore.send(ChartEditorReducer.Action.closeEditor)
+                        callback()
+                    }
+                }).disabled(!viewStore.queryCorrect)
+                Button("Cancel", action: {
+                    viewStore.send(ChartEditorReducer.Action.closeEditor)
+                })
+            }
+        }
     }
 }
 
@@ -51,7 +72,8 @@ struct ChartMenuItem: Identifiable {
 }
 
 struct ChartMenu: View {
-    @ObservedObject var chartItem: ChartItem
+    var store: StoreOf<ChartEditorReducer>
+    
     var labels: [ChartMenuItem] = [
         ChartMenuItem(label: "PIE", imageName: "chart.pie.fill"),
         ChartMenuItem(label: "BAR", imageName: "chart.bar.fill"),
@@ -60,16 +82,18 @@ struct ChartMenu: View {
         
     ]
     var body: some View {
-        HStack {
-            ForEach(labels) { item in
-                Button(action: {
-                    chartItem.type = item.label
-                }) {
-                    Label(item.label, systemImage: item.imageName)
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            HStack {
+                ForEach(labels) { item in
+                    Button(action: {
+                        viewStore.send(ChartEditorReducer.Action.typeChanged(item.label))
+                    }) {
+                        Label(item.label, systemImage: item.imageName)
+                    }
+                    
                 }
-                
             }
+            .labelStyle(.iconOnly)
         }
-        .labelStyle(.iconOnly)
     }
 }
