@@ -9,7 +9,8 @@ import SwiftUI
 import Charts
 
 struct ChartView: View {
-    @ObservedObject var chartItem: ChartItem
+    
+    var chartItem: ChartItem
     var chartWidth: CGFloat
     
     var body: some View {

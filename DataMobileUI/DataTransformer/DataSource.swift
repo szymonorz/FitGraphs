@@ -9,59 +9,63 @@ import Foundation
 import DuckDB
 import TabularData
 
-class DataSource: ObservableObject {
-    let db: Database
-    let conn: Connection
+class DataSource {
+    var db: Database? = nil
+    var conn: Connection? = nil
+    
+    static let shared = DataSource()
     
     // Initiates a DataSource instance
     // Technically this looks like it should be a singleton but as of now
     // I have no idea what I'm doing/want to do
     // probably a TODO: Refactor when I know what to do
-    static func create() throws -> DataSource {
+    init() {
         let fileManager = FileManager.default
-        let db = try Database(store: .inMemory)
-        let conn = try db.connect()
-        var filePath: URL
-        let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-        filePath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json")
-        debugPrint(filePath.path)
-        if !fileManager.fileExists(atPath: filePath.path) {
-            debugPrint("File doesn't exist. Creating empty file so DataSource doesn't shrimp itself...... ")
-            if let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
-                let dataPth = dir.appendingPathComponent("data")
-                
-                do {
-                    try fileManager.createDirectory(atPath: dataPth.path(), withIntermediateDirectories: true)
-                } catch let error as NSError{
-                    debugPrint("Failed to create directory at \(dataPth.absoluteString): \(error.localizedDescription)")
-                    throw error
-                }
-                
-                do {
-                    try "[]".write(toFile: filePath.path, atomically: false, encoding: .utf8)
-                } catch {
-                    debugPrint("Failed to save file: \(error.localizedDescription)")
-                    throw error
+       
+        do {
+            db = try? Database(store: .inMemory)
+            conn = try? db!.connect()
+            
+            var filePath: URL
+            let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
+            filePath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json")
+            debugPrint(filePath.path)
+            if !fileManager.fileExists(atPath: filePath.path) {
+                debugPrint("File doesn't exist. Creating empty file so DataSource doesn't shrimp itself...... ")
+                if let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
+                    let dataPth = dir.appendingPathComponent("data")
+                    
+                    do {
+                        try fileManager.createDirectory(atPath: dataPth.path(), withIntermediateDirectories: true)
+                    } catch let error as NSError{
+                        debugPrint("Failed to create directory at \(dataPth.absoluteString): \(error.localizedDescription)")
+                    }
+                    
+                    do {
+                        try "[]".write(toFile: filePath.path, atomically: false, encoding: .utf8)
+                    } catch {
+                        debugPrint("Failed to save file: \(error.localizedDescription)")
+                    }
                 }
             }
-        }
-        
-        do {
-            let activityColumns: String = Activity.generateDuckDBSchema()
-            let dbArgs: String = "columns=\(activityColumns)"
-            try conn.query("""
-                CREATE TABLE activities AS (
-                        SELECT * FROM read_json('\(filePath.path)', \(dbArgs))
-                )
-            """)
+            
+            do {
+                let activityColumns: String = Activity.generateDuckDBSchema()
+                let dbArgs: String = "columns=\(activityColumns)"
+                try conn!.query("""
+                    CREATE TABLE activities AS (
+                            SELECT * FROM read_json('\(filePath.path)', \(dbArgs))
+                    )
+                """)
+            } catch {
+                debugPrint("Create table failed: \(error) at filePath: \(filePath.path)")
+                // This should literally never happen
+                try fileManager.removeItem(atPath: filePath.path)
+                throw error
+            }
         } catch {
-            debugPrint("Create table failed: \(error) at filePath: \(filePath.path)")
-            // This should literally never happen
-            try fileManager.removeItem(atPath: filePath.path)
-            throw error
+            debugPrint("Whoops")
         }
-        
-        return DataSource(db: db, conn: conn)
     }
     
     // Create a backup in case shit goes down
@@ -114,7 +118,7 @@ class DataSource: ObservableObject {
             let dbArgs: String = "columns=\(activityColumns)"
             // conn.execute is useless since duckdb doesn't return reason in case it errors
             // so always use .query and just ignore the result if it isn't needed just like in this case
-            try conn.query("""
+            try conn!.query("""
                 DROP TABLE activities;
                 CREATE TABLE activities AS (
                         SELECT * FROM read_json('\(filePath.path)', \(dbArgs))
@@ -128,11 +132,14 @@ class DataSource: ObservableObject {
         }
     }
     
-    func query(measure: String, dimensions: String) throws -> DataFrame {
-        let queryString = "SELECT \(dimensions), \(measure) as count FROM activities GROUP BY \(dimensions)"
+    func query(dimensions: [String], measures: [String]) throws -> [ChartItem._ChartContent] {
+        let dimensionString = dimensions.joined(separator: ",")
+        let measuresString = measures.joined(separator: ",")
+        
+        let queryString = "SELECT \(dimensionString), \(measuresString) as count FROM activities GROUP BY \(dimensionString)"
         let result: ResultSet
         do {
-            result = try conn.query(queryString);
+            result = try conn!.query(queryString);
         } catch {
             debugPrint("Encountered an error \(error)")
             throw error
@@ -141,17 +148,21 @@ class DataSource: ObservableObject {
         let dimensionColumn = result[0].cast(to: String.self)
         let countColumn = result[1].cast(to: Int.self)
         
-        return DataFrame(
+        let df = DataFrame(
             columns: [
                 TabularData.Column(dimensionColumn).eraseToAnyColumn(),
                 TabularData.Column(countColumn).eraseToAnyColumn()
             ]
         )
+        
+        var chartContents: [ChartItem._ChartContent] = []
+        let labelColumn = df.columns[1].assumingType(Int.self).filled(with: 0)
+        let valueColumn = df.columns[1].assumingType(Int.self).filled(with: 0)
+        
+        for (activity, count) in zip(labelColumn, valueColumn) {
+            chartContents.append(ChartItem._ChartContent(key: String(activity), value: Decimal(count)))
+        }
+        
+        return chartContents
     }
-    
-    private init(db: Database, conn: Connection){
-        self.db = db
-        self.conn = conn
-    }
-    
 }
