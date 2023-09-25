@@ -7,6 +7,7 @@
 
 import CoreData
 import Dependencies
+import FirebaseFirestore
 
 struct ChartItemsClient {
     
@@ -22,6 +23,19 @@ struct ChartItemsClient {
 extension ChartItemsClient: DependencyKey {
     static let liveValue = ChartItemsClient(
         fetchChartItems: {
+            do {
+                let chartItemsDocuments = try await FirebaseDataManager
+                    .db
+                    .collection(FirebaseDataManager.FirebaseCollections.user.rawValue)
+                    .document("aa")
+                    .collection(FirebaseDataManager.FirebaseCollections.dashboards.rawValue)
+                    .document("bb")
+                    .collection(FirebaseDataManager.FirebaseCollections.chartItems.rawValue)
+                    .getDocuments()
+            } catch {
+                debugPrint("\(error.localizedDescription)")
+            }
+            
             let viewContext = CoreDataManager.shared.container.viewContext
             let fetchRequest: NSFetchRequest<ChartItemEntity> = ChartItemEntity.fetchRequest()
             var chartItems: [ChartItem] = []

@@ -7,9 +7,9 @@
 
 import Foundation
 
-class ChartItem: Hashable, ObservableObject, Equatable, Identifiable {
+class ChartItem: Hashable, Equatable, Identifiable, Codable {
     
-    struct _ChartContent: Equatable, Hashable, Identifiable {
+    struct _ChartContent: Equatable, Hashable, Identifiable, Codable {
         var id: UUID
         var key: String
         var value: Decimal
@@ -22,13 +22,13 @@ class ChartItem: Hashable, ObservableObject, Equatable, Identifiable {
     }
     
     var id: UUID
-    @Published var name: String
-    @Published var type: String
-    @Published var contents: [_ChartContent]
+    var name: String
+    var type: String
+    var contents: [_ChartContent]
     
-    @Published var dimensions: [String]
-    @Published var measures: [String]
-    @Published var filters: [String]
+    var dimensions: [String]
+    var measures: [String]
+    var filters: [String]
     
     init(id: UUID = UUID(),
          name: String,
