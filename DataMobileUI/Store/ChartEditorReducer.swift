@@ -161,7 +161,7 @@ struct ChartEditorReducer: Reducer {
                         filters = state.filters
                     ] send in
                     let chartItem = ChartItem(
-                        id: id,
+                        id: id!,
                         name: title,
                         type: type,
                         contents: [],
@@ -186,12 +186,20 @@ struct ChartEditorReducer: Reducer {
             case .updateChartItem:
                 let chartItemToSave = state.chartItemToEdit
                 return .run { send in
-                    await chartItemsClient.updateChartItem(chartItemToSave)
+                    do {
+                        try await chartItemsClient.updateChartItem(chartItemToSave)
+                    } catch {
+                        debugPrint("\(error)")
+                    }
                 }
             case .saveChartItem:
                 let chartItemToSave = state.chartItemToEdit
                 return .run { send in
-                    await chartItemsClient.addChartItem(chartItemToSave)
+                    do {
+                        try await chartItemsClient.addChartItem(chartItemToSave)
+                    } catch {
+                        debugPrint("\(error)")
+                    }
                 }
             case .queryCorrectChanged(let correct):
                 state.queryCorrect = correct

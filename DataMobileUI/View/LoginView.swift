@@ -9,6 +9,9 @@ import SwiftUI
 import ComposableArchitecture
 
 struct LoginView: View {
+    
+    @Dependency(\.stravaApi) var stravaApi
+    
     let store: StoreOf<StravaAuthReducer>
     
     var body: some View {
@@ -19,12 +22,17 @@ struct LoginView: View {
                         if let params = authParameters {
                             print("Authorized! Access token is in `oauth.accessToken`")
                             print("Authorized! Additional parameters: \(params)")
-                            viewStore.send(StravaAuthReducer.Action.authorizedChanged)
+                            Task {
+                                await viewStore.send(StravaAuthReducer.Action.storeAthleteData).finish()
+                                viewStore.send(StravaAuthReducer.Action.authorizedChanged(true))
+                            }
+                            
                         }
                         else {
                             print("Authorization was canceled or went wrong: \(error!.localizedDescription) \(error)")   // error will not be nil
                             if StravaAuth.shared.oauth.isAuthorizing {
                                 StravaAuth.shared.oauth.forgetTokens()
+                                UserDefaults.standard.removeObject(forKey: "userId")
                             }
                         }
                     }

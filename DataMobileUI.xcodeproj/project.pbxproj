@@ -64,6 +64,7 @@
 		01C2B4622AC231FB00078B44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C2B4612AC231FB00078B44 /* AppDelegate.swift */; };
 		01C2B4642AC2332700078B44 /* FirebaseDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C2B4632AC2332700078B44 /* FirebaseDataManager.swift */; };
 		01C2B4662AC236EF00078B44 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01C2B4652AC236EF00078B44 /* GoogleService-Info.plist */; };
+		01C2B4682AC38B5800078B44 /* Athlete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C2B4672AC38B5800078B44 /* Athlete.swift */; };
 		01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CA2A3F2013004AF3F0 /* LoginView.swift */; };
 		01D046CD2A3F2F3D004AF3F0 /* ChartEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */; };
 		01D046CF2A3F5E3D004AF3F0 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D046CE2A3F5E3D004AF3F0 /* Activity.swift */; };
@@ -115,6 +116,7 @@
 		01C2B4612AC231FB00078B44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01C2B4632AC2332700078B44 /* FirebaseDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDataManager.swift; sourceTree = "<group>"; };
 		01C2B4652AC236EF00078B44 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		01C2B4672AC38B5800078B44 /* Athlete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Athlete.swift; sourceTree = "<group>"; };
 		01D046CA2A3F2013004AF3F0 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		01D046CC2A3F2F3D004AF3F0 /* ChartEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartEditorView.swift; sourceTree = "<group>"; };
 		01D046CE2A3F5E3D004AF3F0 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 			children = (
 				01D046CE2A3F5E3D004AF3F0 /* Activity.swift */,
 				01A0E7F729F922D20080E576 /* ChartItem.swift */,
+				01C2B4672AC38B5800078B44 /* Athlete.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -463,6 +466,7 @@
 				01A2E6772ABF243800120978 /* ChartItemEntity+CoreDataProperties.swift in Sources */,
 				01C2B4642AC2332700078B44 /* FirebaseDataManager.swift in Sources */,
 				01D046CF2A3F5E3D004AF3F0 /* Activity.swift in Sources */,
+				01C2B4682AC38B5800078B44 /* Athlete.swift in Sources */,
 				01DF42FC29F545790066F88F /* DataMobileUIApp.swift in Sources */,
 				01BFC5A32AAD24D300E4407C /* ChartEditorReducer.swift in Sources */,
 			);

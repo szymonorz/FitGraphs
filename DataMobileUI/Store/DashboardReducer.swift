@@ -45,14 +45,22 @@ class DashboardReducer: Reducer {
             switch action {
             case .addChart(let chartItem):
                 return .run { send in
-                    await self.chartItemsClient.addChartItem(chartItem)
-                    await send(.loadCharts)
+                    do {
+                        try await self.chartItemsClient.addChartItem(chartItem)
+                        await send(.loadCharts)
+                    } catch {
+                        debugPrint("\(error)")
+                    }
                 }
             case .loadCharts:
                 return .run { send in
-                    let charts = await self.chartItemsClient.fetchChartItems()
-                    debugPrint(charts.count)
-                    await send(.updateCharts(charts))
+                    do {
+                        let charts = try await self.chartItemsClient.fetchChartItems()
+                        debugPrint(charts.count)
+                        await send(.updateCharts(charts))
+                    } catch {
+                        debugPrint("\(error)")
+                    }
                 }
             case .fetchFromStrava:
                 return .run {

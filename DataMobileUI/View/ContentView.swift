@@ -18,7 +18,7 @@ struct ContentView: View {
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             
-            if StravaAuth.shared.oauth.hasUnexpiredAccessToken() {
+            if viewStore.stravaAuth.isAuthorized {
                 HomeView(store: self.store)
             } else {
                 LoginView(store: self.store.scope(
