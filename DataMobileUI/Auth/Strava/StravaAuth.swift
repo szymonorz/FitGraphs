@@ -7,7 +7,6 @@
 
 import Foundation
 import OAuth2
-import ComposableArchitecture
 
 struct StravaAuth {
     static let shared = StravaAuth()

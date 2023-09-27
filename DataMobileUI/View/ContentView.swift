@@ -18,12 +18,12 @@ struct ContentView: View {
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             
-            if viewStore.stravaAuth.isAuthorized {
+            if viewStore.googleAuth.isAuthorized {
                 HomeView(store: self.store)
             } else {
                 LoginView(store: self.store.scope(
-                    state: \.stravaAuth,
-                    action: RootReducer.Action.stravaAuth
+                    state: \.googleAuth,
+                    action: RootReducer.Action.googleAuth
                     )
                 )
             }

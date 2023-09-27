@@ -18,6 +18,7 @@ struct RootReducer: Reducer {
         case dashboard(DashboardReducer.Action)
         case chartEditor(ChartEditorReducer.Action)
         case stravaAuth(StravaAuthReducer.Action)
+        case googleAuth(GoogleAuthReducer.Action)
     }
     
     struct State: Equatable {
@@ -28,6 +29,8 @@ struct RootReducer: Reducer {
         var chartEditor = ChartEditorReducer.State()
         
         var stravaAuth = StravaAuthReducer.State()
+        
+        var googleAuth = GoogleAuthReducer.State()
         
     }
     
@@ -48,6 +51,10 @@ struct RootReducer: Reducer {
             StravaAuthReducer()
         }
         
+        Scope(state: \.googleAuth, action: /Action.googleAuth){
+            GoogleAuthReducer()
+        }
+        
         Reduce { state, action in
             switch action {
             case .chartItems(let _):
@@ -57,6 +64,8 @@ struct RootReducer: Reducer {
             case .chartEditor(let _):
                 return .none
             case .stravaAuth(let _):
+                return .none
+            case .googleAuth(let _):
                 return .none
             }
         }

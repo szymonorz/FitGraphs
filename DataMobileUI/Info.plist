@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>STRAVA_CLIENT_SECRET</key>
-	<string>$(STRAVA_CLIENT_SECRET)</string>
-	<key>STRAVA_CLIENT_ID</key>
-	<string>$(STRAVA_CLIENT_ID)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -19,6 +15,18 @@
 			</array>
 		</dict>
 		<dict/>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.747248231388-g9ftuehnp98enptf9p5m2e8d4bl6n2vj</string>
+			</array>
+		</dict>
 	</array>
+	<key>STRAVA_CLIENT_ID</key>
+	<string>$(STRAVA_CLIENT_ID)</string>
+	<key>STRAVA_CLIENT_SECRET</key>
+	<string>$(STRAVA_CLIENT_SECRET)</string>
 </dict>
 </plist>
