@@ -39,8 +39,18 @@ struct HomeView: View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack(spacing: 0) {
                 Button("Deauth", action: {
-                    viewStore.send(RootReducer.Action.stravaAuth(.logout))
+                    viewStore.send(RootReducer.Action.googleAuth(.signOut))
                 })
+                if viewStore.stravaAuth.isAuthorized {
+                    Button("Fetch data from Strava", action: {
+                        viewStore.send(RootReducer.Action.dashboard(.fetchFromStrava))
+                    })
+                } else {
+                    Button("Log in to Strava", action: {
+                        viewStore.send(RootReducer.Action.stravaAuth(.authorize))
+                    })
+                }
+
                 DashboardView(
                     store: self.store.scope(state: \.dashboard,
                                             action: RootReducer.Action.dashboard)

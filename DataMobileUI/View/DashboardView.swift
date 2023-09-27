@@ -25,9 +25,6 @@ struct DashboardView: View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             ScrollView {
                 VStack{
-                    Button("Fetch data from Strava", action: {
-                        viewStore.send(DashboardReducer.Action.fetchFromStrava)
-                    })
                     LazyVGrid(columns: [
                         GridItem(.flexible()),
                         GridItem(.flexible())
