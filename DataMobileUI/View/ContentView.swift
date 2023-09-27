@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import ComposableArchitecture
+import FirebaseAuth
 
 struct ContentView: View {
     @State private var showAlert: Bool = false
@@ -25,7 +26,11 @@ struct ContentView: View {
                     state: \.googleAuth,
                     action: RootReducer.Action.googleAuth
                     )
-                )
+                ).onAppear {
+                    if Auth.auth().currentUser != nil {
+                        viewStore.send(RootReducer.Action.googleAuth(.authorized(true)))
+                    }
+                }
             }
         }
     }
