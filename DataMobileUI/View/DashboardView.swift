@@ -13,7 +13,6 @@ struct DashboardView: View {
     
     @State var presentModal: Bool = false
     
-    @Dependency(\.dataTransformer) var dataTransformer
     @Dependency(\.stravaApi) var stravaApi
     
     let store: StoreOf<DashboardReducer>

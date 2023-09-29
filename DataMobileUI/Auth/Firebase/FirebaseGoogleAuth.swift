@@ -20,6 +20,15 @@ struct FirebaseGoogleAuth {
         GIDSignIn.sharedInstance.configuration = config
     }
     
+    func getUserId() async throws -> String {
+        if let currentUser = Auth.auth().currentUser {
+            return currentUser.uid
+        }
+        
+        // Should absolutely never happen, since getUserId() is only called after Sign In
+        throw ChartItemsClient.ClientError.userIdMissing
+    }
+    
     func signInWithGoogle() async -> Bool {
         await withCheckedContinuation({ continuation in
             GIDSignIn.sharedInstance.signIn(withPresenting: self.topViewController()!) { result, error in

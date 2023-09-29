@@ -14,7 +14,7 @@ class FirebaseDataManager {
 
 extension FirebaseDataManager {
     enum FirebaseCollections: String {
-        case user             = "user"
+        case user             = "users"
         case dashboards       = "dashboards"
         case chartItems       = "chartItems"
         case chartItemContets = "chartItemContets"
