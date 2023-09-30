@@ -18,7 +18,7 @@ extension ChartItemEntity {
 
     @NSManaged public var dimensions: String?
     @NSManaged public var filters: String?
-    @NSManaged public var id: UUID?
+    @NSManaged public var id: String?
     @NSManaged public var measures: String?
     @NSManaged public var name: String?
     @NSManaged public var type: String?

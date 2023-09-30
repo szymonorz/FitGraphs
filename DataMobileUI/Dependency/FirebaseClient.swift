@@ -9,14 +9,14 @@ import Foundation
 import Dependencies
 
 
-struct ActivitiesClient {
+struct FirebaseClient {
     var saveToDevice: (Data) -> ()
-    var saveToFirebase: (DM_User) async throws -> ()
-    var loadFromFirebase: () throws -> (DM_User)
+    var saveToFirebase: (Athlete) async throws -> ()
+    var loadFromFirebase: () throws -> Athlete
 }
 
-extension ActivitiesClient: DependencyKey {
-    static let liveValue = ActivitiesClient(
+extension FirebaseClient: DependencyKey {
+    static let liveValue = FirebaseClient(
         saveToDevice: { data in
             let fileManager = FileManager.default
             if let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
@@ -40,7 +40,7 @@ extension ActivitiesClient: DependencyKey {
             }
         },
         saveToFirebase: { user in
-            let userId = try await FirebaseGoogleAuth.shared.getUserId()
+            let userId = try FirebaseGoogleAuth.shared.getUserId()
             let userCollection = FirebaseDataManager
                                         .db
                                         .collection(FirebaseDataManager.FirebaseCollections.user.rawValue)
@@ -49,19 +49,16 @@ extension ActivitiesClient: DependencyKey {
             try userRef.setData(from: user)
         },
         loadFromFirebase: {
-            guard let userId = UserDefaults.standard.string(forKey: "userId") else {
-                debugPrint("userId is missing")
-                throw ChartItemsClient.ClientError.userIdMissing
-            }
+            let userId = try FirebaseGoogleAuth.shared.getUserId()
             
             let docRef = FirebaseDataManager
                                         .db
                                         .collection(FirebaseDataManager.FirebaseCollections.user.rawValue)
                                         .document(userId)
             
-            var user: DM_User? = nil
+            var user: Athlete? = nil
             var error: Error? = nil
-            docRef.getDocument(as: DM_User.self) { result in
+            docRef.getDocument(as: Athlete.self) { result in
                 switch result {
                 case .success(let _user):
                     user = _user
@@ -80,8 +77,8 @@ extension ActivitiesClient: DependencyKey {
 }
 
 extension DependencyValues {
-    var activitiesClient: ActivitiesClient {
-        get { self[ActivitiesClient.self] }
-        set { self[ActivitiesClient.self] = newValue }
+    var firebaseClient: FirebaseClient {
+        get { self[FirebaseClient.self] }
+        set { self[FirebaseClient.self] = newValue }
     }
 }

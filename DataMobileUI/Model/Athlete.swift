@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct Athlete: Decodable {
-    // Don't need more rn
+struct Athlete: Codable {
     var id: Int64
+    var activities: [Activity]
+    
+    init(id: Int64, activities: [Activity]) {
+        self.id = id
+        self.activities = activities
+    }
 }

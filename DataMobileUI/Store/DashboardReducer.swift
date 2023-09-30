@@ -11,7 +11,7 @@ import Charts
 
 class DashboardReducer: Reducer {
     
-    @Dependency(\.activitiesClient) var activitiesClient
+    @Dependency(\.firebaseClient) var firebaseClient
     @Dependency(\.stravaApi) var stravaApi
     @Dependency(\.chartItemsClient) var chartItemsClient
     
@@ -66,10 +66,10 @@ class DashboardReducer: Reducer {
                 return .run {
                     send in
                     let activities = try await self.stravaApi.getUserActivities()
-                    let userId = UserDefaults.standard.string(forKey: "userId")
-                    let user: DM_User = DM_User(userId: userId!, activities: activities)
-                    try await self.activitiesClient.saveToFirebase(user)
-                    try self.activitiesClient.saveToDevice(JSONEncoder().encode(activities))
+                    let userId: String? = UserDefaults.standard.string(forKey: "userId")
+                    let user: Athlete = Athlete(id: Int64(userId!)!, activities: activities)
+                    try await self.firebaseClient.saveToFirebase(user)
+                    try self.firebaseClient.saveToDevice(JSONEncoder().encode(activities))
                     await send(.loadCharts)
                 }
             case .chartItemTapped(let chartItem):

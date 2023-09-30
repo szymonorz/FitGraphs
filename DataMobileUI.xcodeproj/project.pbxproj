@@ -16,7 +16,7 @@
 		013C51E729F5A811006AF055 /* DashboardReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013C51E629F5A811006AF055 /* DashboardReducer.swift */; };
 		0166005F2A3F9A1300E5E2F8 /* EditHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0166005E2A3F9A1300E5E2F8 /* EditHub.swift */; };
 		016600612A3F9A2A00E5E2F8 /* Selector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016600602A3F9A2A00E5E2F8 /* Selector.swift */; };
-		016600672A424F4300E5E2F8 /* ActivitiesClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016600662A424F4300E5E2F8 /* ActivitiesClient.swift */; };
+		016600672A424F4300E5E2F8 /* FirebaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016600662A424F4300E5E2F8 /* FirebaseClient.swift */; };
 		0166006B2A42630D00E5E2F8 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0166006A2A42630D00E5E2F8 /* DataSource.swift */; };
 		0166006E2A42EBEC00E5E2F8 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 0166006D2A42EBEC00E5E2F8 /* WrappingHStack */; };
 		017606912AC63F3100CBDC7E /* DM_User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017606902AC63F3100CBDC7E /* DM_User.swift */; };
@@ -101,7 +101,7 @@
 		013C51E629F5A811006AF055 /* DashboardReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardReducer.swift; sourceTree = "<group>"; };
 		0166005E2A3F9A1300E5E2F8 /* EditHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHub.swift; sourceTree = "<group>"; };
 		016600602A3F9A2A00E5E2F8 /* Selector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selector.swift; sourceTree = "<group>"; };
-		016600662A424F4300E5E2F8 /* ActivitiesClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesClient.swift; sourceTree = "<group>"; };
+		016600662A424F4300E5E2F8 /* FirebaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseClient.swift; sourceTree = "<group>"; };
 		0166006A2A42630D00E5E2F8 /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		017606902AC63F3100CBDC7E /* DM_User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DM_User.swift; sourceTree = "<group>"; };
 		01A0E7F529F9224E0080E576 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
@@ -256,7 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				012902F72A3E062D00DC5712 /* StravaApi.swift */,
-				016600662A424F4300E5E2F8 /* ActivitiesClient.swift */,
+				016600662A424F4300E5E2F8 /* FirebaseClient.swift */,
 				01BFC5962AACD6AA00E4407C /* ChartItemsClient.swift */,
 			);
 			path = Dependency;
@@ -484,7 +484,7 @@
 				01D046CB2A3F2013004AF3F0 /* LoginView.swift in Sources */,
 				01A2E6742ABF243800120978 /* ChartContentEntity+CoreDataClass.swift in Sources */,
 				012903242A3E3FB900DC5712 /* OAuth2RetryHandler.swift in Sources */,
-				016600672A424F4300E5E2F8 /* ActivitiesClient.swift in Sources */,
+				016600672A424F4300E5E2F8 /* FirebaseClient.swift in Sources */,
 				01BFC5942AACD35F00E4407C /* ChartItemsReducer.swift in Sources */,
 				017606912AC63F3100CBDC7E /* DM_User.swift in Sources */,
 				01BFC5A12AACFA2900E4407C /* DataMobileUI.xcdatamodeld in Sources */,

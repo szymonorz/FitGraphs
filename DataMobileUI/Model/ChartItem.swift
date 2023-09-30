@@ -11,18 +11,18 @@ import FirebaseFirestoreSwift
 class ChartItem: Hashable, Equatable, Identifiable, Codable {
     
     struct _ChartContent: Equatable, Hashable, Identifiable, Codable {
-        var id: UUID
+        var id: String
         var key: String
         var value: Decimal
         
-        init(id: UUID = UUID(), key: String, value: Decimal) {
+        init(id: String = UUID().uuidString, key: String, value: Decimal) {
             self.id = id
             self.key = key
             self.value = value
         }
     }
     
-    @DocumentID var id: String?
+    var id: String
     var name: String
     var type: String
     var contents: [_ChartContent]

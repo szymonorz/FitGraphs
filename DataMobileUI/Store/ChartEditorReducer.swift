@@ -161,7 +161,7 @@ struct ChartEditorReducer: Reducer {
                         filters = state.filters
                     ] send in
                     let chartItem = ChartItem(
-                        id: id!,
+                        id: id,
                         name: title,
                         type: type,
                         contents: [],

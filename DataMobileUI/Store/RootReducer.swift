@@ -11,7 +11,7 @@ import ComposableArchitecture
 struct RootReducer: Reducer {
     
     @Dependency(\.stravaApi) var stravaApi
-    @Dependency(\.activitiesClient) var activitiesClient
+    @Dependency(\.firebaseClient) var firebaseClient
     
     enum Action: Equatable {
         case chartItems(ChartItemsReducer.Action)

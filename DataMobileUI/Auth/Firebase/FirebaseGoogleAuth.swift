@@ -20,7 +20,7 @@ struct FirebaseGoogleAuth {
         GIDSignIn.sharedInstance.configuration = config
     }
     
-    func getUserId() async throws -> String {
+    func getUserId() throws -> String {
         if let currentUser = Auth.auth().currentUser {
             return currentUser.uid
         }

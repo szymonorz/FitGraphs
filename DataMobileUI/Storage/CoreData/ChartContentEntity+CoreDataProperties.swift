@@ -16,7 +16,7 @@ extension ChartContentEntity {
         return NSFetchRequest<ChartContentEntity>(entityName: "ChartContentEntity")
     }
 
-    @NSManaged public var id: UUID?
+    @NSManaged public var id: String?
     @NSManaged public var key: String?
     @NSManaged public var val: NSDecimalNumber?
     @NSManaged public var chartItem: ChartItemEntity?

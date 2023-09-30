@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22222" systemVersion="22G91" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="ChartContentEntity" representedClassName=".ChartContentEntity" syncable="YES">
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="key" optional="YES" attributeType="String"/>
         <attribute name="val" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
         <relationship name="chartItem" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="ChartItemEntity"/>
@@ -9,7 +9,7 @@
     <entity name="ChartItemEntity" representedClassName=".ChartItemEntity" syncable="YES">
         <attribute name="dimensions" optional="YES" attributeType="String"/>
         <attribute name="filters" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="measures" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
