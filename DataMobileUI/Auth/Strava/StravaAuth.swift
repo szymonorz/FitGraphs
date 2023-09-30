@@ -7,7 +7,6 @@
 
 import Foundation
 import OAuth2
-import ComposableArchitecture
 
 struct StravaAuth {
     static let shared = StravaAuth()
@@ -35,7 +34,7 @@ struct StravaAuth {
         oauth = OAuth2CodeGrant(settings: settings)
     }
     
-    func authorize() async {
+    func authorize() async {	
         oauth.authorize() { authParameters, error in
             if let params = authParameters {
                 print("Authorized! Access token is in `oauth.accessToken`")

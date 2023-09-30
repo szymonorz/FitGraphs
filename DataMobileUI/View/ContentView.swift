@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import ComposableArchitecture
+import FirebaseAuth
 
 struct ContentView: View {
     @State private var showAlert: Bool = false
@@ -18,14 +19,18 @@ struct ContentView: View {
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             
-            if StravaAuth.shared.oauth.hasUnexpiredAccessToken() {
+            if viewStore.googleAuth.isAuthorized {
                 HomeView(store: self.store)
             } else {
                 LoginView(store: self.store.scope(
-                    state: \.stravaAuth,
-                    action: RootReducer.Action.stravaAuth
+                    state: \.googleAuth,
+                    action: RootReducer.Action.googleAuth
                     )
-                )
+                ).onAppear {
+                    if Auth.auth().currentUser != nil {
+                        viewStore.send(RootReducer.Action.googleAuth(.authorized(true)))
+                    }
+                }
             }
         }
     }
@@ -39,8 +44,18 @@ struct HomeView: View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack(spacing: 0) {
                 Button("Deauth", action: {
-                    viewStore.send(RootReducer.Action.stravaAuth(.logout))
+                    viewStore.send(RootReducer.Action.googleAuth(.signOut))
                 })
+                if viewStore.stravaAuth.isAuthorized {
+                    Button("Fetch data from Strava", action: {
+                        viewStore.send(RootReducer.Action.dashboard(.fetchFromStrava))
+                    })
+                } else {
+                    Button("Log in to Strava", action: {
+                        viewStore.send(RootReducer.Action.stravaAuth(.authorize))
+                    })
+                }
+
                 DashboardView(
                     store: self.store.scope(state: \.dashboard,
                                             action: RootReducer.Action.dashboard)

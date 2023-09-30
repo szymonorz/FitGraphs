@@ -7,61 +7,70 @@
 
 import CoreData
 import Dependencies
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 struct ChartItemsClient {
     
-    var fetchChartItems: () async -> [ChartItem]
+    enum ClientError: Error {
+        case userIdMissing
+    }
     
-    var removeChartItem: (ChartItem) async -> Void
+    var fetchChartItems: () async throws-> [ChartItem]
     
-    var addChartItem: (ChartItem) async -> Void
+    var removeChartItem: (ChartItem) async throws -> Void
     
-    var updateChartItem: (ChartItem) async -> Void
+    var addChartItem: (ChartItem) async throws -> Void
+    
+    var updateChartItem: (ChartItem) async throws -> Void
 }
+
 
 extension ChartItemsClient: DependencyKey {
     static let liveValue = ChartItemsClient(
         fetchChartItems: {
-            let viewContext = CoreDataManager.shared.container.viewContext
-            let fetchRequest: NSFetchRequest<ChartItemEntity> = ChartItemEntity.fetchRequest()
-            var chartItems: [ChartItem] = []
-            do {
-                let fetchedEntities = try viewContext.fetch(fetchRequest)
-                chartItems = fetchedEntities.map { entity in
-                    let contentsEntity = entity.contents?.array as! [ChartContentEntity]
-                    let chartItemContets = contentsEntity.map { ce in
-                        return ChartItem._ChartContent(
-                            id: ce.id!,
-                            key: ce.key!,
-                            value: ce.val! as Decimal
-                        )
-                    }
-                    let dimensions = entity.dimensions!.isEmpty ? [] : entity.dimensions!.components(separatedBy: ";")
-                    let measures = entity.measures!.isEmpty ? [] : entity.measures!.components(separatedBy: ";")
-                    let filters = entity.filters!.isEmpty ? [] : entity.filters!.components(separatedBy: ";")
-                    return ChartItem(
-                        id: entity.id!,
-                        name: entity.name!,
-                        type: entity.type!,
-                        contents: chartItemContets,
-                        dimensions: dimensions,
-                        measures: measures,
-                        filters: filters
-                    )
-                }
-                
-            } catch {
-                debugPrint("Encountered an error while fetching.... Reason: \(error.localizedDescription)")
-            }
+             let viewContext = CoreDataManager.shared.container.viewContext
+             let fetchRequest: NSFetchRequest<ChartItemEntity> = ChartItemEntity.fetchRequest()
+             var chartItems: [ChartItem] = []
+             do {
+                 let fetchedEntities = try viewContext.fetch(fetchRequest)
+                 chartItems = fetchedEntities.map { entity in
+                     let contentsEntity = entity.contents?.array as! [ChartContentEntity]
+                     let chartItemContets = contentsEntity.map { ce in
+                         return ChartItem._ChartContent(
+                             id: ce.id!,
+                             key: ce.key!,
+                             value: ce.val! as Decimal
+                         )
+                     }
+                     let dimensions = entity.dimensions!.isEmpty ? [] : entity.dimensions!.components(separatedBy: ";")
+                     let measures = entity.measures!.isEmpty ? [] : entity.measures!.components(separatedBy: ";")
+                     let filters = entity.filters!.isEmpty ? [] : entity.filters!.components(separatedBy: ";")
+                     return ChartItem(
+                         id: entity.id!,
+                         name: entity.name!,
+                         type: entity.type!,
+                         contents: chartItemContets,
+                         dimensions: dimensions,
+                         measures: measures,
+                         filters: filters
+                     )
+                 }
+
+             } catch {
+                 debugPrint("Encountered an error while fetching.... Reason: \(error.localizedDescription)")
+             }
+            
             return chartItems
+
         },
         
         removeChartItem: { chartItem in
             let viewContext = CoreDataManager.shared.container.viewContext
             let fetchRequest: NSFetchRequest<ChartItemEntity> = ChartItemEntity.fetchRequest()
-            
+
             fetchRequest.predicate = NSPredicate(format: "id == %@", chartItem.id as CVarArg)
-            
+
             do {
                 let fetchedEntities = try viewContext.fetch(fetchRequest)
                 if let entity = fetchedEntities.first {
@@ -73,37 +82,36 @@ extension ChartItemsClient: DependencyKey {
             } catch {
                 debugPrint("Couldn't delete chartItem of id : \(chartItem.id). Reason: \(error.localizedDescription)")
             }
-        }
-        ,
+        },
         addChartItem: { chartItem in
             let viewContext = CoreDataManager.shared.container.viewContext
             let entity = ChartItemEntity(context: viewContext)
-            
+
             entity.id = chartItem.id
             entity.name = chartItem.name
             entity.type = chartItem.type
             entity.dimensions = chartItem.dimensions.joined(separator: ";")
             entity.measures = chartItem.measures.joined(separator: ";")
             entity.filters = chartItem.filters.joined(separator: ";")
-            
+
             for content in chartItem.contents {
                 let contentEntity = ChartContentEntity(context: viewContext)
                 contentEntity.id = content.id
                 contentEntity.key = content.key
                 contentEntity.val = content.value as NSDecimalNumber
-                
+
                 entity.addToContents(contentEntity)
             }
-            
+
             do {
                 viewContext.insert(entity)
                 try viewContext.save()
             } catch {
                 debugPrint("Couldn't save chartItem. Reason: \(error.localizedDescription)")
             }
-        }
-        ,
+        },
         updateChartItem: {chartItem in
+            
             let viewContext = CoreDataManager.shared.container.viewContext
             let fetchRequest: NSFetchRequest<ChartItemEntity> = ChartItemEntity.fetchRequest()
             

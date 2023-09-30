@@ -11,7 +11,7 @@ import Charts
 
 class DashboardReducer: Reducer {
     
-    @Dependency(\.dataTransformer) var dataTransformer
+    @Dependency(\.firebaseClient) var firebaseClient
     @Dependency(\.stravaApi) var stravaApi
     @Dependency(\.chartItemsClient) var chartItemsClient
     
@@ -45,20 +45,31 @@ class DashboardReducer: Reducer {
             switch action {
             case .addChart(let chartItem):
                 return .run { send in
-                    await self.chartItemsClient.addChartItem(chartItem)
-                    await send(.loadCharts)
+                    do {
+                        try await self.chartItemsClient.addChartItem(chartItem)
+                        await send(.loadCharts)
+                    } catch {
+                        debugPrint("\(error)")
+                    }
                 }
             case .loadCharts:
                 return .run { send in
-                    let charts = await self.chartItemsClient.fetchChartItems()
-                    debugPrint(charts.count)
-                    await send(.updateCharts(charts))
+                    do {
+                        let charts = try await self.chartItemsClient.fetchChartItems()
+                        debugPrint(charts.count)
+                        await send(.updateCharts(charts))
+                    } catch {
+                        debugPrint("\(error)")
+                    }
                 }
             case .fetchFromStrava:
                 return .run {
                     send in
                     let activities = try await self.stravaApi.getUserActivities()
-                    try self.dataTransformer.saveToDevice(JSONEncoder().encode(activities))
+                    let userId: String? = UserDefaults.standard.string(forKey: "userId")
+                    let user: Athlete = Athlete(id: Int64(userId!)!, activities: activities)
+                    try await self.firebaseClient.saveToFirebase(user)
+                    try self.firebaseClient.saveToDevice(JSONEncoder().encode(activities))
                     await send(.loadCharts)
                 }
             case .chartItemTapped(let chartItem):

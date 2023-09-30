@@ -6,31 +6,32 @@
 //
 
 import Foundation
+import FirebaseFirestoreSwift
 
-class ChartItem: Hashable, ObservableObject, Equatable, Identifiable {
+class ChartItem: Hashable, Equatable, Identifiable, Codable {
     
-    struct _ChartContent: Equatable, Hashable, Identifiable {
-        var id: UUID
+    struct _ChartContent: Equatable, Hashable, Identifiable, Codable {
+        var id: String
         var key: String
         var value: Decimal
         
-        init(id: UUID = UUID(), key: String, value: Decimal) {
+        init(id: String = UUID().uuidString, key: String, value: Decimal) {
             self.id = id
             self.key = key
             self.value = value
         }
     }
     
-    var id: UUID
-    @Published var name: String
-    @Published var type: String
-    @Published var contents: [_ChartContent]
+    var id: String
+    var name: String
+    var type: String
+    var contents: [_ChartContent]
     
-    @Published var dimensions: [String]
-    @Published var measures: [String]
-    @Published var filters: [String]
+    var dimensions: [String]
+    var measures: [String]
+    var filters: [String]
     
-    init(id: UUID = UUID(),
+    init(id: String = UUID().uuidString,
          name: String,
          type: String,
          contents: [_ChartContent],
@@ -66,13 +67,5 @@ extension ChartItem {
         return lhs.name == rhs.name &&
                 lhs.type == rhs.type &&
                 lhs.contents == rhs.contents
-    }
-}
-
-extension ChartItem._ChartContent {
-    init(record: ChartContentEntity) {
-        self.id = record.id!
-        self.key = record.key!
-        self.value = record.val! as Decimal
     }
 }

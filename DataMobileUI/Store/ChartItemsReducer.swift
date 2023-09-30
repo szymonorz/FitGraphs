@@ -26,7 +26,11 @@ class ChartItemsReducer: Reducer {
             switch action {
             case .onDeleteButtonTapped(let chartItem):
                 return .run { send in
-                    await self.chartItemsClient.removeChartItem(chartItem)
+                    do {
+                        try await self.chartItemsClient.removeChartItem(chartItem)
+                    } catch {
+                        debugPrint("\(error.localizedDescription)")
+                    }
                 }
             }
         }

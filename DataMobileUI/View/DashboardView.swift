@@ -13,7 +13,6 @@ struct DashboardView: View {
     
     @State var presentModal: Bool = false
     
-    @Dependency(\.dataTransformer) var dataTransformer
     @Dependency(\.stravaApi) var stravaApi
     
     let store: StoreOf<DashboardReducer>
@@ -25,9 +24,6 @@ struct DashboardView: View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             ScrollView {
                 VStack{
-                    Button("Fetch data from Strava", action: {
-                        viewStore.send(DashboardReducer.Action.fetchFromStrava)
-                    })
                     LazyVGrid(columns: [
                         GridItem(.flexible()),
                         GridItem(.flexible())
