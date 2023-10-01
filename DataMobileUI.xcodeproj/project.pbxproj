@@ -23,6 +23,7 @@
 		017606932AC8D91A00CBDC7E /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017606922AC8D91A00CBDC7E /* Dashboard.swift */; };
 		017606962AC992FF00CBDC7E /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017606952AC992FF00CBDC7E /* ChartData.swift */; };
 		017606982AC9EE1600CBDC7E /* DashboardListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017606972AC9EE1600CBDC7E /* DashboardListReducer.swift */; };
+		0176069A2ACA145C00CBDC7E /* DashboardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017606992ACA145C00CBDC7E /* DashboardListView.swift */; };
 		01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F529F9224E0080E576 /* ChartView.swift */; };
 		01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F729F922D20080E576 /* ChartItem.swift */; };
 		01A2E6742ABF243800120978 /* ChartContentEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A2E6702ABF243800120978 /* ChartContentEntity+CoreDataClass.swift */; };
@@ -110,6 +111,7 @@
 		017606922AC8D91A00CBDC7E /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
 		017606952AC992FF00CBDC7E /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
 		017606972AC9EE1600CBDC7E /* DashboardListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardListReducer.swift; sourceTree = "<group>"; };
+		017606992ACA145C00CBDC7E /* DashboardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardListView.swift; sourceTree = "<group>"; };
 		01A0E7F529F9224E0080E576 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		01A0E7F729F922D20080E576 /* ChartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartItem.swift; sourceTree = "<group>"; };
 		01A2E6702ABF243800120978 /* ChartContentEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChartContentEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 				0166005E2A3F9A1300E5E2F8 /* EditHub.swift */,
 				016600602A3F9A2A00E5E2F8 /* Selector.swift */,
 				01BFC5A82AAE6BA600E4407C /* RootView.swift */,
+				017606992ACA145C00CBDC7E /* DashboardListView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 				0166005F2A3F9A1300E5E2F8 /* EditHub.swift in Sources */,
 				01BFC59B2AACF79300E4407C /* CoreDataManager.swift in Sources */,
 				016600612A3F9A2A00E5E2F8 /* Selector.swift in Sources */,
+				0176069A2ACA145C00CBDC7E /* DashboardListView.swift in Sources */,
 				01BFC5A72AAE0C4D00E4407C /* RootReducer.swift in Sources */,
 				01BFC5972AACD6AA00E4407C /* ChartItemsClient.swift in Sources */,
 				017606962AC992FF00CBDC7E /* ChartData.swift in Sources */,

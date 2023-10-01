@@ -45,7 +45,7 @@ struct MainView: View {
                 .tabItem {
                     Label("Home", systemImage: "house.circle.fill")
                 }
-            Text("DashboardList")
+            DashboardListView(store: self.store.scope(state: \.dashboardList, action: RootReducer.Action.dashboardList))
                 .tabItem {
                     Label("Dashboards", systemImage: "list.bullet.rectangle.fill")
                 }

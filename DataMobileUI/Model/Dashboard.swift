@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Dashboard: Codable, Equatable {
+struct Dashboard: Codable, Equatable, Identifiable {
+    var id: String = UUID().uuidString
     var name: String
     var data: [ChartData]
 }

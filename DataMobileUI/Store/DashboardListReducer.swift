@@ -17,8 +17,11 @@ class DashboardListReducer: Reducer {
         case saveToFirebase([Dashboard])
         case onDashboardTapped(Dashboard)
         case deleteDashboard(Dashboard)
+        case addDashboardTapped
+        case addDashboard(PresentationAction<DashboardReducer.Action>)
         
         case dashboard(DashboardReducer.Action)
+        case path(StackAction<DashboardReducer.State,DashboardReducer.Action>)
     }
     
     struct State: Equatable {
@@ -26,6 +29,8 @@ class DashboardListReducer: Reducer {
         var currentDashboard: Dashboard? = nil
         
         var dashboard = DashboardReducer.State()
+        var path = StackState<DashboardReducer.State>()
+        @PresentationState var addDashboard: DashboardReducer.State?
     }
     
     var body: some Reducer<State, Action> {
@@ -70,9 +75,31 @@ class DashboardListReducer: Reducer {
                 return .run { send in
                     await send(.dashboard(.dashboardChanged(dashboard)))
                 }
-            case .dashboard(let _):
+            case .addDashboardTapped:
+                state.addDashboard = DashboardReducer.State(
+                    dashboard: Dashboard(name: "new", data: [])
+                )
+                return .none
+            case .addDashboard(.presented(.delegate(.save(let dashboard)))):
+                state.dashboards.append(dashboard)
+                return .run { [dashboards = state.dashboards] send in
+                    await send(.saveToFirebase(dashboards))
+                }
+            case .dashboard:
+                return .none
+            case .path:
+                return .none
+            case .addDashboard(.presented(_)):
+                return .none
+            case .addDashboard(.dismiss):
                 return .none
             }
+        }
+        .ifLet(\.$addDashboard, action: /Action.addDashboard) {
+            DashboardReducer()
+        }
+        .forEach(\.path, action: /Action.path) {
+            DashboardReducer()
         }
     }
 }

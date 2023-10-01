@@ -22,10 +22,17 @@ class DashboardReducer: Reducer {
         case chartItemTapped(ChartData)
         case updateCharts([ChartData])
         case addChart(ChartData)
-//        case onSaveTapped
+
         
         case chartItems(ChartItemsReducer.Action)
         case chartEditor(ChartEditorReducer.Action)
+        
+        case onSaveTapped
+        case onCancelTapped
+        case delegate(Delegate)
+        enum Delegate: Equatable {
+            case save(Dashboard)
+        }
     }
     
     struct State: Equatable {
@@ -45,6 +52,7 @@ class DashboardReducer: Reducer {
         var chartEditor = ChartEditorReducer.State()
     }
     
+    @Dependency(\.dismiss) var dismiss
     var body: some ReducerOf<DashboardReducer> {
         Scope(state: \.chartEditor, action: /Action.chartEditor) {
             ChartEditorReducer()
@@ -106,9 +114,18 @@ class DashboardReducer: Reducer {
             case .updateCharts(let charts):
                 state.charts = charts
                 return .none
-            case .chartItems(let _):
+            case .chartItems:
                 return .none
-            case .chartEditor(let _):
+            case .chartEditor:
+                return .none
+            case .onSaveTapped:
+                return .run { [dashboard = state.dashboard! ] send in
+                    await send(.delegate(.save(dashboard)))
+                    await self.dismiss()
+                }
+            case .onCancelTapped:
+                return .run { _ in await self.dismiss() }
+            case .delegate:
                 return .none
             }
         }
