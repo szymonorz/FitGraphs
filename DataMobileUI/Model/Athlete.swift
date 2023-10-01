@@ -9,6 +9,6 @@ import Foundation
 
 struct Athlete: Codable {
     var id: Int64
-    var activities: [Activity]
-    var dashboards: [Dashboard]
+    var activities: [Activity]?
+    var dashboards: [Dashboard]?
 }

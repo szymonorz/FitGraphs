@@ -24,16 +24,34 @@ struct DashboardListView: View {
                 }
                 .toolbar {
                     ToolbarItem {
-                        Button {
-                            viewStore.send(.addDashboardTapped)
-                        } label: {
-                            Image(systemName: "plus")
+                        NavigationLink(state: DashboardReducer.State()) {
+                            Button {
+                                viewStore.send(.addDashboardTapped)
+                            } label: {
+                                Image(systemName: "plus")
+                            }
                         }
                     }
                 }
             }
         } destination: { store in
             DashboardView(store: store)
+        }
+        .sheet(store: self.store.scope(state: \.$addDashboard, action: { .addDashboard($0)})) { addDashboardStore in
+            NavigationStack {
+                VStack {
+                    Text("Create new dashboard")
+                    
+                    HStack {
+                        Button("Save") {
+                            addDashboardStore.send(.onSaveTapped)
+                        }
+                        Button("Cancel") {
+                            addDashboardStore.send(.onCancelTapped)
+                        }
+                    }
+                }
+            }
         }
     }
 }

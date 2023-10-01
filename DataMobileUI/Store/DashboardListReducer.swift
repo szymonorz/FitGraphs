@@ -18,7 +18,7 @@ class DashboardListReducer: Reducer {
         case onDashboardTapped(Dashboard)
         case deleteDashboard(Dashboard)
         case addDashboardTapped
-        case addDashboard(PresentationAction<DashboardReducer.Action>)
+        case addDashboard(PresentationAction<AddDashboardReducer.Action>)
         
         case dashboard(DashboardReducer.Action)
         case path(StackAction<DashboardReducer.State,DashboardReducer.Action>)
@@ -30,7 +30,7 @@ class DashboardListReducer: Reducer {
         
         var dashboard = DashboardReducer.State()
         var path = StackState<DashboardReducer.State>()
-        @PresentationState var addDashboard: DashboardReducer.State?
+        @PresentationState var addDashboard: AddDashboardReducer.State?
     }
     
     var body: some Reducer<State, Action> {
@@ -46,8 +46,8 @@ class DashboardListReducer: Reducer {
             case .onAppear:
                 return .run { send in
                     do {
-                        let athlete = try self.firebaseClient.loadFromFirebase()
-                        await send(.dashboardsChanged(athlete.dashboards))
+                        let athlete = try await self.firebaseClient.loadFromFirebase()
+                        await send(.dashboardsChanged(athlete.dashboards ?? []))
                     } catch {
                         debugPrint("onAppear: \(error.localizedDescription)")
                     }
@@ -63,7 +63,7 @@ class DashboardListReducer: Reducer {
             case .saveToFirebase(let dashboards):
                 return .run { send in
                     do {
-                        var athlete = try self.firebaseClient.loadFromFirebase()
+                        var athlete = try await self.firebaseClient.loadFromFirebase()
                         athlete.dashboards = dashboards
                         try await self.firebaseClient.saveToFirebase(athlete)
                     } catch {
@@ -76,7 +76,7 @@ class DashboardListReducer: Reducer {
                     await send(.dashboard(.dashboardChanged(dashboard)))
                 }
             case .addDashboardTapped:
-                state.addDashboard = DashboardReducer.State(
+                state.addDashboard = AddDashboardReducer.State(
                     dashboard: Dashboard(name: "new", data: [])
                 )
                 return .none
@@ -89,14 +89,14 @@ class DashboardListReducer: Reducer {
                 return .none
             case .path:
                 return .none
-            case .addDashboard(.presented(_)):
-                return .none
             case .addDashboard(.dismiss):
+                return .none
+            case .addDashboard(.presented(_)):
                 return .none
             }
         }
         .ifLet(\.$addDashboard, action: /Action.addDashboard) {
-            DashboardReducer()
+            AddDashboardReducer()
         }
         .forEach(\.path, action: /Action.path) {
             DashboardReducer()
