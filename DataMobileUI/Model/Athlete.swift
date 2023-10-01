@@ -10,9 +10,5 @@ import Foundation
 struct Athlete: Codable {
     var id: Int64
     var activities: [Activity]
-    
-    init(id: Int64, activities: [Activity]) {
-        self.id = id
-        self.activities = activities
-    }
+    var dashboards: [Dashboard]
 }

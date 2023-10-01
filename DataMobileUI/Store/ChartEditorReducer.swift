@@ -57,10 +57,7 @@ struct ChartEditorReducer: Reducer {
         var chartItemToEdit: ChartItem = ChartItem(
             name: "new",
             type: "BAR",
-            contents: [],
-            dimensions: [],
-            measures: [],
-            filters: []
+            contents: []
         )
     }
     
@@ -106,45 +103,36 @@ struct ChartEditorReducer: Reducer {
                 }
             case .addDimension(let dimension):
                 state.dimensions.append(dimension)
-                state.chartItemToEdit.dimensions.append(dimension)
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .removeDimension(let dimension):
                 state.dimensions.remove(at: state.dimensions.firstIndex(of: dimension)!)
-                state.chartItemToEdit.dimensions.remove(at: state.chartItemToEdit.dimensions.firstIndex(of: dimension)!)
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .addMeasure(let measure):
                 state.measures.append(measure)
-                state.chartItemToEdit.measures.append(measure)
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .removeMeasure(let measure):
                 state.measures.remove(at: state.measures.firstIndex(of: measure)!)
-                state.chartItemToEdit.measures.remove(at: state.chartItemToEdit.measures.firstIndex(of: measure)!)
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .addFilter(let filter):
                 state.filters.append(filter)
-                state.chartItemToEdit.filters.append(filter)
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .removeFilter(let filter):
                 state.filters.remove(at: state.filters.firstIndex(of: filter)!)
-                state.chartItemToEdit.filters.remove(at: state.chartItemToEdit.filters.firstIndex(of: filter)!)
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .chartToEditChanged(let chartToEdit):
                 state.chartItemToEdit = chartToEdit
-                state.measures = chartToEdit.measures
-                state.dimensions = chartToEdit.dimensions
-                state.filters = chartToEdit.filters
                 state.type = chartToEdit.type
                 state.title = chartToEdit.name
                 return .run { send in
@@ -164,15 +152,12 @@ struct ChartEditorReducer: Reducer {
                         id: id,
                         name: title,
                         type: type,
-                        contents: [],
-                        dimensions: dimensions,
-                        measures: measures,
-                        filters: filters
+                        contents: []
                     )
                     debugPrint("MATH")
                     do {
-                        chartItem.contents = try DataSource.shared.query(dimensions: chartItem.dimensions,
-                                                                         measures: chartItem.measures)
+                        chartItem.contents = try DataSource.shared.query(dimensions: dimensions,
+                                                                         measures: measures)
                         await send(.updateChartItemView(chartItem))
                         await send(.queryCorrectChanged(true))
                     } catch {

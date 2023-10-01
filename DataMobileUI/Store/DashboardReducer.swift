@@ -18,22 +18,30 @@ class DashboardReducer: Reducer {
     enum Action: Equatable {
         case loadCharts
         case fetchFromStrava
-        case chartItemTapped(ChartItem)
-        case updateCharts([ChartItem])
-        case addChart(ChartItem)
+        case dashboardChanged(Dashboard)
+        case chartItemTapped(ChartData)
+        case updateCharts([ChartData])
+        case addChart(ChartData)
+//        case onSaveTapped
         
+        case chartItems(ChartItemsReducer.Action)
         case chartEditor(ChartEditorReducer.Action)
     }
     
     struct State: Equatable {
-        var charts: [ChartItem] = [
-            ChartItem(
+        var charts: [ChartData] = [
+            ChartData(
                 name: "Test",
                 type: "BAR",
-                contents: []
+                dimensions: [],
+                measures: [],
+                filters: []
             )
         ]
         
+        var dashboard: Dashboard? = nil
+        
+        var chartItems = ChartItemsReducer.State()
         var chartEditor = ChartEditorReducer.State()
     }
     
@@ -41,33 +49,36 @@ class DashboardReducer: Reducer {
         Scope(state: \.chartEditor, action: /Action.chartEditor) {
             ChartEditorReducer()
         }
+        Scope(state: \.chartItems, action: /Action.chartItems) {
+            ChartItemsReducer()
+        }
         Reduce { state, action in
             switch action {
-            case .addChart(let chartItem):
+            case .dashboardChanged(let dashboard):
+                state.dashboard = dashboard
+                return .none
+            case .addChart(let chart):
+                state.charts.append(chart)
                 return .run { send in
-                    do {
-                        try await self.chartItemsClient.addChartItem(chartItem)
-                        await send(.loadCharts)
-                    } catch {
-                        debugPrint("\(error)")
-                    }
+                    await send(.chartItems(.onAppear))
                 }
             case .loadCharts:
                 return .run { send in
                     do {
                         let charts = try await self.chartItemsClient.fetchChartItems()
                         debugPrint(charts.count)
-                        await send(.updateCharts(charts))
+//                        await send(.updateCharts(charts))
                     } catch {
                         debugPrint("\(error)")
                     }
                 }
             case .fetchFromStrava:
+//                let dashboards = state.dashboards
                 return .run {
                     send in
                     let activities = try await self.stravaApi.getUserActivities()
                     let userId: String? = UserDefaults.standard.string(forKey: "userId")
-                    let user: Athlete = Athlete(id: Int64(userId!)!, activities: activities)
+                    let user: Athlete = Athlete(id: Int64(userId!)!, activities: activities, dashboards: [])
                     try await self.firebaseClient.saveToFirebase(user)
                     try self.firebaseClient.saveToDevice(JSONEncoder().encode(activities))
                     await send(.loadCharts)
@@ -75,12 +86,27 @@ class DashboardReducer: Reducer {
             case .chartItemTapped(let chartItem):
                 state.chartEditor.isEditorOpen = true
                 // Copy so editing wont affect the Dashboard state
-                let chartCopy = ChartItem(chartItem: chartItem)
+//                let chartCopy = ChartData(chartItem: chartItem)
                 return .run { send in
-                    await send(.chartEditor(.chartToEditChanged(chartCopy)))
+//                    await send(.chartEditor(.chartToEditChanged(chartCopy)))
                 }
+//            case .onSaveTapped:
+//                let chartData: [ChartData] = state.chartItems.chartData
+//                let dashboards = state.dashboards
+//                
+//                return .run { send in
+//                    do {
+//                        var athlete: Athlete = try self.firebaseClient.loadFromFirebase()
+//                        athlete.dashboards = dashboards
+//                        try await self.firebaseClient.saveToFirebase(athlete)
+//                    } catch {
+//                        
+//                    }
+//                }
             case .updateCharts(let charts):
                 state.charts = charts
+                return .none
+            case .chartItems(let _):
                 return .none
             case .chartEditor(let _):
                 return .none

@@ -20,6 +20,9 @@
 		0166006B2A42630D00E5E2F8 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0166006A2A42630D00E5E2F8 /* DataSource.swift */; };
 		0166006E2A42EBEC00E5E2F8 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 0166006D2A42EBEC00E5E2F8 /* WrappingHStack */; };
 		017606912AC63F3100CBDC7E /* DM_User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017606902AC63F3100CBDC7E /* DM_User.swift */; };
+		017606932AC8D91A00CBDC7E /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017606922AC8D91A00CBDC7E /* Dashboard.swift */; };
+		017606962AC992FF00CBDC7E /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017606952AC992FF00CBDC7E /* ChartData.swift */; };
+		017606982AC9EE1600CBDC7E /* DashboardListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017606972AC9EE1600CBDC7E /* DashboardListReducer.swift */; };
 		01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F529F9224E0080E576 /* ChartView.swift */; };
 		01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0E7F729F922D20080E576 /* ChartItem.swift */; };
 		01A2E6742ABF243800120978 /* ChartContentEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A2E6702ABF243800120978 /* ChartContentEntity+CoreDataClass.swift */; };
@@ -104,6 +107,9 @@
 		016600662A424F4300E5E2F8 /* FirebaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseClient.swift; sourceTree = "<group>"; };
 		0166006A2A42630D00E5E2F8 /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		017606902AC63F3100CBDC7E /* DM_User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DM_User.swift; sourceTree = "<group>"; };
+		017606922AC8D91A00CBDC7E /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
+		017606952AC992FF00CBDC7E /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
+		017606972AC9EE1600CBDC7E /* DashboardListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardListReducer.swift; sourceTree = "<group>"; };
 		01A0E7F529F9224E0080E576 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		01A0E7F729F922D20080E576 /* ChartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartItem.swift; sourceTree = "<group>"; };
 		01A2E6702ABF243800120978 /* ChartContentEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChartContentEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -227,6 +233,8 @@
 				01A0E7F729F922D20080E576 /* ChartItem.swift */,
 				01C2B4672AC38B5800078B44 /* Athlete.swift */,
 				017606902AC63F3100CBDC7E /* DM_User.swift */,
+				017606922AC8D91A00CBDC7E /* Dashboard.swift */,
+				017606952AC992FF00CBDC7E /* ChartData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -248,6 +256,7 @@
 				01BFC5A42AADD71900E4407C /* StravaAuthReducer.swift */,
 				01BFC5A62AAE0C4D00E4407C /* RootReducer.swift */,
 				01C2B4712AC4C2E200078B44 /* GoogleAuthReducer.swift */,
+				017606972AC9EE1600CBDC7E /* DashboardListReducer.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -471,12 +480,15 @@
 				016600612A3F9A2A00E5E2F8 /* Selector.swift in Sources */,
 				01BFC5A72AAE0C4D00E4407C /* RootReducer.swift in Sources */,
 				01BFC5972AACD6AA00E4407C /* ChartItemsClient.swift in Sources */,
+				017606962AC992FF00CBDC7E /* ChartData.swift in Sources */,
 				01BFC5A92AAE6BA600E4407C /* RootView.swift in Sources */,
 				01A0E7F829F922D20080E576 /* ChartItem.swift in Sources */,
 				013C51E329F5A7EF006AF055 /* DashboardView.swift in Sources */,
+				017606932AC8D91A00CBDC7E /* Dashboard.swift in Sources */,
 				01A0E7F629F9224E0080E576 /* ChartView.swift in Sources */,
 				012902F82A3E062D00DC5712 /* StravaApi.swift in Sources */,
 				013C51E729F5A811006AF055 /* DashboardReducer.swift in Sources */,
+				017606982AC9EE1600CBDC7E /* DashboardListReducer.swift in Sources */,
 				012902ED2A3DE92400DC5712 /* StravaAuth.swift in Sources */,
 				01C2B4622AC231FB00078B44 /* AppDelegate.swift in Sources */,
 				01A2E6752ABF243800120978 /* ChartContentEntity+CoreDataProperties.swift in Sources */,

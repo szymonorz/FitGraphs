@@ -7,10 +7,7 @@
         <relationship name="chartItem" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="ChartItemEntity"/>
     </entity>
     <entity name="ChartItemEntity" representedClassName=".ChartItemEntity" syncable="YES">
-        <attribute name="dimensions" optional="YES" attributeType="String"/>
-        <attribute name="filters" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
-        <attribute name="measures" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
         <relationship name="contents" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ChartContentEntity"/>

@@ -28,7 +28,7 @@ struct DashboardView: View {
                         GridItem(.flexible()),
                         GridItem(.flexible())
                     ], spacing: 20) {
-                        ForEach(Array(viewStore.state.charts.enumerated()), id: \.element) { index, chartItem in
+                        ForEach(Array(viewStore.state.chartItems.chartItems.enumerated()), id: \.element) { index, chartItem in
                             ChartView(chartItem: chartItem, chartWidth: chartWidth)
                                 .sheet(isPresented: viewStore.binding(
                                     get: \.chartEditor.isEditorOpen,
@@ -41,10 +41,10 @@ struct DashboardView: View {
                                             }
                                         )
                                     }.onTapGesture {
-                                        Task {
-                                            await viewStore.send(DashboardReducer.Action.chartItemTapped(chartItem)).finish()
-                                            viewStore.send(DashboardReducer.Action.chartEditor(.openEditor))
-                                        }
+//                                        Task {
+//                                            await viewStore.send(DashboardReducer.Action.chartItemTapped(chartItem)).finish()
+//                                            viewStore.send(DashboardReducer.Action.chartEditor(.openEditor))
+//                                        }
                                     }
                         }
                         Button("+", action: {
@@ -64,7 +64,8 @@ struct DashboardView: View {
                         }
                     }
                 }.onAppear {
-                    viewStore.send(DashboardReducer.Action.loadCharts)
+                    viewStore.send(DashboardReducer.Action.chartItems(.onAppear))
+//                    viewStore.send(DashboardReducer.Action.loadCharts)
             }
         }
     }

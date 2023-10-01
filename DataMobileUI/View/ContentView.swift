@@ -20,7 +20,7 @@ struct ContentView: View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             
             if viewStore.googleAuth.isAuthorized {
-                HomeView(store: self.store)
+                MainView(store: self.store)
             } else {
                 LoginView(store: self.store.scope(
                     state: \.googleAuth,
@@ -32,6 +32,27 @@ struct ContentView: View {
                     }
                 }
             }
+        }
+    }
+}
+
+struct MainView: View {
+    let store: StoreOf<RootReducer>
+    
+    var body: some View {
+        TabView {
+            HomeView(store: self.store)
+                .tabItem {
+                    Label("Home", systemImage: "house.circle.fill")
+                }
+            Text("DashboardList")
+                .tabItem {
+                    Label("Dashboards", systemImage: "list.bullet.rectangle.fill")
+                }
+            Text("User settings")
+                .tabItem {
+                    Label("Settings", systemImage: "gear.circle.fill")
+                }
         }
     }
 }
