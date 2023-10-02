@@ -191,7 +191,7 @@ struct ChartEditorReducer: Reducer {
                 state.chartItemToEdit = chartItem
                 return .none
             case .onCancelTapped:
-                return .run { _ in await self.dismiss() }
+                return .none
             case .onSaveTapped:
                 let chartItemToSave = state.chartDataToEdit
                 return .run { send in

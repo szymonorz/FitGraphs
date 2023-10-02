@@ -28,15 +28,7 @@ class DashboardReducer: Reducer {
     }
     
     struct State: Equatable {
-        var charts: [ChartData] = [
-            ChartData(
-                title: "Test",
-                type: "BAR",
-                dimensions: [],
-                measures: [],
-                filters: []
-            )
-        ]
+        var charts: [ChartData] = []
         
         var dashboard: Dashboard? = nil
         
