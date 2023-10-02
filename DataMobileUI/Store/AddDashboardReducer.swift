@@ -15,7 +15,6 @@ struct AddDashboardReducer: Reducer {
     enum Action: Equatable {
         case onSaveTapped
         case onCancelTapped
-        
         case delegate(Delegate)
         enum Delegate: Equatable {
             case save(Dashboard)
@@ -23,7 +22,7 @@ struct AddDashboardReducer: Reducer {
     }
     
     @Dependency(\.dismiss) var dismiss
-    var body: some ReducerOf<Self> {
+    var body: some Reducer<AddDashboardReducer.State, AddDashboardReducer.Action> {
         Reduce { state, action in
             switch action {
             case .onSaveTapped:

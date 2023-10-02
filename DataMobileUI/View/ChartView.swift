@@ -18,9 +18,6 @@ struct ChartView: View {
             Text(chartItem.name)
             if let errorMsg = chartItem.errorMsg {
                 Text(errorMsg)
-                
-            } else if chartItem.contents.isEmpty {
-                Text("No data to show")
             } else {
                 let maxElement = chartItem.contents.max { $0.value < $1.value}
                 Chart {

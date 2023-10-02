@@ -5,6 +5,7 @@
 //  Created by b on 09/09/2023.
 //
 
+import Foundation
 import ComposableArchitecture
 
 class ChartItemsReducer: Reducer {
@@ -14,20 +15,20 @@ class ChartItemsReducer: Reducer {
         case onAppear
         case onDeleteButtonTapped(ChartItem)
         
-//        case chartEditor(ChartEditorReducer.Action)
+        case chartEditor(ChartEditorReducer.Action)
     }
     
     struct State: Equatable {
-        var data : [ChartData] = []
-        var items: [ChartItem] = []
+        var chartData : [ChartData] = []
+        var chartItems: [ChartItem] = []
         
-//        var chartEditor = ChartEditorReducer.State()
+        var chartEditor = ChartEditorReducer.State()
     }
     
     var body: some Reducer<State, Action> {
-//        Scope(state: \.chartEditor, action: /Action.chartEditor) {
-//            ChartEditorReducer()
-//        }
+        Scope(state: \.chartEditor, action: /Action.chartEditor) {
+            ChartEditorReducer()
+        }
         Reduce { state, action in
             switch action {
             case .onDeleteButtonTapped(let chartItem):
@@ -39,10 +40,10 @@ class ChartItemsReducer: Reducer {
                     }
                 }
             case .onAppear:
-                state.items = []
-                for data in state.data {
+                state.chartItems = []
+                for data in state.chartData {
                     var chartItem = ChartItem(
-                            name: data.title,
+                            name: data.name,
                             type: data.type,
                             contents: []
                         )
@@ -53,11 +54,11 @@ class ChartItemsReducer: Reducer {
                     } catch {
                         chartItem.errorMsg = error.localizedDescription
                     }
-                    state.items.append(chartItem)
+                    state.chartItems.append(chartItem)
                 }
                 return .none
-//            case .chartEditor(let _):
-//                return .none
+            case .chartEditor(let _):
+                return .none
             }
         }
     }

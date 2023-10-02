@@ -22,9 +22,6 @@ struct DashboardListView: View {
                         }
                     }
                 }
-                .onAppear {
-                    viewStore.send(.onAppear)
-                }
                 .toolbar {
                     ToolbarItem {
                         NavigationLink(state: DashboardReducer.State()) {

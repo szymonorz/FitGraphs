@@ -9,7 +9,7 @@ import Foundation
 
 struct ChartData: Codable, Equatable, Hashable {
     var id: String = UUID().uuidString
-    var title: String
+    var name: String
     var type: String
     var dimensions: [String]
     var measures: [String]
@@ -18,7 +18,7 @@ struct ChartData: Codable, Equatable, Hashable {
 
 extension ChartData {
     static func==(lhs: ChartData, rhs: ChartData) -> Bool{
-        return lhs.title == rhs.title &&
+        return lhs.name == rhs.name &&
                 lhs.type == rhs.type &&
         lhs.measures == rhs.measures &&
         lhs.dimensions == rhs.dimensions &&
