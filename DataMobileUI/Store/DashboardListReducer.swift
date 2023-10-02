@@ -91,7 +91,9 @@ class DashboardListReducer: Reducer {
                 return .none
             case .addDashboard(.dismiss):
                 return .none
-            case .addDashboard(.presented(_)):
+            case .addDashboard(.presented(.onSaveTapped)):
+                return .none
+            case .addDashboard(.presented(.onCancelTapped)):
                 return .none
             }
         }

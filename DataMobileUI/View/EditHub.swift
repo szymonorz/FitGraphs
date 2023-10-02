@@ -13,7 +13,7 @@ struct EditHub: View {
     var store: StoreOf<ChartEditorReducer>
     
     var body: some View {
-        WithViewStore(store, observe: { $0.chartItemToEdit }) { viewStore in
+        WithViewStore(store, observe: { $0 }) { viewStore in
             VStack(spacing: 0) {
                 Selector(name: "Filters", type: "filters", store: self.store)
                 Selector(name: "Dimensions", type: "dimensions", store: self.store)

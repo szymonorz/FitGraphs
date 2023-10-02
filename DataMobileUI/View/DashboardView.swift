@@ -28,44 +28,27 @@ struct DashboardView: View {
                         GridItem(.flexible()),
                         GridItem(.flexible())
                     ], spacing: 20) {
-                        ForEach(Array(viewStore.state.chartItems.chartItems.enumerated()), id: \.element) { index, chartItem in
+                        ForEach(Array(viewStore.state.chartItems.items.enumerated()), id: \.element) { index, chartItem in
                             ChartView(chartItem: chartItem, chartWidth: chartWidth)
-                                .sheet(isPresented: viewStore.binding(
-                                    get: \.chartEditor.isEditorOpen,
-                                    send: { DashboardReducer.Action.chartEditor(.editorOpenChanged($0))})) {
-                                        ChartEditorView(
-                                            store: self.store.scope(state: \.chartEditor,
-                                                                    action: DashboardReducer.Action.chartEditor),
-                                            callback: {
-                                                viewStore.send(DashboardReducer.Action.loadCharts)
-                                            }
-                                        )
-                                    }.onTapGesture {
-//                                        Task {
-//                                            await viewStore.send(DashboardReducer.Action.chartItemTapped(chartItem)).finish()
-//                                            viewStore.send(DashboardReducer.Action.chartEditor(.openEditor))
-//                                        }
-                                    }
+//                                .onTapGesture {
+//                                    viewStore.send(.chartItemTapped(<#T##ChartData#>))
+//                                }
                         }
-                        Button("+", action: {
-                            viewStore.send(DashboardReducer.Action.chartEditor(.openCreator))
-                        })
-                        .sheet(isPresented: viewStore.binding(
-                            get: \.chartEditor.isCreatorOpen,
-                            send: { DashboardReducer.Action.chartEditor(.creatorOpenChanged($0)) })){
-                                ChartCreatorView(
-                                    store: self.store.scope(state: \.chartEditor,
-                                                            action: DashboardReducer.Action.chartEditor),
-                                    callback: {
-                                        viewStore.send(DashboardReducer.Action.loadCharts)
-                                    }
-                                )
-                            }
+                        Button {
+                            viewStore.send(.addChartTapped)
+                        } label: {
+                            Image(systemName: "plus")
                         }
                     }
                 }.onAppear {
                     viewStore.send(DashboardReducer.Action.chartItems(.onAppear))
-//                    viewStore.send(DashboardReducer.Action.loadCharts)
+                }.sheet(store: self.store.scope(state: \.$chartEditor, action: { .chartEditor($0)})) { chartEditorStore in
+                    NavigationStack {
+                        ChartEditorView(store: chartEditorStore, callback: {
+                            viewStore.send(.loadCharts)
+                        })
+                    }
+                }
             }
         }
     }

@@ -16,14 +16,14 @@ struct ChartCreatorView: View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack {
                 Text("Creator view")
-                ChartView(chartItem: viewStore.state.chartItemToEdit, chartWidth: 200)
+                ChartView(chartItem: viewStore.state.chartItem, chartWidth: 200)
                 EditHub(store: self.store)
                 ChartMenu(store: self.store)
             }
             HStack {
                 Button("Save", action: {
                     Task {
-                        await viewStore.send(ChartEditorReducer.Action.saveChartItem).finish()
+                        await viewStore.send(ChartEditorReducer.Action.onSaveTapped).finish()
                         viewStore.send(ChartEditorReducer.Action.closeCreator)
                         callback()
                     }
@@ -45,21 +45,20 @@ struct ChartEditorView: View {
         WithViewStore(store, observe: {$0}) { viewStore in
             VStack {
                 Text("Editor view")
-                ChartView(chartItem: viewStore.state.chartItemToEdit, chartWidth: 200)
+                ChartView(chartItem: viewStore.state.chartItem, chartWidth: 200)
                 EditHub(store: self.store)
                 ChartMenu(store: self.store)
             }
             HStack {
-                Button("Save", action: {
+                Button("Save") {
                     Task {
-                        await viewStore.send(ChartEditorReducer.Action.updateChartItem).finish()
-                        viewStore.send(ChartEditorReducer.Action.closeEditor)
+                        await viewStore.send(.onSaveTapped).finish()
                         callback()
                     }
-                }).disabled(!viewStore.queryCorrect)
-                Button("Cancel", action: {
-                    viewStore.send(ChartEditorReducer.Action.closeEditor)
-                })
+                }.disabled(!viewStore.queryCorrect)
+                Button("Cancel") {
+                    viewStore.send(.onCancelTapped)
+                }
             }
         }
     }
