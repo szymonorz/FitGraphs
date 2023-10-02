@@ -40,11 +40,6 @@ struct DashboardView: View {
                                                 viewStore.send(DashboardReducer.Action.loadCharts)
                                             }
                                         )
-                                    }.onTapGesture {
-//                                        Task {
-//                                            await viewStore.send(DashboardReducer.Action.chartItemTapped(chartItem)).finish()
-//                                            viewStore.send(DashboardReducer.Action.chartEditor(.openEditor))
-//                                        }
                                     }
                         }
                         Button("+", action: {

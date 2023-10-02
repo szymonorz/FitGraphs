@@ -16,6 +16,7 @@ class ChartItemsReducer: Reducer {
         case onDeleteButtonTapped(ChartItem)
         
         case chartEditor(ChartEditorReducer.Action)
+
     }
     
     struct State: Equatable {
@@ -41,9 +42,10 @@ class ChartItemsReducer: Reducer {
                 }
             case .onAppear:
                 state.chartItems = []
+                debugPrint(state.chartData)
                 for data in state.chartData {
                     var chartItem = ChartItem(
-                            name: data.name,
+                            name: data.title,
                             type: data.type,
                             contents: []
                         )

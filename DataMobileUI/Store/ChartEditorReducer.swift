@@ -9,9 +9,6 @@ import Foundation
 import ComposableArchitecture
 
 struct ChartEditorReducer: Reducer {
-    
-    @Dependency(\.chartItemsClient) var chartItemsClient
-    
     enum Action: Equatable {
         case titleChanged(String)
         case typeChanged(String)
@@ -25,13 +22,11 @@ struct ChartEditorReducer: Reducer {
         case addFilter(String)
         case removeFilter(String)
         
-        case chartToEditChanged(ChartItem)
+        case chartToEditChanged(ChartData)
         
         case recalcChartItem
         case updateChartItemView(ChartItem)
         
-        case updateChartItem
-        case saveChartItem
         
         case openEditor
         case closeEditor
@@ -42,6 +37,14 @@ struct ChartEditorReducer: Reducer {
         case creatorOpenChanged(Bool)
         
         case queryCorrectChanged(Bool)
+        
+        case onSaveTapped
+        case onCancelTapped
+        
+        case delegate(Delegate)
+        enum Delegate: Equatable {
+            case save(ChartData)
+        }
     }
     
     struct State: Equatable {
@@ -54,6 +57,13 @@ struct ChartEditorReducer: Reducer {
         var measures: [String] = []
         var filters: [String] = []
         
+        var chartDataToEdit: ChartData = ChartData(
+            title: "new",
+            type: "BAR",
+            dimensions: [],
+            measures: [],
+            filters: []
+        )
         var chartItemToEdit: ChartItem = ChartItem(
             name: "new",
             type: "BAR",
@@ -61,6 +71,7 @@ struct ChartEditorReducer: Reducer {
         )
     }
     
+    @Dependency(\.dismiss) var dismiss
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
@@ -93,16 +104,19 @@ struct ChartEditorReducer: Reducer {
                 return .none
             case .titleChanged(let title):
                 state.title = title
+                state.chartDataToEdit.title = title
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .typeChanged(let type):
                 state.type = type
+                state.chartDataToEdit.type = type
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .addDimension(let dimension):
                 state.dimensions.append(dimension)
+                state.chartDataToEdit.dimensions = state.dimensions
                 return .run { send in
                     await send(.recalcChartItem)
                 }
@@ -132,22 +146,30 @@ struct ChartEditorReducer: Reducer {
                     await send(.recalcChartItem)
                 }
             case .chartToEditChanged(let chartToEdit):
-                state.chartItemToEdit = chartToEdit
-                state.type = chartToEdit.type
-                state.title = chartToEdit.name
-                return .run { send in
-                    await send(.recalcChartItem)
-                }
+                state.chartDataToEdit = chartToEdit
+                return .none
             case .recalcChartItem:
                 return .run {
                     [
-                        id = state.chartItemToEdit.id,
+                        id = state.chartDataToEdit.id,
                         title = state.title,
                         type = state.type,
                         dimensions = state.dimensions,
                         measures = state.measures,
                         filters = state.filters
                     ] send in
+                    
+                    let chartDataToEdit = ChartData(
+                        id: id,
+                        title: title,
+                        type: type,
+                        dimensions: dimensions,
+                        measures: measures,
+                        filters: filters
+                    )
+                    
+                    await send(.chartToEditChanged(chartDataToEdit))
+                    
                     let chartItem = ChartItem(
                         id: id,
                         name: title,
@@ -168,26 +190,17 @@ struct ChartEditorReducer: Reducer {
             case .updateChartItemView(let chartItem):
                 state.chartItemToEdit = chartItem
                 return .none
-            case .updateChartItem:
-                let chartItemToSave = state.chartItemToEdit
+            case .onCancelTapped:
+                return .run { _ in await self.dismiss() }
+            case .onSaveTapped:
+                let chartItemToSave = state.chartDataToEdit
                 return .run { send in
-                    do {
-                        try await chartItemsClient.updateChartItem(chartItemToSave)
-                    } catch {
-                        debugPrint("\(error)")
-                    }
-                }
-            case .saveChartItem:
-                let chartItemToSave = state.chartItemToEdit
-                return .run { send in
-                    do {
-                        try await chartItemsClient.addChartItem(chartItemToSave)
-                    } catch {
-                        debugPrint("\(error)")
-                    }
+                    await send(.delegate(.save(chartItemToSave)))
                 }
             case .queryCorrectChanged(let correct):
                 state.queryCorrect = correct
+                return .none
+            case .delegate(_):
                 return .none
             }
         }

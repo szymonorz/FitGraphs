@@ -23,14 +23,14 @@ struct ChartCreatorView: View {
             HStack {
                 Button("Save", action: {
                     Task {
-                        await viewStore.send(ChartEditorReducer.Action.saveChartItem).finish()
+                        await viewStore.send(ChartEditorReducer.Action.onSaveTapped).finish()
                         viewStore.send(ChartEditorReducer.Action.closeCreator)
                         callback()
                     }
                 }).disabled(!viewStore.queryCorrect)
                 
                 Button("Cancel", action: {
-                    viewStore.send(ChartEditorReducer.Action.closeCreator)
+                    viewStore.send(ChartEditorReducer.Action.onCancelTapped)
                 })
             }
         }
@@ -52,7 +52,7 @@ struct ChartEditorView: View {
             HStack {
                 Button("Save", action: {
                     Task {
-                        await viewStore.send(ChartEditorReducer.Action.updateChartItem).finish()
+                        await viewStore.send(ChartEditorReducer.Action.onSaveTapped).finish()
                         viewStore.send(ChartEditorReducer.Action.closeEditor)
                         callback()
                     }
