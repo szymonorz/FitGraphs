@@ -18,6 +18,7 @@ class DashboardReducer: Reducer {
         case loadCharts
         case fetchFromStrava
         case dashboardChanged(Dashboard)
+        case titleChanged(String)
         case chartItemTapped(ChartData)
         case updateCharts([ChartData])
         
@@ -39,6 +40,7 @@ class DashboardReducer: Reducer {
         
         var dashboard: Dashboard? = nil
         
+        var title: String = "new"
         var chartItems = ChartItemsReducer.State()
         var chartEditor = ChartEditorReducer.State()
     }
@@ -53,8 +55,13 @@ class DashboardReducer: Reducer {
         }
         Reduce { state, action in
             switch action {
+            case .titleChanged(let title):
+                state.title = title
+                state.dashboard?.name = title
+                return .none
             case .dashboardChanged(let dashboard):
                 state.dashboard = dashboard
+                state.title = dashboard.name
                 state.charts = dashboard.data
                 state.chartItems.chartData = dashboard.data
                 return .none

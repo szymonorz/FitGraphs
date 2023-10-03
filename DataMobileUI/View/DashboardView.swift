@@ -65,16 +65,25 @@ struct DashboardView: View {
                         }
                     }
                 }.onAppear {
-//                    viewStore.send(DashboardReducer.Action.chartItems(.onAppear))
                     viewStore.send(DashboardReducer.Action.loadCharts)
                 }.toolbar {
                     ToolbarItem {
-                        Button("Save") {
-                            viewStore.send(.onSaveTapped)
+                        HStack {
+                            TextField(
+                                "Dashboard name",
+                                text: viewStore.binding(
+                                    get: \.title,
+                                    send: DashboardReducer.Action.titleChanged
+                                )
+                            )
+                            .multilineTextAlignment(.center)
+                            .disableAutocorrection(true)
+
+                            Button("Save") {
+                                viewStore.send(.onSaveTapped)
+                            }
                         }
-                        Button("Cancel") {
-                            viewStore.send(.onCancelTapped)
-                        }
+                        
                     }
                 }
         }
