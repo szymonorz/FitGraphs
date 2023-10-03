@@ -69,6 +69,7 @@ class DashboardListReducer: Reducer {
                     } catch {
                         debugPrint("saveToFirebase: \(error.localizedDescription)")
                     }
+                    await send(.onAppear)
                 }
             case .onDashboardTapped(let dashboard):
                 state.currentDashboard = dashboard

@@ -99,6 +99,7 @@ class DashboardReducer: Reducer {
                     state.charts.append(chart)
                 }
                 state.chartItems.chartData = state.charts
+                state.dashboard?.data = state.charts
                 return .none
             case .chartEditor:
                 return .none
