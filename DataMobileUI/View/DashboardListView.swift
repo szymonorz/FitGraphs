@@ -19,8 +19,10 @@ struct DashboardListView: View {
                     ForEach(viewStore.dashboards) { dashboard in
                         NavigationLink(
                             state: DashboardReducer.State(
-                            charts: dashboard.data,
-                            dashboard: dashboard)
+                                charts: dashboard.data,
+                                dashboard: dashboard,
+                                title: dashboard.name
+                            )
                         ) {
                             Text(dashboard.name)
                         }
@@ -46,16 +48,27 @@ struct DashboardListView: View {
         }
         .sheet(store: self.store.scope(state: \.$addDashboard, action: { .addDashboard($0)})) { addDashboardStore in
             NavigationStack {
-                VStack {
-                    Text("Create new dashboard")
-                    
-                    HStack {
-                        Button("Save") {
-                            addDashboardStore.send(.onSaveTapped)
-                        }
-                        Button("Cancel") {
-                            addDashboardStore.send(.onCancelTapped)
-                        }
+                WithViewStore(addDashboardStore, observe: { $0 }) { viewStore in
+                    Form {
+                        Text("Create new dashboard").frame(maxWidth: .infinity, alignment: .center)
+                        TextField(
+                            "Dashboard name",
+                            text: viewStore.binding(
+                                get: \.title,
+                                send: { .titleChanged($0) }
+                            )
+                        )
+                        .multilineTextAlignment(.center)
+                        .disableAutocorrection(true)
+                        HStack {
+                            Button("Save") {
+                                addDashboardStore.send(.onSaveTapped)
+                            }.buttonStyle(BorderlessButtonStyle())
+                            
+                            Button("Cancel") {
+                                addDashboardStore.send(.onCancelTapped)
+                            }.buttonStyle(BorderlessButtonStyle())
+                        }.frame(maxWidth: .infinity, alignment: .center)
                     }
                 }
             }
