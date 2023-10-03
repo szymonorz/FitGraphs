@@ -21,7 +21,7 @@ class DashboardReducer: Reducer {
         case titleChanged(String)
         case chartItemTapped(ChartData)
         case updateCharts([ChartData])
-        
+        case deleteChart(ChartData)
         
         case chartItems(ChartItemsReducer.Action)
         case chartEditor(ChartEditorReducer.Action)
@@ -90,19 +90,24 @@ class DashboardReducer: Reducer {
                 return .run { send in
                     await send(.chartEditor(.chartToEditChanged(chartItem)))
                 }
+            case .deleteChart(let chart):
+                state.charts.remove(at: state.charts.firstIndex(of: chart)!)
+                return .run { [charts = state.charts] send in
+                    await send(.updateCharts(charts))
+                }
             case .updateCharts(let charts):
                 state.charts = charts
-                return .none
+                state.dashboard?.data = charts
+                return .run { send in
+                    await send(.loadCharts)
+                }
             case .chartItems:
                 return .none
             case .chartEditor(.delegate(.save(let chart))):
-                debugPrint("DEBUGID: \(chart.id)")
                 let contains = state.charts.contains { $0.id == chart.id }
                 if contains {
-                    debugPrint("CONTAINS")
                     state.charts = state.charts.map({ $0.id == chart.id ? chart : $0 })
                 } else {
-                    debugPrint("KILLME")
                     state.charts.append(chart)
                 }
                 state.chartItems.chartData = state.charts

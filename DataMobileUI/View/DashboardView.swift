@@ -29,23 +29,35 @@ struct DashboardView: View {
                         GridItem(.flexible())
                     ], spacing: 20) {
                         ForEach(Array(viewStore.state.chartItems.chartItems.enumerated()), id: \.element) { index, chartItem in
-                            VStack {
-                                Text(chartItem.name)
-                                ChartView(chartItem: chartItem, chartWidth: chartWidth)
-                                    .sheet(isPresented: viewStore.binding(
-                                        get: \.chartEditor.isEditorOpen,
-                                        send: { DashboardReducer.Action.chartEditor(.editorOpenChanged($0))})) {
-                                            ChartEditorView(
-                                                store: self.store.scope(state: \.chartEditor,
-                                                                        action: DashboardReducer.Action.chartEditor),
-                                                callback: {
-                                                    viewStore.send(DashboardReducer.Action.loadCharts)
-                                                }
-                                            )
-                                        }.onTapGesture {
-                                            let chartData = viewStore.state.charts[index]
-                                            viewStore.send(.chartItemTapped(chartData))
-                                        }
+                            Menu {
+                                Button("Edit") {
+                                    let chartData = viewStore.state.charts[index]
+                                    viewStore.send(.chartItemTapped(chartData))
+                                }
+                                
+                                Button("Delete") {
+                                    let chartData = viewStore.state.charts[index]
+                                    viewStore.send(.deleteChart(chartData))
+                                }.foregroundColor(.red)
+                            } label: {
+                                VStack {
+                                    Text(chartItem.name)
+                                    ChartView(chartItem: chartItem, chartWidth: chartWidth)
+                                        .sheet(isPresented: viewStore.binding(
+                                            get: \.chartEditor.isEditorOpen,
+                                            send: { DashboardReducer.Action.chartEditor(.editorOpenChanged($0))})) {
+                                                ChartEditorView(
+                                                    store: self.store.scope(state: \.chartEditor,
+                                                                            action: DashboardReducer.Action.chartEditor),
+                                                    callback: {
+                                                        viewStore.send(DashboardReducer.Action.loadCharts)
+                                                    }
+                                                )
+                                            }
+                                }
+                            } primaryAction: {
+                                let chartData = viewStore.state.charts[index]
+                                viewStore.send(.chartItemTapped(chartData))
                             }
                         }
                         Button("+", action: {

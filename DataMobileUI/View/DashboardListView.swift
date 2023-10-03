@@ -24,8 +24,17 @@ struct DashboardListView: View {
                                 title: dashboard.name
                             )
                         ) {
-                            Text(dashboard.name)
-                        }
+                            HStack {
+                                Text(dashboard.name)
+                                Spacer()
+                                Button {
+                                    viewStore.send(.deleteDashboard(dashboard))
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                        .foregroundColor(.red)
+                                }
+                            }
+                        }.buttonStyle(.borderless)
                     }
                 }
                 .onAppear {
