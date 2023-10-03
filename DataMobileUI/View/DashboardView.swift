@@ -40,6 +40,9 @@ struct DashboardView: View {
                                                 viewStore.send(DashboardReducer.Action.loadCharts)
                                             }
                                         )
+                                    }.onTapGesture {
+                                        let chartData = viewStore.state.charts[index]
+                                        viewStore.send(.chartItemTapped(chartData))
                                     }
                         }
                         Button("+", action: {
@@ -59,9 +62,18 @@ struct DashboardView: View {
                         }
                     }
                 }.onAppear {
-                    viewStore.send(DashboardReducer.Action.chartItems(.onAppear))
-//                    viewStore.send(DashboardReducer.Action.loadCharts)
-            }
+//                    viewStore.send(DashboardReducer.Action.chartItems(.onAppear))
+                    viewStore.send(DashboardReducer.Action.loadCharts)
+                }.toolbar {
+                    ToolbarItem {
+                        Button("Save") {
+                            viewStore.send(.onSaveTapped)
+                        }
+                        Button("Cancel") {
+                            viewStore.send(.onCancelTapped)
+                        }
+                    }
+                }
         }
     }
 }

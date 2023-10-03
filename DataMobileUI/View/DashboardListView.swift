@@ -17,7 +17,11 @@ struct DashboardListView: View {
             WithViewStore(store, observe: { $0 }) { viewStore in
                 List {
                     ForEach(viewStore.dashboards) { dashboard in
-                        NavigationLink(state: DashboardReducer.State(dashboard: dashboard)) {
+                        NavigationLink(
+                            state: DashboardReducer.State(
+                            charts: dashboard.data,
+                            dashboard: dashboard)
+                        ) {
                             Text(dashboard.name)
                         }
                     }

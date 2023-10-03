@@ -12,7 +12,7 @@ class ChartItemsReducer: Reducer {
     @Dependency(\.chartItemsClient) var chartItemsClient
     
     enum Action: Equatable {
-        case onAppear
+        case loadItems
         case onDeleteButtonTapped(ChartItem)
         
         case chartEditor(ChartEditorReducer.Action)
@@ -40,7 +40,7 @@ class ChartItemsReducer: Reducer {
                         debugPrint("\(error.localizedDescription)")
                     }
                 }
-            case .onAppear:
+            case .loadItems:
                 state.chartItems = []
                 debugPrint(state.chartData)
                 for data in state.chartData {

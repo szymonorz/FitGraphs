@@ -13,7 +13,6 @@ class DashboardReducer: Reducer {
     
     @Dependency(\.firebaseClient) var firebaseClient
     @Dependency(\.stravaApi) var stravaApi
-    @Dependency(\.chartItemsClient) var chartItemsClient
     
     enum Action: Equatable {
         case loadCharts
@@ -25,6 +24,14 @@ class DashboardReducer: Reducer {
         
         case chartItems(ChartItemsReducer.Action)
         case chartEditor(ChartEditorReducer.Action)
+        
+        case onSaveTapped
+        case onCancelTapped
+        
+        case delegate(Delegate)
+        enum Delegate: Equatable {
+            case save(Dashboard)
+        }
     }
     
     struct State: Equatable {
@@ -36,7 +43,7 @@ class DashboardReducer: Reducer {
         var chartEditor = ChartEditorReducer.State()
     }
     
-    
+    @Dependency(\.dismiss) var dismiss
     var body: some ReducerOf<DashboardReducer> {
         Scope(state: \.chartEditor, action: /Action.chartEditor) {
             ChartEditorReducer()
@@ -48,10 +55,17 @@ class DashboardReducer: Reducer {
             switch action {
             case .dashboardChanged(let dashboard):
                 state.dashboard = dashboard
+                state.charts = dashboard.data
+                state.chartItems.chartData = dashboard.data
                 return .none
             case .loadCharts:
+                guard let dashboard = state.dashboard 
+                else { return .none }
+                
+                state.charts = dashboard.data
+                state.chartItems.chartData = dashboard.data
                 return .run { send in
-                    await send(.chartItems(.onAppear))
+                    await send(.chartItems(.loadItems))
                 }
             case .fetchFromStrava:
                 //                let dashboards = state.dashboards
@@ -66,10 +80,8 @@ class DashboardReducer: Reducer {
                 }
             case .chartItemTapped(let chartItem):
                 state.chartEditor.isEditorOpen = true
-                // Copy so editing wont affect the Dashboard state
-                //                let chartCopy = ChartData(chartItem: chartItem)
                 return .run { send in
-                    //                    await send(.chartEditor(.chartToEditChanged(chartCopy)))
+                    await send(.chartEditor(.chartToEditChanged(chartItem)))
                 }
             case .updateCharts(let charts):
                 state.charts = charts
@@ -77,14 +89,28 @@ class DashboardReducer: Reducer {
             case .chartItems:
                 return .none
             case .chartEditor(.delegate(.save(let chart))):
-                if state.charts.contains(chart) {
+                debugPrint("DEBUGID: \(chart.id)")
+                let contains = state.charts.contains { $0.id == chart.id }
+                if contains {
+                    debugPrint("CONTAINS")
                     state.charts = state.charts.map({ $0.id == chart.id ? chart : $0 })
                 } else {
+                    debugPrint("KILLME")
                     state.charts.append(chart)
                 }
                 state.chartItems.chartData = state.charts
                 return .none
             case .chartEditor:
+                return .none
+            case .onCancelTapped:
+                return .run { _ in await self.dismiss() }
+            case .onSaveTapped:
+                state.dashboard?.data = state.charts
+                return .run { [dashboard = state.dashboard ] send in
+                    await send(.delegate(.save(dashboard!)))
+                    await self.dismiss()
+                }
+            case .delegate(_):
                 return .none
             }
         }

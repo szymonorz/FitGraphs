@@ -87,6 +87,21 @@ class DashboardListReducer: Reducer {
                 }
             case .dashboard:
                 return .none
+            case let .path(.element(id: id, action: .delegate(.save(dashboard)))):
+                guard let dashboardState = state.path[id: id]
+                else { return .none }
+                
+                let contains = state.dashboards.contains { $0.id == dashboardState.dashboard!.id }
+                if contains {
+                    debugPrint("KURWAAAA")
+                    state.dashboards = state.dashboards.map({ $0.id == dashboard.id ? dashboard : $0 })
+                } else {
+                    debugPrint("Should never happen lol")
+                    state.dashboards.append(dashboard)
+                }
+                return .run { [dashboards = state.dashboards] send in
+                    await send(.saveToFirebase(dashboards))
+                }
             case .path:
                 return .none
             case .addDashboard(.dismiss):
