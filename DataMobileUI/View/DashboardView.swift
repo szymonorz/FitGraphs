@@ -35,10 +35,10 @@ struct DashboardView: View {
                                     viewStore.send(.chartItemTapped(chartData))
                                 }
                                 
-                                Button("Delete") {
+                                Button("Delete", role: .destructive) {
                                     let chartData = viewStore.state.charts[index]
                                     viewStore.send(.deleteChart(chartData))
-                                }.foregroundColor(.red)
+                                }
                             } label: {
                                 VStack {
                                     Text(chartItem.name)

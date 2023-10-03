@@ -28,7 +28,7 @@ struct DashboardListView: View {
                                 Text(dashboard.name)
                                 Spacer()
                                 Button {
-                                    viewStore.send(.deleteDashboard(dashboard))
+                                    viewStore.send(.onDeleteTapped(dashboard))
                                 } label: {
                                     Image(systemName: "trash.fill")
                                         .foregroundColor(.red)
@@ -55,7 +55,11 @@ struct DashboardListView: View {
         } destination: { store in
             DashboardView(store: store)
         }
-        .sheet(store: self.store.scope(state: \.$addDashboard, action: { .addDashboard($0)})) { addDashboardStore in
+        .sheet(
+            store: self.store.scope(state: \.$destination, action: { .destination($0) }),
+            state: /DashboardListReducer.Destination.State.addDashboard,
+            action: DashboardListReducer.Destination.Action.addDashboard
+        ) { addDashboardStore in
             NavigationStack {
                 WithViewStore(addDashboardStore, observe: { $0 }) { viewStore in
                     Form {
@@ -72,15 +76,19 @@ struct DashboardListView: View {
                         HStack {
                             Button("Save") {
                                 addDashboardStore.send(.onSaveTapped)
-                            }.buttonStyle(BorderlessButtonStyle())
+                            }.buttonStyle(.borderless)
                             
                             Button("Cancel") {
                                 addDashboardStore.send(.onCancelTapped)
-                            }.buttonStyle(BorderlessButtonStyle())
+                            }.buttonStyle(.borderless)
                         }.frame(maxWidth: .infinity, alignment: .center)
                     }
                 }
             }
-        }
+        }.alert(
+            store: self.store.scope(state: \.$destination, action: { .destination($0) }),
+            state: /DashboardListReducer.Destination.State.alert,
+            action: DashboardListReducer.Destination.Action.alert
+        )
     }
 }
