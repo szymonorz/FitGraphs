@@ -161,6 +161,8 @@ struct ChartEditorReducer: Reducer {
                 state.measures = chartToEdit.measures
                 state.dimensions = chartToEdit.dimensions
                 state.filters = chartToEdit.filters
+                state.type = chartToEdit.type
+                state.title = chartToEdit.title
                 return .run { send in
                     await send(.recalcChartItem)
                 }

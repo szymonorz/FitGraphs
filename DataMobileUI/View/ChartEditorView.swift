@@ -16,6 +16,14 @@ struct ChartCreatorView: View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack {
                 Text("Creator view")
+                TextField(
+                    "Edit name",
+                    text: viewStore.binding(
+                        get: \.title,
+                        send: ChartEditorReducer.Action.titleChanged
+                    ))
+                .multilineTextAlignment(.center)
+                .disableAutocorrection(true)
                 ChartView(chartItem: viewStore.state.chartItemToEdit, chartWidth: 200)
                 EditHub(store: self.store)
                 ChartMenu(store: self.store)
@@ -45,6 +53,14 @@ struct ChartEditorView: View {
         WithViewStore(store, observe: {$0}) { viewStore in
             VStack {
                 Text("Editor view")
+                TextField(
+                    "Edit name",
+                    text: viewStore.binding(
+                        get: \.title,
+                        send: ChartEditorReducer.Action.titleChanged
+                    ))
+                .multilineTextAlignment(.center)
+                .disableAutocorrection(true)
                 ChartView(chartItem: viewStore.state.chartItemToEdit, chartWidth: 200)
                 EditHub(store: self.store)
                 ChartMenu(store: self.store)

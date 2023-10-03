@@ -15,7 +15,6 @@ struct ChartView: View {
     
     var body: some View {
         VStack {
-            Text(chartItem.name)
             if let errorMsg = chartItem.errorMsg {
                 Text(errorMsg)
             } else if chartItem.contents.isEmpty {
