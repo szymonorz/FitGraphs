@@ -16,6 +16,7 @@ struct RootReducer: Reducer {
     enum Action: Equatable {
         case chartItems(ChartItemsReducer.Action)
         case dashboard(DashboardReducer.Action)
+        case dashboardList(DashboardListReducer.Action)
         case chartEditor(ChartEditorReducer.Action)
         case stravaAuth(StravaAuthReducer.Action)
         case googleAuth(GoogleAuthReducer.Action)
@@ -25,6 +26,8 @@ struct RootReducer: Reducer {
         var chartItems = ChartItemsReducer.State()
         
         var dashboard = DashboardReducer.State()
+        
+        var dashboardList = DashboardListReducer.State()
         
         var chartEditor = ChartEditorReducer.State()
         
@@ -37,6 +40,9 @@ struct RootReducer: Reducer {
     var body: some Reducer<State,Action> {
         Scope(state: \.chartItems, action: /Action.chartItems) {
             ChartItemsReducer()
+        }
+        Scope(state: \.dashboardList, action: /Action.dashboardList){
+            DashboardListReducer()
         }
         
         Scope(state: \.dashboard, action: /Action.dashboard) {
@@ -58,6 +64,8 @@ struct RootReducer: Reducer {
         Reduce { state, action in
             switch action {
             case .chartItems(let _):
+                return .none
+            case .dashboardList(let _):
                 return .none
             case .dashboard(let _):
                 return .none

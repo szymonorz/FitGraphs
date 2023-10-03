@@ -15,16 +15,10 @@ struct ChartView: View {
     
     var body: some View {
         VStack {
-            Text(chartItem.name)
-            if chartItem.contents.isEmpty {
+            if let errorMsg = chartItem.errorMsg {
+                Text(errorMsg)
+            } else if chartItem.contents.isEmpty {
                 Text("No data to show")
-                    .padding(.top, CGFloat(40))
-            } else if chartItem.dimensions.isEmpty {
-                Text("Need at least one dimension")
-                    .padding(.top, CGFloat(40))
-            } else if chartItem.measures.isEmpty {
-                Text("Need at least one measure")
-                    .padding(.top, CGFloat(40))
             } else {
                 let maxElement = chartItem.contents.max { $0.value < $1.value}
                 Chart {

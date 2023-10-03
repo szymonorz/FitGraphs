@@ -16,6 +16,14 @@ struct ChartCreatorView: View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack {
                 Text("Creator view")
+                TextField(
+                    "Edit name",
+                    text: viewStore.binding(
+                        get: \.title,
+                        send: ChartEditorReducer.Action.titleChanged
+                    ))
+                .multilineTextAlignment(.center)
+                .disableAutocorrection(true)
                 ChartView(chartItem: viewStore.state.chartItemToEdit, chartWidth: 200)
                 EditHub(store: self.store)
                 ChartMenu(store: self.store)
@@ -23,14 +31,14 @@ struct ChartCreatorView: View {
             HStack {
                 Button("Save", action: {
                     Task {
-                        await viewStore.send(ChartEditorReducer.Action.saveChartItem).finish()
+                        await viewStore.send(ChartEditorReducer.Action.onSaveTapped).finish()
                         viewStore.send(ChartEditorReducer.Action.closeCreator)
                         callback()
                     }
                 }).disabled(!viewStore.queryCorrect)
                 
                 Button("Cancel", action: {
-                    viewStore.send(ChartEditorReducer.Action.closeCreator)
+                    viewStore.send(ChartEditorReducer.Action.onCancelTapped)
                 })
             }
         }
@@ -45,6 +53,14 @@ struct ChartEditorView: View {
         WithViewStore(store, observe: {$0}) { viewStore in
             VStack {
                 Text("Editor view")
+                TextField(
+                    "Edit name",
+                    text: viewStore.binding(
+                        get: \.title,
+                        send: ChartEditorReducer.Action.titleChanged
+                    ))
+                .multilineTextAlignment(.center)
+                .disableAutocorrection(true)
                 ChartView(chartItem: viewStore.state.chartItemToEdit, chartWidth: 200)
                 EditHub(store: self.store)
                 ChartMenu(store: self.store)
@@ -52,7 +68,7 @@ struct ChartEditorView: View {
             HStack {
                 Button("Save", action: {
                     Task {
-                        await viewStore.send(ChartEditorReducer.Action.updateChartItem).finish()
+                        await viewStore.send(ChartEditorReducer.Action.onSaveTapped).finish()
                         viewStore.send(ChartEditorReducer.Action.closeEditor)
                         callback()
                     }

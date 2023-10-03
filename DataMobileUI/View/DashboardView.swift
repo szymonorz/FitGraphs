@@ -28,24 +28,37 @@ struct DashboardView: View {
                         GridItem(.flexible()),
                         GridItem(.flexible())
                     ], spacing: 20) {
-                        ForEach(Array(viewStore.state.charts.enumerated()), id: \.element) { index, chartItem in
-                            ChartView(chartItem: chartItem, chartWidth: chartWidth)
-                                .sheet(isPresented: viewStore.binding(
-                                    get: \.chartEditor.isEditorOpen,
-                                    send: { DashboardReducer.Action.chartEditor(.editorOpenChanged($0))})) {
-                                        ChartEditorView(
-                                            store: self.store.scope(state: \.chartEditor,
-                                                                    action: DashboardReducer.Action.chartEditor),
-                                            callback: {
-                                                viewStore.send(DashboardReducer.Action.loadCharts)
+                        ForEach(Array(viewStore.state.chartItems.chartItems.enumerated()), id: \.element) { index, chartItem in
+                            Menu {
+                                Button("Edit") {
+                                    let chartData = viewStore.state.charts[index]
+                                    viewStore.send(.chartItemTapped(chartData))
+                                }
+                                
+                                Button("Delete", role: .destructive) {
+                                    let chartData = viewStore.state.charts[index]
+                                    viewStore.send(.deleteChart(chartData))
+                                }
+                            } label: {
+                                VStack {
+                                    Text(chartItem.name)
+                                    ChartView(chartItem: chartItem, chartWidth: chartWidth)
+                                        .sheet(isPresented: viewStore.binding(
+                                            get: \.chartEditor.isEditorOpen,
+                                            send: { DashboardReducer.Action.chartEditor(.editorOpenChanged($0))})) {
+                                                ChartEditorView(
+                                                    store: self.store.scope(state: \.chartEditor,
+                                                                            action: DashboardReducer.Action.chartEditor),
+                                                    callback: {
+                                                        viewStore.send(DashboardReducer.Action.loadCharts)
+                                                    }
+                                                )
                                             }
-                                        )
-                                    }.onTapGesture {
-                                        Task {
-                                            await viewStore.send(DashboardReducer.Action.chartItemTapped(chartItem)).finish()
-                                            viewStore.send(DashboardReducer.Action.chartEditor(.openEditor))
-                                        }
-                                    }
+                                }
+                            } primaryAction: {
+                                let chartData = viewStore.state.charts[index]
+                                viewStore.send(.chartItemTapped(chartData))
+                            }
                         }
                         Button("+", action: {
                             viewStore.send(DashboardReducer.Action.chartEditor(.openCreator))
@@ -65,7 +78,26 @@ struct DashboardView: View {
                     }
                 }.onAppear {
                     viewStore.send(DashboardReducer.Action.loadCharts)
-            }
+                }.toolbar {
+                    ToolbarItem {
+                        HStack {
+                            TextField(
+                                "Dashboard name",
+                                text: viewStore.binding(
+                                    get: \.title,
+                                    send: DashboardReducer.Action.titleChanged
+                                )
+                            )
+                            .multilineTextAlignment(.center)
+                            .disableAutocorrection(true)
+
+                            Button("Save") {
+                                viewStore.send(.onSaveTapped)
+                            }
+                        }
+                        
+                    }
+                }
         }
     }
 }

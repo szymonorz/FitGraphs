@@ -12,7 +12,7 @@ import Dependencies
 struct FirebaseClient {
     var saveToDevice: (Data) -> ()
     var saveToFirebase: (Athlete) async throws -> ()
-    var loadFromFirebase: () throws -> Athlete
+    var loadFromFirebase: () async throws -> Athlete
 }
 
 extension FirebaseClient: DependencyKey {
@@ -56,22 +56,18 @@ extension FirebaseClient: DependencyKey {
                                         .collection(FirebaseDataManager.FirebaseCollections.user.rawValue)
                                         .document(userId)
             
-            var user: Athlete? = nil
-            var error: Error? = nil
-            docRef.getDocument(as: Athlete.self) { result in
-                switch result {
-                case .success(let _user):
-                    user = _user
-                case .failure(let _error):
-                    error = _error
+            
+            return try await withCheckedThrowingContinuation({ continuation in
+                docRef.getDocument(as: Athlete.self) { result in
+                    switch result {
+                    case .success(let user):
+                        continuation.resume(returning: user)
+                    case .failure(let error):
+                        continuation.resume(throwing: error)
+                    }
                 }
-            }
-            
-            if error != nil {
-                throw error!
-            }
-            
-            return user!
+            })
+
         }
     )
 }

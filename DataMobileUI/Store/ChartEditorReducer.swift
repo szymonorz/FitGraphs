@@ -9,9 +9,6 @@ import Foundation
 import ComposableArchitecture
 
 struct ChartEditorReducer: Reducer {
-    
-    @Dependency(\.chartItemsClient) var chartItemsClient
-    
     enum Action: Equatable {
         case titleChanged(String)
         case typeChanged(String)
@@ -25,13 +22,10 @@ struct ChartEditorReducer: Reducer {
         case addFilter(String)
         case removeFilter(String)
         
-        case chartToEditChanged(ChartItem)
+        case chartToEditChanged(ChartData)
         
         case recalcChartItem
         case updateChartItemView(ChartItem)
-        
-        case updateChartItem
-        case saveChartItem
         
         case openEditor
         case closeEditor
@@ -42,6 +36,14 @@ struct ChartEditorReducer: Reducer {
         case creatorOpenChanged(Bool)
         
         case queryCorrectChanged(Bool)
+        
+        case onSaveTapped
+        case onCancelTapped
+        
+        case delegate(Delegate)
+        enum Delegate: Equatable {
+            case save(ChartData)
+        }
     }
     
     struct State: Equatable {
@@ -54,16 +56,21 @@ struct ChartEditorReducer: Reducer {
         var measures: [String] = []
         var filters: [String] = []
         
-        var chartItemToEdit: ChartItem = ChartItem(
-            name: "new",
+        var chartDataToEdit: ChartData = ChartData(
+            title: "new",
             type: "BAR",
-            contents: [],
             dimensions: [],
             measures: [],
             filters: []
         )
+        var chartItemToEdit: ChartItem = ChartItem(
+            name: "new",
+            type: "BAR",
+            contents: []
+        )
     }
     
+    @Dependency(\.dismiss) var dismiss
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
@@ -77,12 +84,19 @@ struct ChartEditorReducer: Reducer {
                 state.isEditorOpen = isEditorOpen
                 return .none
             case .openCreator:
+                state.queryCorrect = false
                 state.isCreatorOpen = true
                 state.measures = []
                 state.dimensions = []
                 state.filters = []
                 state.title = "new"
                 state.type = "BAR"
+                state.chartDataToEdit = ChartData(
+                    title: "new",
+                    type: "BAR",
+                    dimensions: [],
+                    measures: [],
+                    filters: [])
                 state.chartItemToEdit = ChartItem(
                     name: "new",
                     type: "BAR",
@@ -96,113 +110,115 @@ struct ChartEditorReducer: Reducer {
                 return .none
             case .titleChanged(let title):
                 state.title = title
+                state.chartDataToEdit.title = title
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .typeChanged(let type):
                 state.type = type
+                state.chartDataToEdit.type = type
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .addDimension(let dimension):
                 state.dimensions.append(dimension)
-                state.chartItemToEdit.dimensions.append(dimension)
+                state.chartDataToEdit.dimensions = state.dimensions
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .removeDimension(let dimension):
                 state.dimensions.remove(at: state.dimensions.firstIndex(of: dimension)!)
-                state.chartItemToEdit.dimensions.remove(at: state.chartItemToEdit.dimensions.firstIndex(of: dimension)!)
+                state.chartDataToEdit.dimensions = state.dimensions
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .addMeasure(let measure):
                 state.measures.append(measure)
-                state.chartItemToEdit.measures.append(measure)
+                state.chartDataToEdit.measures = state.measures
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .removeMeasure(let measure):
                 state.measures.remove(at: state.measures.firstIndex(of: measure)!)
-                state.chartItemToEdit.measures.remove(at: state.chartItemToEdit.measures.firstIndex(of: measure)!)
+                state.chartDataToEdit.measures = state.measures
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .addFilter(let filter):
                 state.filters.append(filter)
-                state.chartItemToEdit.filters.append(filter)
+                state.chartDataToEdit.filters = state.filters
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .removeFilter(let filter):
                 state.filters.remove(at: state.filters.firstIndex(of: filter)!)
-                state.chartItemToEdit.filters.remove(at: state.chartItemToEdit.filters.firstIndex(of: filter)!)
+                state.chartDataToEdit.filters = state.filters
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .chartToEditChanged(let chartToEdit):
-                state.chartItemToEdit = chartToEdit
+                state.chartDataToEdit = chartToEdit
                 state.measures = chartToEdit.measures
                 state.dimensions = chartToEdit.dimensions
                 state.filters = chartToEdit.filters
                 state.type = chartToEdit.type
-                state.title = chartToEdit.name
+                state.title = chartToEdit.title
                 return .run { send in
                     await send(.recalcChartItem)
                 }
             case .recalcChartItem:
                 return .run {
                     [
-                        id = state.chartItemToEdit.id,
-                        title = state.title,
-                        type = state.type,
-                        dimensions = state.dimensions,
-                        measures = state.measures,
-                        filters = state.filters
+                        _chartItem = state.chartItemToEdit,
+                        chartData = state.chartDataToEdit
                     ] send in
                     let chartItem = ChartItem(
-                        id: id,
-                        name: title,
-                        type: type,
-                        contents: [],
-                        dimensions: dimensions,
-                        measures: measures,
-                        filters: filters
+                        id: _chartItem.id,
+                        name: chartData.title,
+                        type: chartData.type,
+                        contents: []
+                    )
+                    let chartDataCopy = ChartData(
+                        id: chartData.id,
+                        title: chartData.title,
+                        type: chartData.type,
+                        dimensions: chartData.dimensions,
+                        measures: chartData.measures,
+                        filters: chartData.filters
                     )
                     debugPrint("MATH")
                     do {
-                        chartItem.contents = try DataSource.shared.query(dimensions: chartItem.dimensions,
-                                                                         measures: chartItem.measures)
-                        await send(.updateChartItemView(chartItem))
+                        chartItem.contents = try DataSource.shared.query(dimensions: chartDataCopy.dimensions,
+                                                                         measures: chartDataCopy.measures)
                         await send(.queryCorrectChanged(true))
                     } catch {
                         debugPrint("kurwa")
+                        chartItem.contents = []
+                        chartItem.errorMsg = error.localizedDescription
                         await send(.queryCorrectChanged(false))
                     }
+                    await send(.updateChartItemView(chartItem))
                 }
             case .updateChartItemView(let chartItem):
                 state.chartItemToEdit = chartItem
+                debugPrint("UPDATE")
                 return .none
-            case .updateChartItem:
-                let chartItemToSave = state.chartItemToEdit
+            case .onCancelTapped:
                 return .run { send in
-                    do {
-                        try await chartItemsClient.updateChartItem(chartItemToSave)
-                    } catch {
-                        debugPrint("\(error)")
-                    }
+                    await send(.editorOpenChanged(false))
+                    await send(.creatorOpenChanged(false))
                 }
-            case .saveChartItem:
-                let chartItemToSave = state.chartItemToEdit
+            case .onSaveTapped:
+                let chartItemToSave = state.chartDataToEdit
                 return .run { send in
-                    do {
-                        try await chartItemsClient.addChartItem(chartItemToSave)
-                    } catch {
-                        debugPrint("\(error)")
-                    }
+                    await send(.delegate(.save(chartItemToSave)))
+                    await send(.editorOpenChanged(false))
+                    await send(.creatorOpenChanged(false))
                 }
             case .queryCorrectChanged(let correct):
                 state.queryCorrect = correct
+                return .none
+            case .delegate(_):
                 return .none
             }
         }

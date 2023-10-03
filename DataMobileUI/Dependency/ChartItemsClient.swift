@@ -35,25 +35,17 @@ extension ChartItemsClient: DependencyKey {
              do {
                  let fetchedEntities = try viewContext.fetch(fetchRequest)
                  chartItems = fetchedEntities.map { entity in
-                     let contentsEntity = entity.contents?.array as! [ChartContentEntity]
-                     let chartItemContets = contentsEntity.map { ce in
-                         return ChartItem._ChartContent(
-                             id: ce.id!,
-                             key: ce.key!,
-                             value: ce.val! as Decimal
-                         )
-                     }
-                     let dimensions = entity.dimensions!.isEmpty ? [] : entity.dimensions!.components(separatedBy: ";")
-                     let measures = entity.measures!.isEmpty ? [] : entity.measures!.components(separatedBy: ";")
-                     let filters = entity.filters!.isEmpty ? [] : entity.filters!.components(separatedBy: ";")
+//                     let dimensions = entity.dimensions!.isEmpty ? [] : entity.dimensions!.components(separatedBy: ";")
+//                     let measures = entity.measures!.isEmpty ? [] : entity.measures!.components(separatedBy: ";")
+//                     let filters = entity.filters!.isEmpty ? [] : entity.filters!.components(separatedBy: ";")
                      return ChartItem(
                          id: entity.id!,
                          name: entity.name!,
                          type: entity.type!,
-                         contents: chartItemContets,
-                         dimensions: dimensions,
-                         measures: measures,
-                         filters: filters
+                         contents: []
+//                         dimensions: dimensions,
+//                         measures: measures,
+//                         filters: filters
                      )
                  }
 
@@ -90,9 +82,6 @@ extension ChartItemsClient: DependencyKey {
             entity.id = chartItem.id
             entity.name = chartItem.name
             entity.type = chartItem.type
-            entity.dimensions = chartItem.dimensions.joined(separator: ";")
-            entity.measures = chartItem.measures.joined(separator: ";")
-            entity.filters = chartItem.filters.joined(separator: ";")
 
             for content in chartItem.contents {
                 let contentEntity = ChartContentEntity(context: viewContext)
@@ -122,9 +111,6 @@ extension ChartItemsClient: DependencyKey {
                 if let entity = fetchedEntities.first {
                     entity.name = chartItem.name
                     entity.type = chartItem.type
-                    entity.dimensions = chartItem.dimensions.joined(separator: ";")
-                    entity.measures = chartItem.measures.joined(separator: ";")
-                    entity.filters = chartItem.filters.joined(separator: ";")
                     
                     if let chartContents = entity.contents {
                         debugPrint(chartContents.array)
