@@ -16,7 +16,6 @@ class DashboardReducer: Reducer {
     
     enum Action: Equatable {
         case loadCharts
-        case fetchFromStrava
         case dashboardChanged(Dashboard)
         case titleChanged(String)
         case chartItemTapped(ChartData)
@@ -73,17 +72,6 @@ class DashboardReducer: Reducer {
                 state.chartItems.chartData = dashboard.data
                 return .run { send in
                     await send(.chartItems(.loadItems))
-                }
-            case .fetchFromStrava:
-                //                let dashboards = state.dashboards
-                return .run {
-                    send in
-                    let activities = try await self.stravaApi.getUserActivities()
-                    let userId: String? = UserDefaults.standard.string(forKey: "userId")
-                    let user: Athlete = Athlete(id: Int64(userId!)!, activities: activities, dashboards: [])
-                    try await self.firebaseClient.saveToFirebase(user)
-                    try self.firebaseClient.saveToDevice(JSONEncoder().encode(activities))
-                    await send(.loadCharts)
                 }
             case .chartItemTapped(let chartItem):
                 state.chartEditor.isEditorOpen = true

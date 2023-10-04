@@ -18,7 +18,7 @@ struct RootReducer: Reducer {
         case dashboard(DashboardReducer.Action)
         case dashboardList(DashboardListReducer.Action)
         case chartEditor(ChartEditorReducer.Action)
-        case stravaAuth(StravaAuthReducer.Action)
+        case settings(SettingsReducer.Action)
         case googleAuth(GoogleAuthReducer.Action)
     }
     
@@ -31,7 +31,7 @@ struct RootReducer: Reducer {
         
         var chartEditor = ChartEditorReducer.State()
         
-        var stravaAuth = StravaAuthReducer.State()
+        var settings = SettingsReducer.State()
         
         var googleAuth = GoogleAuthReducer.State()
         
@@ -53,8 +53,8 @@ struct RootReducer: Reducer {
             ChartEditorReducer()
         }
         
-        Scope(state: \.stravaAuth, action: /Action.stravaAuth) {
-            StravaAuthReducer()
+        Scope(state: \.settings, action: /Action.settings) {
+            SettingsReducer()
         }
         
         Scope(state: \.googleAuth, action: /Action.googleAuth){
@@ -71,7 +71,11 @@ struct RootReducer: Reducer {
                 return .none
             case .chartEditor(let _):
                 return .none
-            case .stravaAuth(let _):
+            case .settings(.delegate(.logoutFromFirebase)):
+                return .run { send in
+                    await send(.googleAuth(.signOut))
+                }
+            case .settings(let _):
                 return .none
             case .googleAuth(let _):
                 return .none
