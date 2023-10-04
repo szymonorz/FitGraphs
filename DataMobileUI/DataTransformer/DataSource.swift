@@ -156,7 +156,7 @@ class DataSource {
         )
         
         var chartContents: [ChartItem._ChartContent] = []
-        let labelColumn = df.columns[1].assumingType(Int.self).filled(with: 0)
+        let labelColumn = df.columns[0].assumingType(String.self).filled(with: "")
         let valueColumn = df.columns[1].assumingType(Int.self).filled(with: 0)
         
         for (activity, count) in zip(labelColumn, valueColumn) {
