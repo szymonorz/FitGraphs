@@ -16,8 +16,9 @@ struct RootView: View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             ContentView(store: store)
                 .onOpenURL(perform: { url in
-                    debugPrint(url)
-                    guard url.scheme == "datamobileui" else {
+                    debugPrint("KURWWWWWWWA", url)
+                    guard url.scheme == "fitgraphs" else {
+                        print("Invalid scheme")
                         return
                     }
                     guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
@@ -28,6 +29,7 @@ struct RootView: View {
                         print("Unknown URL, we can't handle this one!")
                         return
                     }
+                    debugPrint("handleRedirect")
                     StravaAuth.shared.oauth.handleRedirectURL(url)
                 })
         }

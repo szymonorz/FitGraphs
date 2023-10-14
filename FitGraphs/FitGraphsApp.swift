@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 @main
-struct DataMobileUIApp: App {
+struct FitGraphsApp: App {
     let store: StoreOf<RootReducer>
     
     init(){

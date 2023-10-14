@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "01DF42F729F545790066F88F"
-               BuildableName = "DataMobileUI.app"
-               BlueprintName = "DataMobileUI"
-               ReferencedContainer = "container:DataMobileUI.xcodeproj">
+               BuildableName = "FitGraphs.app"
+               BlueprintName = "FitGraphs"
+               ReferencedContainer = "container:FitGraphs.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -44,14 +44,14 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "01DF42F729F545790066F88F"
-            BuildableName = "DataMobileUI.app"
-            BlueprintName = "DataMobileUI"
-            ReferencedContainer = "container:DataMobileUI.xcodeproj">
+            BuildableName = "FitGraphs.app"
+            BlueprintName = "FitGraphs"
+            ReferencedContainer = "container:FitGraphs.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-FIRDebugEnabled"
+            argument = "-FIRDebugDisabled"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
@@ -67,9 +67,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "01DF42F729F545790066F88F"
-            BuildableName = "DataMobileUI.app"
-            BlueprintName = "DataMobileUI"
-            ReferencedContainer = "container:DataMobileUI.xcodeproj">
+            BuildableName = "FitGraphs.app"
+            BlueprintName = "FitGraphs"
+            ReferencedContainer = "container:FitGraphs.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -8,19 +8,18 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>pl.szyorz.DataMobileUI</string>
+			<string>pl.szyorz.FitGraphs</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>datamobileui</string>
+				<string>fitgraphs</string>
 			</array>
 		</dict>
-		<dict/>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.747248231388-g9ftuehnp98enptf9p5m2e8d4bl6n2vj</string>
+				<string>com.googleusercontent.apps.502947793296-mibc1rffu0ii06m8e6g9mgqmk4t5sapk</string>
 			</array>
 		</dict>
 	</array>

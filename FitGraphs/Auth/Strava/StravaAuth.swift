@@ -21,7 +21,7 @@ struct StravaAuth {
             "client_secret": clientSecret,
             "authorize_uri": "https://www.strava.com/oauth/authorize",
             "token_uri": "https://www.strava.com/oauth/token",
-            "redirect_uris": ["datamobileui://callback"],
+            "redirect_uris": ["fitgraphs://callback"],
             "response_type": "code",
             "scope": "activity:read",
             "grant_type": "authorization_code",
@@ -34,7 +34,7 @@ struct StravaAuth {
         oauth = OAuth2CodeGrant(settings: settings)
     }
     
-    func authorize() async {	
+    func authorize() {
         oauth.authorize() { authParameters, error in
             if let params = authParameters {
                 print("Authorized! Access token is in `oauth.accessToken`")

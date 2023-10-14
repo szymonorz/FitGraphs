@@ -12,7 +12,7 @@ import Dependencies
 struct FirebaseClient {
     var saveToDevice: (Data) -> ()
     var saveToFirebase: (Athlete) async throws -> ()
-    var loadFromFirebase: () async throws -> Athlete
+    var loadFromFirebase: () async throws -> Athlete?
 }
 
 extension FirebaseClient: DependencyKey {
@@ -63,7 +63,7 @@ extension FirebaseClient: DependencyKey {
                     case .success(let user):
                         continuation.resume(returning: user)
                     case .failure(let error):
-                        continuation.resume(throwing: error)
+                        continuation.resume(returning: nil)
                     }
                 }
             })

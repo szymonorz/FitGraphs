@@ -13,7 +13,7 @@ struct CoreDataManager {
     let container: NSPersistentContainer
     
     init() {
-        container = NSPersistentContainer(name: "DataMobileUI")
+        container = NSPersistentContainer(name: "FitGraphs")
         
         // inMemory storage
         if let storageDescription = container.persistentStoreDescriptions.first {

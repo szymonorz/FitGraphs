@@ -52,7 +52,7 @@ class DashboardListReducer: Reducer {
                 return .run { send in
                     do {
                         let athlete = try await self.firebaseClient.loadFromFirebase()
-                        await send(.dashboardsChanged(athlete.dashboards ?? []))
+                        await send(.dashboardsChanged(athlete?.dashboards ?? []))
                     } catch {
                         debugPrint("onAppear: \(error.localizedDescription)")
                     }
@@ -68,9 +68,13 @@ class DashboardListReducer: Reducer {
             case .saveToFirebase(let dashboards):
                 return .run { send in
                     do {
-                        var athlete = try await self.firebaseClient.loadFromFirebase()
-                        athlete.dashboards = dashboards
-                        try await self.firebaseClient.saveToFirebase(athlete)
+                        var athlete: Athlete? = try await self.firebaseClient.loadFromFirebase()
+                        if athlete == nil {
+                            let userId: String? = UserDefaults.standard.string(forKey: "userId")
+                            athlete = Athlete(id: Int64(userId!)!, activities: [], dashboards: [])
+                        }
+                        athlete!.dashboards = dashboards
+                        try await self.firebaseClient.saveToFirebase(athlete!)
                     } catch {
                         debugPrint("saveToFirebase: \(error.localizedDescription)")
                     }

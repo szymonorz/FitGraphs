@@ -55,11 +55,19 @@ class SettingsReducer: Reducer {
             case .fetchFromStrava:
                 return .run {
                     send in
-                    let activities = try await self.stravaApi.getUserActivities()
-                    var athlete = try await self.firebaseClient.loadFromFirebase()
-                    athlete.activities = activities
-                    try await self.firebaseClient.saveToFirebase(athlete)
-                    try self.firebaseClient.saveToDevice(JSONEncoder().encode(activities))
+                    do {
+                        let activities = try await self.stravaApi.getUserActivities()
+                        var athlete: Athlete? = try await self.firebaseClient.loadFromFirebase()
+                        if athlete == nil {
+                            let userId: String? = UserDefaults.standard.string(forKey: "userId")
+                            athlete = Athlete(id: Int64(userId!)!, activities: [], dashboards: [])
+                        }
+                        athlete?.activities = activities
+                        try await self.firebaseClient.saveToFirebase(athlete!)
+                        try self.firebaseClient.saveToDevice(JSONEncoder().encode(activities))
+                    } catch {
+                        debugPrint("\(error)")
+                    }
                 }
             case .alert:
                 return .none
