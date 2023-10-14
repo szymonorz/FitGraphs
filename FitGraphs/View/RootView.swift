@@ -16,7 +16,6 @@ struct RootView: View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             ContentView(store: store)
                 .onOpenURL(perform: { url in
-                    debugPrint("KURWWWWWWWA", url)
                     guard url.scheme == "fitgraphs" else {
                         print("Invalid scheme")
                         return

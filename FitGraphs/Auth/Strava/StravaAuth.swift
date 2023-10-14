@@ -34,23 +34,9 @@ struct StravaAuth {
         oauth = OAuth2CodeGrant(settings: settings)
     }
     
-    func authorize() {
-        oauth.authorize() { authParameters, error in
-            if let params = authParameters {
-                print("Authorized! Access token is in `oauth.accessToken`")
-                print("Authorized! Additional parameters: \(params)")
-            }
-            else {
-                print("Authorization was canceled or went wrong: \(error!.localizedDescription) \(error)")   // error will not be nil
-                if self.oauth.isAuthorizing {
-                    self.oauth.forgetTokens()
-                }
-            }
-        }
-    }
-    
     func logout() async {
         oauth.forgetTokens()
+        oauth.forgetClient()
     }
     
 }

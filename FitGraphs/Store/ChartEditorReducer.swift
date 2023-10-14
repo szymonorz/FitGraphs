@@ -192,7 +192,6 @@ struct ChartEditorReducer: Reducer {
                                                                          measures: chartDataCopy.measures)
                         await send(.queryCorrectChanged(true))
                     } catch {
-                        debugPrint("kurwa")
                         chartItem.contents = []
                         chartItem.errorMsg = error.localizedDescription
                         await send(.queryCorrectChanged(false))

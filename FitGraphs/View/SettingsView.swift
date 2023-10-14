@@ -37,6 +37,7 @@ struct SettingsView: View {
                                 print("Authorization was canceled or went wrong: \(error!.localizedDescription) \(error)")   // error will not be nil
                                 if StravaAuth.shared.oauth.isAuthorizing {
                                     StravaAuth.shared.oauth.forgetTokens()
+                                    StravaAuth.shared.oauth.forgetClient()
                                     viewStore.send(.stravaAuth(.authorizedChanged(false)))
                                     UserDefaults.standard.removeObject(forKey: "userId")
                                 }
