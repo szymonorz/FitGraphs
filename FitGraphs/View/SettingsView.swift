@@ -14,15 +14,12 @@ struct SettingsView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack(spacing: 0) {
-                Button("Deauth", action: {
-                    viewStore.send(.logoutTapped)
-                })
-                if viewStore.stravaAuth.isAuthorized {
-                    Button("Fetch data from Strava", action: {
-                        viewStore.send(.fetchFromStrava)
-                    })
-                } else {
-                    Button("Log in to Strava", action: {
+                List {
+                    Button("Sign out from FitGraphs", action: {
+                        viewStore.send(.logoutTapped)
+                    }).frame(width: 193, height: 48)
+                    
+                    Button(action: {
                         StravaAuth.shared.oauth.authorize() { authParameters, error in
                             if let params = authParameters {
                                 print("Authorized! Access token is in `oauth.accessToken`")
@@ -43,12 +40,27 @@ struct SettingsView: View {
                                 }
                             }
                         }
+                    }) {
+                        Image("StravaButton")
+                    }.disabled(viewStore.stravaAuth.isAuthorized)
+                    
+                    Button("Fetch data from Strava", action: {
+                        viewStore.send(.fetchFromStrava)
                     })
-                }
-            }.alert(store: self.store.scope(
-                state: \.$alert,
-                action: { .alert($0) }
-            ))
+                    .frame(width: 193, height: 48)
+                    .disabled(!viewStore.stravaAuth.isAuthorized)
+                    
+                    Button("Sign out from Strava", action: {
+                        viewStore.send(.stravaAuth(.logout))
+                    })
+                    .frame(width: 193, height: 48)
+                    .disabled(!viewStore.stravaAuth.isAuthorized)
+                    
+                }.alert(store: self.store.scope(
+                    state: \.$alert,
+                    action: { .alert($0) }
+                ))
+            }
         }
     }
 }
