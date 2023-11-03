@@ -24,18 +24,13 @@ struct DashboardListView: View {
                                 title: dashboard.name
                             )
                         ) {
-                            HStack {
-                                Text(dashboard.name)
-                                Spacer()
-                                Button {
-                                    viewStore.send(.onDeleteTapped(dashboard))
-                                } label: {
-                                    Image(systemName: "trash.fill")
-                                        .foregroundColor(.red)
-                                }
-                            }
+                            Text(dashboard.name)
                         }.buttonStyle(.borderless)
-                    }
+                    }.onDelete(perform: {
+                        indexSet in
+                        let dashboard = viewStore.dashboards[indexSet.first!]
+                        viewStore.send(.onDeleteTapped(dashboard))
+                    })
                 }
                 .onAppear {
                     viewStore.send(.onAppear)
