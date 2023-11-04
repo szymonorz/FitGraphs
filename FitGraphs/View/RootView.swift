@@ -31,6 +31,8 @@ struct RootView: View {
                     debugPrint("handleRedirect")
                     StravaAuth.shared.oauth.handleRedirectURL(url)
                 })
+                .foregroundColor(.black)
+                .tint(.black) // NavigationView back button is not affected by .foregroundColor
         }
         
     }

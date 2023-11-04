@@ -19,7 +19,7 @@ struct DashboardView: View {
     
     @ViewBuilder
     var body: some View {
-        let chartWidth = (UIScreen.main.bounds.width - 40) / 2 // Width of each chart, with some padding
+        let chartWidth = (UIScreen.main.bounds.width - 80) / 2 // Width of each chart, with some padding
         
         WithViewStore(store, observe: { $0 }) { viewStore in
             ScrollView {
@@ -55,6 +55,12 @@ struct DashboardView: View {
                                                 )
                                             }
                                 }
+                                .padding() // Padding inside the background
+                                .background(
+                                   RoundedRectangle(cornerRadius: 10) // Background shape with rounded corners
+                                       .foregroundColor(.white) // Setting the background color
+                                    .shadow(color: Color.black.opacity(0.5), radius: 5, x: 5, y: 5) // Shadow applied to bottom-right
+                               )
                             } primaryAction: {
                                 let chartData = viewStore.state.charts[index]
                                 viewStore.send(.chartItemTapped(chartData))
