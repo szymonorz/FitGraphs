@@ -87,10 +87,33 @@ struct Selector: View {
                 )
         }
     }
+    
+    struct CheckboxField: View {
+        var name: String
+        var action: (String) -> ()
+        var isChecked: Bool = false
+        var body: some View {
+            Button(action: {
+                action(name)
+            }) {
+                HStack(alignment: .top, spacing: 10) {
+                   Rectangle()
+                        .fill(isChecked ? .gray : .white)
+                        .frame(width:20, height:20, alignment: .center)
+                        .cornerRadius(5)
+                        .border(.gray)
+                    Spacer()
+                    Text(name)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+            .padding(20)
+            .foregroundColor(.black)
+        }
+    }
 
     struct FieldPicker: View {
         @Binding var isPickerPresented: Bool
-//        var onSaveCallback: (ChartItem) -> ()
         
         var type: String
         var store: StoreOf<ChartEditorReducer>
@@ -131,15 +154,22 @@ struct Selector: View {
                     
                     ScrollView {
                         if type == "dimensions" {
-                            WrappingHStack(dimsToChose, id: \.self, spacing: .constant(10)) {
-                                pick in
-                                Field(name: pick, action: { viewStore.send(ChartEditorReducer.Action.addDimension($0)) })
+                            ForEach(dimsToChose, id: \.self) { pick in
+                                let isChecked = viewStore.dimensions.contains(pick)
+                                CheckboxField(name: pick, action: {
+                                    let action = isChecked ? ChartEditorReducer.Action.removeDimension($0) : ChartEditorReducer.Action.addDimension($0)
+                                    viewStore.send(action)
+                                }, isChecked: isChecked)
                             }.frame(minWidth: 300)
                         }
                         if type == "measures" {
-                            WrappingHStack(measuresToChose, id: \.self, spacing: .constant(10)) {
-                                pick in
-                                Field(name: pick, action: { viewStore.send(ChartEditorReducer.Action.addMeasure($0)) })
+                            ForEach(measuresToChose, id: \.self) { pick in
+                                let isChecked = viewStore.measures.contains(pick)
+                                CheckboxField(name: pick, action: {
+                                    let action = isChecked ? ChartEditorReducer.Action.addMeasure($0) : ChartEditorReducer.Action.removeMeasure($0)
+                                    
+                                    viewStore.send(action)
+                                }, isChecked: isChecked)
                             }.frame(minWidth: 300)
                         }
                     }
