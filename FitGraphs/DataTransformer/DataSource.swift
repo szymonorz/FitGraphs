@@ -133,10 +133,12 @@ class DataSource {
     }
     
     func query(dimensions: [String], measures: [String]) throws -> [(String, [ChartItem._ChartContent])] {
-        let dimensionString = dimensions.joined(separator: ",")
+        let dimensionString = dimensions.map { "CAST(\($0) as VARCHAR) as \($0)" }.joined(separator: ",")
         let measuresString = measures.joined(separator: ",")
         
-        let queryString = "SELECT \(dimensionString), \(measuresString) FROM activities GROUP BY \(dimensionString)"
+        let groupByClause = dimensions.joined(separator: ",")
+        
+        let queryString = "SELECT \(dimensionString), \(measuresString) FROM activities GROUP BY \(groupByClause)"
         let result: ResultSet
         do {
             result = try conn!.query(queryString);
