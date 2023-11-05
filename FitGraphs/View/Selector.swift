@@ -120,7 +120,7 @@ struct Selector: View {
         
         //var toChose: [String] = Activity.CodingKeys.allCases.map { $0.stringValue }.filter { $0.typ}
         var dimsToChose: [String] = ["name", "sport_type"]
-        var measuresToChose: [String] = ["COUNT(sport_type)"]
+        var measuresToChose: [String] = ["count(sport_type)"]
         
         var body: some View {
             WithViewStore(store, observe: { $0 }) { viewStore in
@@ -166,7 +166,7 @@ struct Selector: View {
                             ForEach(measuresToChose, id: \.self) { pick in
                                 let isChecked = viewStore.measures.contains(pick)
                                 CheckboxField(name: pick, action: {
-                                    let action = isChecked ? ChartEditorReducer.Action.addMeasure($0) : ChartEditorReducer.Action.removeMeasure($0)
+                                    let action = isChecked ? ChartEditorReducer.Action.removeMeasure($0) : ChartEditorReducer.Action.addMeasure($0)
                                     
                                     viewStore.send(action)
                                 }, isChecked: isChecked)
