@@ -43,6 +43,7 @@ struct DashboardView: View {
                                 VStack {
                                     Text(chartItem.name)
                                     ChartView(chartItem: chartItem, chartWidth: chartWidth)
+                                        .chartLegend(.hidden)
                                         .sheet(isPresented: viewStore.binding(
                                             get: \.chartEditor.isEditorOpen,
                                             send: { DashboardReducer.Action.chartEditor(.editorOpenChanged($0))})) {

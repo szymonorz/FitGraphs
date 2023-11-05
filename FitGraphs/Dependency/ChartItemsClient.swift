@@ -42,7 +42,7 @@ extension ChartItemsClient: DependencyKey {
                          id: entity.id!,
                          name: entity.name!,
                          type: entity.type!,
-                         contents: []
+                         data: []
 //                         dimensions: dimensions,
 //                         measures: measures,
 //                         filters: filters
@@ -83,14 +83,14 @@ extension ChartItemsClient: DependencyKey {
             entity.name = chartItem.name
             entity.type = chartItem.type
 
-            for content in chartItem.contents {
-                let contentEntity = ChartContentEntity(context: viewContext)
-                contentEntity.id = content.id
-                contentEntity.key = content.key
-                contentEntity.val = content.value as NSDecimalNumber
-
-                entity.addToContents(contentEntity)
-            }
+//            for content in chartItem.contents {
+//                let contentEntity = ChartContentEntity(context: viewContext)
+//                contentEntity.id = content.id
+//                contentEntity.key = content.key
+//                contentEntity.val = content.value as NSDecimalNumber
+//
+//                entity.addToContents(contentEntity)
+//            }
 
             do {
                 viewContext.insert(entity)
@@ -116,11 +116,11 @@ extension ChartItemsClient: DependencyKey {
                         debugPrint(chartContents.array)
                         var chartContentArray = chartContents.array as! [ChartContentEntity]
                         
-                        chartContentArray.enumerated().forEach { idx, _ in
-                            let ci = chartItem.contents[idx]
-                            chartContentArray[idx].key = ci.key
-                            chartContentArray[idx].val = ci.value as NSDecimalNumber
-                        }
+//                        chartContentArray.enumerated().forEach { idx, _ in
+//                            let ci = chartItem.contents[idx]
+//                            chartContentArray[idx].key = ci.key
+//                            chartContentArray[idx].val = ci.value as NSDecimalNumber
+//                        }
                         
                         let chartContentsArrayAsOrderedSet = NSOrderedSet(array: chartContentArray)
                         entity.contents = chartContentsArrayAsOrderedSet

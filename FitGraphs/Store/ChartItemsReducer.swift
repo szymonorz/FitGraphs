@@ -47,12 +47,12 @@ class ChartItemsReducer: Reducer {
                     var chartItem = ChartItem(
                             name: data.title,
                             type: data.type,
-                            contents: []
+                            data: []
                         )
                     
                     do {
-                        let contents = try DataSource.shared.query(dimensions: data.dimensions, measures: data.measures)
-                        chartItem.contents = contents
+                        let data = try DataSource.shared.query(dimensions: data.dimensions, measures: data.measures)
+                        chartItem.data = data
                     } catch {
                         chartItem.errorMsg = error.localizedDescription
                     }

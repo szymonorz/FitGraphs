@@ -66,7 +66,7 @@ struct ChartEditorReducer: Reducer {
         var chartItemToEdit: ChartItem = ChartItem(
             name: "new",
             type: "BAR",
-            contents: []
+            data: []
         )
     }
     
@@ -100,7 +100,7 @@ struct ChartEditorReducer: Reducer {
                 state.chartItemToEdit = ChartItem(
                     name: "new",
                     type: "BAR",
-                    contents: [])
+                    data: [])
                 return .none
             case .closeCreator:
                 state.isCreatorOpen = false
@@ -176,7 +176,7 @@ struct ChartEditorReducer: Reducer {
                         id: _chartItem.id,
                         name: chartData.title,
                         type: chartData.type,
-                        contents: []
+                        data: []
                     )
                     let chartDataCopy = ChartData(
                         id: chartData.id,
@@ -186,15 +186,30 @@ struct ChartEditorReducer: Reducer {
                         measures: chartData.measures,
                         filters: chartData.filters
                     )
-                    debugPrint("MATH")
-                    do {
-                        chartItem.contents = try DataSource.shared.query(dimensions: chartDataCopy.dimensions,
-                                                                         measures: chartDataCopy.measures)
-                        await send(.queryCorrectChanged(true))
-                    } catch {
-                        chartItem.contents = []
-                        chartItem.errorMsg = error.localizedDescription
+                    if chartDataCopy.dimensions.count > 2 {
+                        chartItem.data = []
+                        chartItem.errorMsg = "Can handle up to 2 dimensions max"
                         await send(.queryCorrectChanged(false))
+                    } else if chartDataCopy.measures.count > 1 {
+                        chartItem.data = []
+                        chartItem.errorMsg = "Can handle only one measure"
+                        await send(.queryCorrectChanged(false))
+                    } else if chartDataCopy.measures.count < 1 || chartDataCopy.dimensions.count < 1 {
+                        chartItem.data = []
+                        chartItem.errorMsg = "Needs at least one measure and one dimensions"
+                        await send(.queryCorrectChanged(false))
+                    } else {
+                        debugPrint("MATH")
+                        do {
+                            let chartItemData = try DataSource.shared.query(dimensions: chartDataCopy.dimensions,
+                                                                             measures: chartDataCopy.measures)
+                            chartItem.data = chartItemData
+                            await send(.queryCorrectChanged(true))
+                        } catch {
+                            chartItem.data = []
+                            chartItem.errorMsg = error.localizedDescription
+                            await send(.queryCorrectChanged(false))
+                        }
                     }
                     await send(.updateChartItemView(chartItem))
                 }

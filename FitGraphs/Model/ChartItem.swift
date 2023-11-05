@@ -26,18 +26,18 @@ class ChartItem: Hashable, Equatable, Identifiable {
     var name: String
     var type: String
     var errorMsg: String?
-    var contents: [_ChartContent]
+    var data: [(dataType: String, contents: [_ChartContent])]
     
     init(id: String = UUID().uuidString,
          name: String,
          type: String,
          errorMsg: String? = nil,
-         contents: [_ChartContent]){
+         data: [(dataType: String, contents: [_ChartContent])]){
         self.id = id
         self.name = name
         self.type = type
         self.errorMsg = errorMsg
-        self.contents = contents
+        self.data = data
     }
     
     init(chartItem: ChartItem) {
@@ -45,11 +45,14 @@ class ChartItem: Hashable, Equatable, Identifiable {
         self.name = chartItem.name
         self.type = chartItem.type
         self.errorMsg = chartItem.errorMsg
-        self.contents = chartItem.contents
+        self.data = chartItem.data
     }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+        hasher.combine(name)
+        hasher.combine(type)
+        hasher.combine(errorMsg)
     }
 }
 
@@ -57,6 +60,30 @@ extension ChartItem {
     static func==(lhs: ChartItem, rhs: ChartItem) -> Bool{
         return lhs.name == rhs.name &&
                 lhs.type == rhs.type &&
-        lhs.contents == rhs.contents
+        lhs.hashValue == rhs.hashValue &&
+        areArraysOfTuplesEqual(lhs.data, rhs.data)
     }
+}
+
+func areTuplesEqual(
+    _ tuple1: (dataType: String, contents: [ChartItem._ChartContent]),
+    _ tuple2: (dataType: String, contents: [ChartItem._ChartContent])
+) -> Bool {
+    return tuple1.dataType == tuple2.dataType && tuple1.contents == tuple2.contents
+}
+
+func areArraysOfTuplesEqual(
+    _ array1: [(dataType: String, contents: [ChartItem._ChartContent])],
+    _ array2: [(dataType: String, contents: [ChartItem._ChartContent])]
+) -> Bool {
+    guard array1.count == array2.count else { return false }
+    
+    for (index, tuple1) in array1.enumerated() {
+        let tuple2 = array2[index]
+        if !areTuplesEqual(tuple1, tuple2) {
+            return false
+        }
+    }
+    
+    return true
 }

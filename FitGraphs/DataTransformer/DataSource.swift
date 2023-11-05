@@ -132,11 +132,11 @@ class DataSource {
         }
     }
     
-    func query(dimensions: [String], measures: [String]) throws -> [ChartItem._ChartContent] {
+    func query(dimensions: [String], measures: [String]) throws -> [(String, [ChartItem._ChartContent])] {
         let dimensionString = dimensions.joined(separator: ",")
         let measuresString = measures.joined(separator: ",")
         
-        let queryString = "SELECT \(dimensionString), \(measuresString) as count FROM activities GROUP BY \(dimensionString)"
+        let queryString = "SELECT \(dimensionString), \(measuresString) FROM activities GROUP BY \(dimensionString)"
         let result: ResultSet
         do {
             result = try conn!.query(queryString);
@@ -144,25 +144,64 @@ class DataSource {
             debugPrint("Encountered an error \(error)")
             throw error
         }
+        var dimensionsColumns: [TabularData.AnyColumn] = []
+        var valueColumns: [TabularData.AnyColumn] = []
         
-        let dimensionColumn = result[0].cast(to: String.self)
-        let countColumn = result[1].cast(to: Int.self)
-        
-        let df = DataFrame(
-            columns: [
-                TabularData.Column(dimensionColumn).eraseToAnyColumn(),
-                TabularData.Column(countColumn).eraseToAnyColumn()
-            ]
-        )
-        
-        var chartContents: [ChartItem._ChartContent] = []
-        let labelColumn = df.columns[0].assumingType(String.self).filled(with: "")
-        let valueColumn = df.columns[1].assumingType(Int.self).filled(with: 0)
-        
-        for (activity, count) in zip(labelColumn, valueColumn) {
-            chartContents.append(ChartItem._ChartContent(key: String(activity), value: Decimal(count)))
+        for dimension in dimensions {
+            guard let index = result.index(forColumnName: dimension) else {
+                continue
+            }
+            let dimColumn = result[index].cast(to: String.self)
+            dimensionsColumns.append(TabularData.Column(dimColumn).eraseToAnyColumn())
         }
         
-        return chartContents
+        for measure in measures {
+            guard let index = result.index(forColumnName: measure) else {
+                continue
+            }
+            let measureColumn = result[index].cast(to: Int.self)
+            valueColumns.append(TabularData.Column(measureColumn).eraseToAnyColumn())
+        }
+        
+//        let dimensionColumn = result[0].cast(to: String.self)
+//        let countColumn = TabularData.Column(result[1]).eraseToAnyColumn()
+//        
+        let df = DataFrame(
+            columns: dimensionsColumns + valueColumns
+        )
+        
+        var grouped: [String: [ChartItem._ChartContent]] = [:]
+        
+        for row in df.rows {
+            guard let split = row[dimensions[0]] as? String else {
+                continue
+            }
+            
+            var dim: String = split
+            if dimensions.count > 1 {
+                guard let _dim = row[dimensions[1]] as? String else {
+                    continue
+                }
+                dim = _dim
+            }
+            
+            guard let meas = row[measures[0]] as? Int else {
+                continue
+            }
+            
+            let chartContent: ChartItem._ChartContent = ChartItem._ChartContent(key: split, value: Decimal(meas))
+            grouped[dim, default: []].append(chartContent)
+        }
+        
+//        var chartContents: [ChartItem._ChartContent] = []
+//        
+//        let labelColumn = df.columns[dimensions.count - 1].assumingType(String.self).filled(with: "")
+//        let valueColumn = df.columns[measures.count - 1].assumingType(Int.self).filled(with: 0)
+//        
+//        for (label, count) in zip(labelColumn, valueColumn) {
+//            chartContents.append(ChartItem._ChartContent(key: String(label), value: Decimal(count)))
+//        }
+        
+        return grouped.map { ($0.key, $0.value) }
     }
 }
