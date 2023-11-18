@@ -134,7 +134,7 @@ class DataSource {
     
     func query(cubeQuery: CubeQuery) throws -> [(String, [ChartItem._ChartContent])] {
         let dimensionString = cubeQuery.dimensions.map { "CAST(\($0.expression) as VARCHAR) as \($0.name)" }.joined(separator: ",")
-        let measuresString = cubeQuery.measures.map { "CAST(\($0.expression) as VARCHAR) as \($0.name)" }.joined(separator: ",")
+        let measuresString = cubeQuery.measures.map { "CAST(\($0.expression) as INT) as \($0.name)" }.joined(separator: ",")
         
         let groupByClause = cubeQuery.dimensions.map { $0.expression }.joined(separator: ",")
         
