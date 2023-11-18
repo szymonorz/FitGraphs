@@ -132,11 +132,11 @@ class DataSource {
         }
     }
     
-    func query(dimensions: [String], measures: [String]) throws -> [(String, [ChartItem._ChartContent])] {
-        let dimensionString = dimensions.map { "CAST(\($0) as VARCHAR) as \($0)" }.joined(separator: ",")
-        let measuresString = measures.joined(separator: ",")
+    func query(cubeQuery: CubeQuery) throws -> [(String, [ChartItem._ChartContent])] {
+        let dimensionString = cubeQuery.dimensions.map { "CAST(\($0.expression) as VARCHAR) as \($0.name)" }.joined(separator: ",")
+        let measuresString = cubeQuery.measures.map { "CAST(\($0.expression) as VARCHAR) as \($0.name)" }.joined(separator: ",")
         
-        let groupByClause = dimensions.joined(separator: ",")
+        let groupByClause = cubeQuery.dimensions.map { $0.expression }.joined(separator: ",")
         
         let queryString = "SELECT \(dimensionString), \(measuresString) FROM activities GROUP BY \(groupByClause)"
         let result: ResultSet
@@ -149,16 +149,16 @@ class DataSource {
         var dimensionsColumns: [TabularData.AnyColumn] = []
         var valueColumns: [TabularData.AnyColumn] = []
         
-        for dimension in dimensions {
-            guard let index = result.index(forColumnName: dimension) else {
+        for dimension in cubeQuery.dimensions {
+            guard let index = result.index(forColumnName: dimension.name) else {
                 continue
             }
             let dimColumn = result[index].cast(to: String.self)
             dimensionsColumns.append(TabularData.Column(dimColumn).eraseToAnyColumn())
         }
         
-        for measure in measures {
-            guard let index = result.index(forColumnName: measure) else {
+        for measure in cubeQuery.measures {
+            guard let index = result.index(forColumnName: measure.name) else {
                 continue
             }
             let measureColumn = result[index].cast(to: Int.self)
@@ -175,19 +175,19 @@ class DataSource {
         var grouped: [String: [ChartItem._ChartContent]] = [:]
         
         for row in df.rows {
-            guard let split = row[dimensions[0]] as? String else {
+            guard let split = row[cubeQuery.dimensions[0].name] as? String else {
                 continue
             }
             
             var dim: String = split
-            if dimensions.count > 1 {
-                guard let _dim = row[dimensions[1]] as? String else {
+            if cubeQuery.dimensions.count > 1 {
+                guard let _dim = row[cubeQuery.dimensions[1].name] as? String else {
                     continue
                 }
                 dim = _dim
             }
             
-            guard let meas = row[measures[0]] as? Int else {
+            guard let meas = row[cubeQuery.measures[0].name] as? Int else {
                 continue
             }
             
