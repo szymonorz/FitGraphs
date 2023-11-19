@@ -44,7 +44,7 @@
 		01DAB4F22A3D048500752073 /* DuckDB in Frameworks */ = {isa = PBXBuildFile; productRef = 01DAB4F12A3D048500752073 /* DuckDB */; };
 		01E3CDD52ADAD2CA001068D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01E3CD9A2ADAD2CA001068D3 /* Assets.xcassets */; };
 		01E3CDD62ADAD2CA001068D3 /* FitGraphsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CD9B2ADAD2CA001068D3 /* FitGraphsApp.swift */; };
-		01E3CDD72ADAD2CA001068D3 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CD9D2ADAD2CA001068D3 /* DataSource.swift */; };
+		01E3CDD72ADAD2CA001068D3 /* Cube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CD9D2ADAD2CA001068D3 /* Cube.swift */; };
 		01E3CDD82ADAD2CA001068D3 /* StravaAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDA02ADAD2CA001068D3 /* StravaAuth.swift */; };
 		01E3CDD92ADAD2CA001068D3 /* OAuth2RetryHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDA12ADAD2CA001068D3 /* OAuth2RetryHandler.swift */; };
 		01E3CDDA2ADAD2CA001068D3 /* FirebaseGoogleAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDA32ADAD2CA001068D3 /* FirebaseGoogleAuth.swift */; };
@@ -108,7 +108,7 @@
 		01E3CD992ADAD2CA001068D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		01E3CD9A2ADAD2CA001068D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		01E3CD9B2ADAD2CA001068D3 /* FitGraphsApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FitGraphsApp.swift; sourceTree = "<group>"; };
-		01E3CD9D2ADAD2CA001068D3 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
+		01E3CD9D2ADAD2CA001068D3 /* Cube.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cube.swift; sourceTree = "<group>"; };
 		01E3CDA02ADAD2CA001068D3 /* StravaAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StravaAuth.swift; sourceTree = "<group>"; };
 		01E3CDA12ADAD2CA001068D3 /* OAuth2RetryHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2RetryHandler.swift; sourceTree = "<group>"; };
 		01E3CDA32ADAD2CA001068D3 /* FirebaseGoogleAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseGoogleAuth.swift; sourceTree = "<group>"; };
@@ -244,7 +244,7 @@
 		01E3CD9C2ADAD2CA001068D3 /* Query */ = {
 			isa = PBXGroup;
 			children = (
-				01E3CD9D2ADAD2CA001068D3 /* DataSource.swift */,
+				01E3CD9D2ADAD2CA001068D3 /* Cube.swift */,
 				019D1FB42B09323C0025CE15 /* CubeQuery.swift */,
 			);
 			path = Query;
@@ -491,7 +491,7 @@
 			files = (
 				01E3CE062ADAD6DF001068D3 /* GoogleService-Info.plist in Sources */,
 				01E3CDF82ADAD2CB001068D3 /* AddDashboardReducer.swift in Sources */,
-				01E3CDD72ADAD2CA001068D3 /* DataSource.swift in Sources */,
+				01E3CDD72ADAD2CA001068D3 /* Cube.swift in Sources */,
 				01E3CDE22ADAD2CA001068D3 /* ChartView.swift in Sources */,
 				01E3CDE42ADAD2CA001068D3 /* Selector.swift in Sources */,
 				01E3CDD82ADAD2CA001068D3 /* StravaAuth.swift in Sources */,

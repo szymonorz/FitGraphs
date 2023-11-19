@@ -10,7 +10,7 @@ import FirebaseFirestoreSwift
 
 class ChartItem: Hashable, Equatable, Identifiable {
     
-    struct _ChartContent: Equatable, Hashable, Identifiable {
+    struct _ChartContent: Equatable, Hashable, Identifiable, Comparable {
         var id: String
         var key: String
         var value: Decimal
@@ -62,6 +62,12 @@ extension ChartItem {
                 lhs.type == rhs.type &&
         lhs.hashValue == rhs.hashValue &&
         areArraysOfTuplesEqual(lhs.data, rhs.data)
+    }
+}
+
+extension ChartItem._ChartContent {
+    static func <(lhs: ChartItem._ChartContent, rhs: ChartItem._ChartContent) -> Bool {
+        return lhs.value < rhs.value
     }
 }
 

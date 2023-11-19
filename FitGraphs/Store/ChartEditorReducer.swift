@@ -190,8 +190,7 @@ struct ChartEditorReducer: Reducer {
                     } else {
                         debugPrint("MATH")
                         do {
-                            let chartItemData = try DataSource.shared.query(cubeQuery: chartDataCopy.query)
-                            chartItem.data = chartItemData
+                            chartItem.data = try Cube.shared.query(cubeQuery: chartDataCopy.query)
                             await send(.queryCorrectChanged(true))
                         } catch {
                             chartItem.data = []

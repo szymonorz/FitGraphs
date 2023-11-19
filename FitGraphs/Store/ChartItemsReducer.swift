@@ -51,7 +51,7 @@ class ChartItemsReducer: Reducer {
                         )
                     
                     do {
-                        let data = try DataSource.shared.query(cubeQuery: data.query)
+                        let data = try Cube.shared.query(cubeQuery: data.query)
                         chartItem.data = data
                     } catch {
                         chartItem.errorMsg = error.localizedDescription

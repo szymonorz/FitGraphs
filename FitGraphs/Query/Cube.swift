@@ -9,11 +9,11 @@ import Foundation
 import DuckDB
 import TabularData
 
-class DataSource {
+class Cube {
     var db: Database? = nil
     var conn: Connection? = nil
     
-    static let shared = DataSource()
+    static let shared = Cube()
     
     // Initiates a DataSource instance
     // Technically this looks like it should be a singleton but as of now
@@ -204,6 +204,8 @@ class DataSource {
 //            chartContents.append(ChartItem._ChartContent(key: String(label), value: Decimal(count)))
 //        }
         
-        return grouped.map { ($0.key, $0.value) }
+        return grouped.map {
+            ($0.key, $0.value.sorted())
+        }.sorted(by: { $0.1.max()! < $1.1.max()! })
     }
 }
