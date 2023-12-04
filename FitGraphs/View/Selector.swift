@@ -120,10 +120,10 @@ struct Selector: View {
         
         //var toChose: [String] = Activity.CodingKeys.allCases.map { $0.stringValue }.filter { $0.typ}
         var dimsToChose: [CubeQuery.Aggregation] = [
-            CubeQuery.Aggregation(name: "Activity", expression: "name"),
-            CubeQuery.Aggregation(name: "Type", expression: "sport_type")]
+            CubeQuery.Aggregation(name: "SportType", expression: "SportType"),
+            CubeQuery.Aggregation(name: "Weekday", expression: "Weekday")]
         var measuresToChose: [CubeQuery.Aggregation] = [
-            CubeQuery.Aggregation(name: "Activities", expression: "count(*)")
+            CubeQuery.Aggregation(name: "Activity", expression: "Activity")
         ]
         
         var body: some View {

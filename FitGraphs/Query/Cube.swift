@@ -55,7 +55,41 @@ class Cube {
                 try conn!.query("""
                     CREATE TABLE activities AS (
                             SELECT * FROM read_json('\(filePath.path)', \(dbArgs))
-                    )
+                    );
+                    CREATE TABLE olap_activities AS (
+                    SELECT
+                        sport_type as SportType,
+                        type as Type,
+                        location_country as LocationCountry,
+                        start_date as Date,
+                        dayname(start_date::DATE) as Weekday,
+                        monthname(start_date::DATE) as Month,
+                        year(start_date::DATE) as Year,
+                        start_date_local as DateLocal,
+                        dayname(start_date_local::DATE) as WeekdayLocal,
+                        monthname(start_date_local::DATE) as MonthLocal,
+                        year(start_date_local::DATE) as YearLocal,
+                        COUNT(*) as Activity,
+                        SUM(device_watts::DECIMAL) as DeviceWatts,
+                        SUM(max_speed::DECIMAL) as MaxSpeed,
+                        SUM(kilojoules::DECIMAL) as Kilojoules,
+                        SUM(moving_time::DECIMAL) as MovingTime,
+                        SUM(distance::DECIMAL) as Distance,
+                        SUM(total_elevation_gain::DECIMAL) as TotalElevationGain
+                    FROM activities
+                    GROUP BY
+                        sport_type,
+                        type,
+                        location_country,
+                        start_date,
+                        dayname(start_date::DATE),
+                        monthname(start_date::DATE),
+                        year(start_date::DATE),
+                        start_date_local,
+                        dayname(start_date_local::DATE),
+                        monthname(start_date_local::DATE),
+                        year(start_date_local::DATE)
+                    );
                 """)
             } catch {
                 debugPrint("Create table failed: \(error) at filePath: \(filePath.path)")
@@ -123,6 +157,41 @@ class Cube {
                 CREATE TABLE activities AS (
                         SELECT * FROM read_json('\(filePath.path)', \(dbArgs))
                 );
+                DROP TABLE olap_activities;
+                CREATE TABLE olap_activities AS (
+                SELECT
+                    sport_type as SportType,
+                    type as Type,
+                    location_country as LocationCountry,
+                    start_date as Date,
+                    weekday(start_date::DATE) as Weekday,
+                    month(start_date::DATE) as Month,
+                    year(start_date::DATE) as Year,
+                    start_date_local as DateLocal,
+                    weekday(start_date_local::DATE) as WeekdayLocal,
+                    month(start_date_local::DATE) as MonthLocal,
+                    year(start_date_local::DATE) as YearLocal,
+                    COUNT(*) as Activity,
+                    SUM(device_watts) as DeviceWatts,
+                    SUM(max_distance) as MaxDistance,
+                    SUM(kilojoules) as Kilojoules,
+                    SUM(moving_time) as MovingTime,
+                    SUM(distance) as Distance,
+                    SUM(total_elevation_gain) as TotalElevationGain
+                FROM activities
+                GROUP BY
+                    sport_type,
+                    type,
+                    location_country,
+                    start_date,
+                    weekday(start_date::DATE),
+                    month(start_date::DATE),
+                    year(start_date::DATE),
+                    start_date_local,
+                    weekday(start_date_local::DATE),
+                    month(start_date_local::DATE),
+                    year(start_date_local::DATE)
+                );
             """)
             continueAfter(true)
         } catch {
@@ -134,11 +203,11 @@ class Cube {
     
     func query(cubeQuery: CubeQuery) throws -> [(String, [ChartItem._ChartContent])] {
         let dimensionString = cubeQuery.dimensions.map { "CAST(\($0.expression) as VARCHAR) as \($0.name)" }.joined(separator: ",")
-        let measuresString = cubeQuery.measures.map { "CAST(\($0.expression) as INT) as \($0.name)" }.joined(separator: ",")
+        let measuresString = cubeQuery.measures.map { "CAST(SUM(\($0.expression)) as INT) as \($0.name)" }.joined(separator: ",")
         
         let groupByClause = cubeQuery.dimensions.map { $0.expression }.joined(separator: ",")
         
-        let queryString = "SELECT \(dimensionString), \(measuresString) FROM activities GROUP BY \(groupByClause)"
+        let queryString = "SELECT \(dimensionString), \(measuresString) FROM olap_activities GROUP BY \(groupByClause)"
         let result: ResultSet
         do {
             result = try conn!.query(queryString);

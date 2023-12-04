@@ -83,7 +83,9 @@ struct DashboardView: View {
                             }
                         }
                     }
-                }.onAppear {
+                }
+            .contentMargins(.horizontal, 5.0)
+            .onAppear {
                     viewStore.send(DashboardReducer.Action.loadCharts)
                 }.toolbar {
                     ToolbarItem {
