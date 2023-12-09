@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CubeQuery: Codable, Hashable {
+struct CubeQuery: Codable, Hashable {
     
     struct Aggregation: Codable, Hashable, Equatable {
         var name: String
