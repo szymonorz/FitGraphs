@@ -187,6 +187,12 @@ struct ChartEditorReducer: Reducer {
                         chartItem.data = []
                         chartItem.errorMsg = "Needs at least one measure and one dimensions"
                         await send(.queryCorrectChanged(false))
+                    } else if ["PIE", "LINE", "AREA"].contains(chartDataCopy.type) && chartDataCopy.query.dimensions.count > 1 {
+                        chartItem.data = []
+                        chartItem.errorMsg = "\(chartDataCopy.type) chart accepts only one dimension"
+                    } else if ["LINE", "AREA"].contains(chartDataCopy.type) && !chartDataCopy.query.dimensions.map { "\($0.name)" }.contains { Cube.timeDimensions.contains($0) } {
+                        chartItem.data = []
+                        chartItem.errorMsg = "Line chart requires "
                     } else {
                         debugPrint("MATH")
                         do {

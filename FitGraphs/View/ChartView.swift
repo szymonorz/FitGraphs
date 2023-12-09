@@ -26,32 +26,46 @@ struct ChartView: View {
                     let newMaxElement = data.contents.max { $0.value < $1.value }?.value ?? 1
                     maxElement = newMaxElement > maxElement ? newMaxElement : maxElement
                 }
-                Chart(chartItem.data, id: \.dataType) { data in
-                    ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
-                        if(chartItem.type == "BAR") {
+                if(chartItem.type == "BAR") {
+                    Chart(chartItem.data, id: \.dataType) { data in
+                        ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
                             BarMark(
                                 x: .value("x", content.key),
                                 y: .value("y", content.value)
                             )
-                        }else if(chartItem.type == "AREA") {
+                        }.foregroundStyle(by: .value("type", data.dataType))
+                    }.drawingGroup()
+                        .chartYScale(domain: 0...maxElement)
+                }else if(chartItem.type == "AREA") {
+                    Chart(chartItem.data, id: \.dataType) { data in
+                        ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
                             AreaMark(
                                 x: .value("x", content.key),
                                 y: .value("y", content.value)
                             )
-                        }else if(chartItem.type == "LINE") {
+                        }
+                    }.drawingGroup()
+                        .chartYScale(domain: 0...maxElement)
+                }else if(chartItem.type == "LINE") {
+                    Chart(chartItem.data, id: \.dataType) { data in
+                        ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
                             LineMark(
                                 x: .value("x", content.key),
                                 y: .value("y", content.value)
                             )
-                        }else if(chartItem.type == "PIE") {
+                        }
+                    }.drawingGroup()
+                        .chartYScale(domain: 0...maxElement)
+                }else if(chartItem.type == "PIE") {
+                    Chart(chartItem.data, id: \.dataType) { data in
+                        ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
                             SectorMark(
                                 angle: .value("value", content.value)
                             ).foregroundStyle(by: .value("k", content.key))
                         }
-                    }.foregroundStyle(by: .value("type", data.dataType))
+                    }.drawingGroup()
+                        .chartYScale(domain: 0...maxElement)
                 }
-                .drawingGroup()
-                .chartYScale(domain: 0...maxElement)
             }
         }.frame(width: chartWidth, height: chartWidth)
     }

@@ -14,6 +14,44 @@ class Cube {
     var conn: Connection? = nil
     
     static let shared = Cube()
+    static let timeDimensions = ["Date", "DateLocal", "Month", "MonthLocal", "Year", "YearLocal"]
+    
+    private let olapCubeQuery = """
+                CREATE TABLE olap_activities AS(
+                SELECT
+                    sport_type as SportType,
+                    type as Type,
+                    location_country as LocationCountry,
+                    start_date as Date,
+                    dayname(start_date::DATE) as Weekday,
+                    monthname(start_date::DATE) as Month,
+                    year(start_date::DATE) as Year,
+                    start_date_local as DateLocal,
+                    dayname(start_date_local::DATE) as WeekdayLocal,
+                    monthname(start_date_local::DATE) as MonthLocal,
+                    year(start_date_local::DATE) as YearLocal,
+                    COUNT(*) as Activity,
+                    SUM(device_watts::DECIMAL) as DeviceWatts,
+                    SUM(max_speed::DECIMAL) as MaxSpeed,
+                    SUM(kilojoules::DECIMAL) as Kilojoules,
+                    SUM(moving_time::DECIMAL) as MovingTime,
+                    SUM(distance::DECIMAL) as Distance,
+                    SUM(total_elevation_gain::DECIMAL) as TotalElevationGain
+                FROM activities
+                GROUP BY
+                    sport_type,
+                    type,
+                    location_country,
+                    start_date,
+                    dayname(start_date::DATE),
+                    monthname(start_date::DATE),
+                    year(start_date::DATE),
+                    start_date_local,
+                    dayname(start_date_local::DATE),
+                    monthname(start_date_local::DATE),
+                    year(start_date_local::DATE)
+                );
+                """
     
     // Initiates a DataSource instance
     // Technically this looks like it should be a singleton but as of now
@@ -56,40 +94,8 @@ class Cube {
                     CREATE TABLE activities AS (
                             SELECT * FROM read_json('\(filePath.path)', \(dbArgs))
                     );
-                    CREATE TABLE olap_activities AS (
-                    SELECT
-                        sport_type as SportType,
-                        type as Type,
-                        location_country as LocationCountry,
-                        start_date as Date,
-                        dayname(start_date::DATE) as Weekday,
-                        monthname(start_date::DATE) as Month,
-                        year(start_date::DATE) as Year,
-                        start_date_local as DateLocal,
-                        dayname(start_date_local::DATE) as WeekdayLocal,
-                        monthname(start_date_local::DATE) as MonthLocal,
-                        year(start_date_local::DATE) as YearLocal,
-                        COUNT(*) as Activity,
-                        SUM(device_watts::DECIMAL) as DeviceWatts,
-                        SUM(max_speed::DECIMAL) as MaxSpeed,
-                        SUM(kilojoules::DECIMAL) as Kilojoules,
-                        SUM(moving_time::DECIMAL) as MovingTime,
-                        SUM(distance::DECIMAL) as Distance,
-                        SUM(total_elevation_gain::DECIMAL) as TotalElevationGain
-                    FROM activities
-                    GROUP BY
-                        sport_type,
-                        type,
-                        location_country,
-                        start_date,
-                        dayname(start_date::DATE),
-                        monthname(start_date::DATE),
-                        year(start_date::DATE),
-                        start_date_local,
-                        dayname(start_date_local::DATE),
-                        monthname(start_date_local::DATE),
-                        year(start_date_local::DATE)
-                    );
+                    \(self.olapCubeQuery)
+
                 """)
             } catch {
                 debugPrint("Create table failed: \(error) at filePath: \(filePath.path)")
@@ -158,40 +164,7 @@ class Cube {
                         SELECT * FROM read_json('\(filePath.path)', \(dbArgs))
                 );
                 DROP TABLE olap_activities;
-                CREATE TABLE olap_activities AS (
-                SELECT
-                    sport_type as SportType,
-                    type as Type,
-                    location_country as LocationCountry,
-                    start_date as Date,
-                    weekday(start_date::DATE) as Weekday,
-                    month(start_date::DATE) as Month,
-                    year(start_date::DATE) as Year,
-                    start_date_local as DateLocal,
-                    weekday(start_date_local::DATE) as WeekdayLocal,
-                    month(start_date_local::DATE) as MonthLocal,
-                    year(start_date_local::DATE) as YearLocal,
-                    COUNT(*) as Activity,
-                    SUM(device_watts) as DeviceWatts,
-                    SUM(max_distance) as MaxDistance,
-                    SUM(kilojoules) as Kilojoules,
-                    SUM(moving_time) as MovingTime,
-                    SUM(distance) as Distance,
-                    SUM(total_elevation_gain) as TotalElevationGain
-                FROM activities
-                GROUP BY
-                    sport_type,
-                    type,
-                    location_country,
-                    start_date,
-                    weekday(start_date::DATE),
-                    month(start_date::DATE),
-                    year(start_date::DATE),
-                    start_date_local,
-                    weekday(start_date_local::DATE),
-                    month(start_date_local::DATE),
-                    year(start_date_local::DATE)
-                );
+                \(self.olapCubeQuery)
             """)
             continueAfter(true)
         } catch {
@@ -234,9 +207,6 @@ class Cube {
             valueColumns.append(TabularData.Column(measureColumn).eraseToAnyColumn())
         }
         
-//        let dimensionColumn = result[0].cast(to: String.self)
-//        let countColumn = TabularData.Column(result[1]).eraseToAnyColumn()
-//        
         let df = DataFrame(
             columns: dimensionsColumns + valueColumns
         )
@@ -263,15 +233,6 @@ class Cube {
             let chartContent: ChartItem._ChartContent = ChartItem._ChartContent(key: split, value: Decimal(meas))
             grouped[dim, default: []].append(chartContent)
         }
-        
-//        var chartContents: [ChartItem._ChartContent] = []
-//        
-//        let labelColumn = df.columns[dimensions.count - 1].assumingType(String.self).filled(with: "")
-//        let valueColumn = df.columns[measures.count - 1].assumingType(Int.self).filled(with: 0)
-//        
-//        for (label, count) in zip(labelColumn, valueColumn) {
-//            chartContents.append(ChartItem._ChartContent(key: String(label), value: Decimal(count)))
-//        }
         
         return grouped.map {
             ($0.key, $0.value.sorted())
