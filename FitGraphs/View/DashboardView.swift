@@ -19,8 +19,6 @@ struct DashboardView: View {
     
     @ViewBuilder
     var body: some View {
-        let chartWidth = (UIScreen.main.bounds.width - 80) / 2 // Width of each chart, with some padding
-        
         WithViewStore(store, observe: { $0 }) { viewStore in
             ScrollView {
                 VStack{
@@ -40,10 +38,8 @@ struct DashboardView: View {
                                     viewStore.send(.deleteChart(chartData))
                                 }
                             } label: {
-                                VStack {
-                                    Text(chartItem.name)
-                                    ChartView(chartItem: chartItem, chartWidth: chartWidth)
-                                        .chartLegend(.hidden)
+                                GroupBox(chartItem.name) {
+                                    ChartView(chartItem: chartItem)
                                         .sheet(isPresented: viewStore.binding(
                                             get: \.chartEditor.isEditorOpen,
                                             send: { DashboardReducer.Action.chartEditor(.editorOpenChanged($0))})) {
@@ -56,12 +52,12 @@ struct DashboardView: View {
                                                 )
                                             }
                                 }
-                                .padding() // Padding inside the background
-                                .background(
-                                   RoundedRectangle(cornerRadius: 10) // Background shape with rounded corners
-                                       .foregroundColor(.white) // Setting the background color
-                                    .shadow(color: Color.black.opacity(0.5), radius: 5, x: 5, y: 5) // Shadow applied to bottom-right
-                               )
+//                                .padding() // Padding inside the background
+//                                .background(
+//                                   RoundedRectangle(cornerRadius: 10) // Background shape with rounded corners
+//                                       .foregroundColor(.white) // Setting the background color
+//                                    .shadow(color: Color.black.opacity(0.5), radius: 5, x: 5, y: 5) // Shadow applied to bottom-right
+//                               )
                             } primaryAction: {
                                 let chartData = viewStore.state.charts[index]
                                 viewStore.send(.chartItemTapped(chartData))

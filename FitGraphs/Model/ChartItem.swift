@@ -25,17 +25,20 @@ class ChartItem: Hashable, Equatable, Identifiable {
     var id: String
     var name: String
     var type: String
+    var numOfSplits: Int
     var errorMsg: String?
     var data: [(dataType: String, contents: [_ChartContent])]
     
     init(id: String = UUID().uuidString,
          name: String,
          type: String,
+         numOfSplits: Int,
          errorMsg: String? = nil,
          data: [(dataType: String, contents: [_ChartContent])]){
         self.id = id
         self.name = name
         self.type = type
+        self.numOfSplits = numOfSplits
         self.errorMsg = errorMsg
         self.data = data
     }
@@ -44,6 +47,7 @@ class ChartItem: Hashable, Equatable, Identifiable {
         self.id = chartItem.id
         self.name = chartItem.name
         self.type = chartItem.type
+        self.numOfSplits = chartItem.numOfSplits
         self.errorMsg = chartItem.errorMsg
         self.data = chartItem.data
     }
@@ -52,6 +56,7 @@ class ChartItem: Hashable, Equatable, Identifiable {
         hasher.combine(id)
         hasher.combine(name)
         hasher.combine(type)
+        hasher.combine(numOfSplits)
         hasher.combine(errorMsg)
     }
 }
@@ -61,6 +66,7 @@ extension ChartItem {
         return lhs.name == rhs.name &&
                 lhs.type == rhs.type &&
         lhs.hashValue == rhs.hashValue &&
+        lhs.numOfSplits == rhs.numOfSplits &&
         areArraysOfTuplesEqual(lhs.data, rhs.data)
     }
 }

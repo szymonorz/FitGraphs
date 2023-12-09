@@ -42,6 +42,7 @@ extension ChartItemsClient: DependencyKey {
                          id: entity.id!,
                          name: entity.name!,
                          type: entity.type!,
+                         numOfSplits: 1,
                          data: []
 //                         dimensions: dimensions,
 //                         measures: measures,

@@ -10,8 +10,10 @@ import Charts
 
 struct ChartView: View {
     
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
     var chartItem: ChartItem
-    var chartWidth: CGFloat
     
     var body: some View {
         VStack {
@@ -27,15 +29,29 @@ struct ChartView: View {
                     maxElement = newMaxElement > maxElement ? newMaxElement : maxElement
                 }
                 if(chartItem.type == "BAR") {
-                    Chart(chartItem.data, id: \.dataType) { data in
-                        ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
-                            BarMark(
-                                x: .value("x", content.key),
-                                y: .value("y", content.value)
-                            )
-                        }.foregroundStyle(by: .value("type", data.dataType))
-                    }.drawingGroup()
-                        .chartYScale(domain: 0...maxElement)
+                    if chartItem.numOfSplits > 1 {
+                        Chart(chartItem.data, id: \.dataType) { data in
+                            ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
+                                BarMark(
+                                    x: .value("x", content.key),
+                                    y: .value("y", content.value)
+                                )
+                            }.foregroundStyle(by: .value("type", data.dataType))
+                                .position(by: .value("type", data.dataType))
+                        }.drawingGroup()
+                            .chartYScale(domain: 0...maxElement)
+                    } else {
+                        Chart(chartItem.data, id: \.dataType) { data in
+                            ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
+                                BarMark(
+                                    x: .value("x", content.key),
+                                    y: .value("y", content.value)
+                                )
+                            }
+                        }.drawingGroup()
+                            .chartYScale(domain: 0...maxElement)
+                    }
+
                 }else if(chartItem.type == "AREA") {
                     Chart(chartItem.data, id: \.dataType) { data in
                         ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
@@ -67,6 +83,7 @@ struct ChartView: View {
                         .chartYScale(domain: 0...maxElement)
                 }
             }
-        }.frame(width: chartWidth, height: chartWidth)
+        }.frame(width: verticalSizeClass == .compact ? UIScreen.main.bounds.width/2 - 80 : UIScreen.main.bounds.width/2 - 40,
+                height: verticalSizeClass == .compact ? UIScreen.main.bounds.height/3 : UIScreen.main.bounds.width/2 - 40 )
     }
 }

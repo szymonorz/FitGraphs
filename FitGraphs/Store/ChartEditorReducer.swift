@@ -64,6 +64,7 @@ struct ChartEditorReducer: Reducer {
         var chartItemToEdit: ChartItem = ChartItem(
             name: "new",
             type: "BAR",
+            numOfSplits: 1,
             data: []
         )
     }
@@ -94,6 +95,7 @@ struct ChartEditorReducer: Reducer {
                 state.chartItemToEdit = ChartItem(
                     name: "new",
                     type: "BAR",
+                    numOfSplits: 1,
                     data: [])
                 return .none
             case .closeCreator:
@@ -167,6 +169,7 @@ struct ChartEditorReducer: Reducer {
                         id: _chartItem.id,
                         name: chartData.title,
                         type: chartData.type,
+                        numOfSplits: chartData.query.dimensions.count,
                         data: []
                     )
                     let chartDataCopy = ChartData(
@@ -208,7 +211,6 @@ struct ChartEditorReducer: Reducer {
                 }
             case .updateChartItemView(let chartItem):
                 state.chartItemToEdit = chartItem
-                debugPrint("UPDATE")
                 return .none
             case .onCancelTapped:
                 return .run { send in

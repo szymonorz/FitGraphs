@@ -42,11 +42,11 @@ class ChartItemsReducer: Reducer {
                 }
             case .loadItems:
                 state.chartItems = []
-                debugPrint(state.chartData)
                 for data in state.chartData {
                     var chartItem = ChartItem(
                             name: data.title,
                             type: data.type,
+                            numOfSplits: data.query.dimensions.count,
                             data: []
                         )
                     

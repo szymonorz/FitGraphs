@@ -14,32 +14,34 @@ struct ChartCreatorView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
-            VStack {
-                Text("Creator view")
-                TextField(
-                    "Edit name",
-                    text: viewStore.binding(
-                        get: \.title,
-                        send: ChartEditorReducer.Action.titleChanged
-                    ))
-                .multilineTextAlignment(.center)
-                .disableAutocorrection(true)
-                ChartView(chartItem: viewStore.state.chartItemToEdit, chartWidth: 200)
-                EditHub(store: self.store)
-                ChartMenu(store: self.store)
-            }
-            HStack {
-                Button("Save", action: {
-                    Task {
-                        await viewStore.send(ChartEditorReducer.Action.onSaveTapped).finish()
-                        viewStore.send(ChartEditorReducer.Action.closeCreator)
-                        callback()
-                    }
-                }).disabled(!viewStore.queryCorrect)
-                
-                Button("Cancel", action: {
-                    viewStore.send(ChartEditorReducer.Action.onCancelTapped)
-                })
+            ScrollView {
+                VStack {
+                    Text("Creator view")
+                    TextField(
+                        "Edit name",
+                        text: viewStore.binding(
+                            get: \.title,
+                            send: ChartEditorReducer.Action.titleChanged
+                        ))
+                    .multilineTextAlignment(.center)
+                    .disableAutocorrection(true)
+                    ChartView(chartItem: viewStore.state.chartItemToEdit)
+                    EditHub(store: self.store)
+                    ChartMenu(store: self.store)
+                }
+                HStack {
+                    Button("Save", action: {
+                        Task {
+                            await viewStore.send(ChartEditorReducer.Action.onSaveTapped).finish()
+                            viewStore.send(ChartEditorReducer.Action.closeCreator)
+                            callback()
+                        }
+                    }).disabled(!viewStore.queryCorrect)
+                    
+                    Button("Cancel", action: {
+                        viewStore.send(ChartEditorReducer.Action.onCancelTapped)
+                    })
+                }
             }
         }
     }
@@ -61,7 +63,7 @@ struct ChartEditorView: View {
                     ))
                 .multilineTextAlignment(.center)
                 .disableAutocorrection(true)
-                ChartView(chartItem: viewStore.state.chartItemToEdit, chartWidth: 200)
+                ChartView(chartItem: viewStore.state.chartItemToEdit)
                 EditHub(store: self.store)
                 ChartMenu(store: self.store)
             }
