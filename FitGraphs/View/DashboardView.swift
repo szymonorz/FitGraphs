@@ -13,6 +13,10 @@ struct DashboardView: View {
     
     @State var presentModal: Bool = false
     
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    
     @Dependency(\.stravaApi) var stravaApi
     
     let store: StoreOf<DashboardReducer>
@@ -51,13 +55,9 @@ struct DashboardView: View {
                                                     }
                                                 )
                                             }
-                                }
-//                                .padding() // Padding inside the background
-//                                .background(
-//                                   RoundedRectangle(cornerRadius: 10) // Background shape with rounded corners
-//                                       .foregroundColor(.white) // Setting the background color
-//                                    .shadow(color: Color.black.opacity(0.5), radius: 5, x: 5, y: 5) // Shadow applied to bottom-right
-//                               )
+                                }.frame(
+                                    width: verticalSizeClass == .compact ? UIScreen.main.bounds.width/2 - 80 : UIScreen.main.bounds.width/2 - 40,
+                                    height: verticalSizeClass == .compact ? UIScreen.main.bounds.height/3 : UIScreen.main.bounds.width/2 - 40 )
                             } primaryAction: {
                                 let chartData = viewStore.state.charts[index]
                                 viewStore.send(.chartItemTapped(chartData))

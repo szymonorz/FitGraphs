@@ -174,13 +174,51 @@ class Cube {
         }
     }
     
+    func getUniqueValues(columnName: String) throws -> [String] {
+        let query = "SELECT DISTINCT(\(columnName)) as dist FROM olap_activities"
+        
+        let result: ResultSet
+        do {
+            result = try conn!.query(query)
+        } catch {
+            debugPrint("\(error.localizedDescription)")
+            throw error
+        }
+        
+        let df = DataFrame(columns: [TabularData.Column(result[0].cast(to: String.self)).eraseToAnyColumn()])
+        debugPrint(df)
+        return result[0].cast(to: String.self).map { $0 ?? "" }
+    }
+    
     func query(cubeQuery: CubeQuery) throws -> [(String, [ChartItem._ChartContent])] {
         let dimensionString = cubeQuery.dimensions.map { "CAST(\($0.expression) as VARCHAR) as \($0.name)" }.joined(separator: ",")
         let measuresString = cubeQuery.measures.map { "CAST(SUM(\($0.expression)) as INT) as \($0.name)" }.joined(separator: ",")
         
         let groupByClause = cubeQuery.dimensions.map { $0.expression }.joined(separator: ",")
         
-        let queryString = "SELECT \(dimensionString), \(measuresString) FROM olap_activities GROUP BY \(groupByClause)"
+        var whereClause = ""
+        var conditions: [String] = []
+        var _whereIN: String = ""
+        if cubeQuery.filters.count > 0 {
+            _whereIN = ""
+            cubeQuery.filters.forEach {
+                filter in
+                _whereIN += filter.name
+                if filter.exclude {
+                    _whereIN += " NOT "
+                }
+                
+                _whereIN += " IN ( \(filter.chosen.map{ "\'" + $0 + "\'" }.joined(separator: ",")) )"
+                conditions.append(_whereIN)
+            }
+            whereClause = "WHERE \(conditions.joined(separator: " AND "))"
+        }
+
+        
+        print(whereClause)
+//        whereClause = ""
+        
+        let queryString = "SELECT \(dimensionString), \(measuresString) FROM olap_activities \(whereClause) GROUP BY \(groupByClause)"
         let result: ResultSet
         do {
             result = try conn!.query(queryString);

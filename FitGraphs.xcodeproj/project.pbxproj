@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		012902F32A3DEA0A00DC5712 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 012902F22A3DEA0A00DC5712 /* Alamofire */; };
 		012903222A3E3DF600DC5712 /* OAuth2 in Frameworks */ = {isa = PBXBuildFile; productRef = 012903212A3E3DF600DC5712 /* OAuth2 */; };
+		013BF53C2B81054C00A9947D /* FilterValueSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF53B2B81054C00A9947D /* FilterValueSelectionView.swift */; };
+		013BF53E2B81134700A9947D /* FilterValueSelectionReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF53D2B81134700A9947D /* FilterValueSelectionReducer.swift */; };
 		0166006E2A42EBEC00E5E2F8 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 0166006D2A42EBEC00E5E2F8 /* WrappingHStack */; };
 		019D1FB52B09323C0025CE15 /* CubeQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1FB42B09323C0025CE15 /* CubeQuery.swift */; };
 		01B7CD472AAA741E007902AD /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 01B7CD462AAA741E007902AD /* ComposableArchitecture */; };
@@ -103,6 +105,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		013BF53B2B81054C00A9947D /* FilterValueSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterValueSelectionView.swift; sourceTree = "<group>"; };
+		013BF53D2B81134700A9947D /* FilterValueSelectionReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterValueSelectionReducer.swift; sourceTree = "<group>"; };
 		019D1FB42B09323C0025CE15 /* CubeQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeQuery.swift; sourceTree = "<group>"; };
 		01DF42F829F545790066F88F /* FitGraphs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitGraphs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01E3CD992ADAD2CA001068D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -299,6 +303,7 @@
 				01E3CDB02ADAD2CA001068D3 /* RootView.swift */,
 				01E3CDB12ADAD2CA001068D3 /* EditHub.swift */,
 				01E3CDB22ADAD2CA001068D3 /* ContentView.swift */,
+				013BF53B2B81054C00A9947D /* FilterValueSelectionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -335,6 +340,7 @@
 				01E3CDC52ADAD2CA001068D3 /* StravaAuthReducer.swift */,
 				01E3CDC62ADAD2CA001068D3 /* AddDashboardReducer.swift */,
 				01E3CDC72ADAD2CA001068D3 /* SettingsReducer.swift */,
+				013BF53D2B81134700A9947D /* FilterValueSelectionReducer.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -520,7 +526,9 @@
 				01E3CDEC2ADAD2CA001068D3 /* ChartItem.swift in Sources */,
 				01E3CDFC2ADAD2CB001068D3 /* ChartContentEntity+CoreDataClass.swift in Sources */,
 				01E3CDFF2ADAD2CB001068D3 /* ChartItemEntity+CoreDataProperties.swift in Sources */,
+				013BF53C2B81054C00A9947D /* FilterValueSelectionView.swift in Sources */,
 				01E3CDF52ADAD2CB001068D3 /* RootReducer.swift in Sources */,
+				013BF53E2B81134700A9947D /* FilterValueSelectionReducer.swift in Sources */,
 				01E3CDE72ADAD2CA001068D3 /* ContentView.swift in Sources */,
 				01E3CE002ADAD2CB001068D3 /* FirebaseDataManager.swift in Sources */,
 				01E3CDE62ADAD2CA001068D3 /* EditHub.swift in Sources */,

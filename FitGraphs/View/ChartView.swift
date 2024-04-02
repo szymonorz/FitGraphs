@@ -10,9 +10,6 @@ import Charts
 
 struct ChartView: View {
     
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
     var chartItem: ChartItem
     
     var body: some View {
@@ -83,7 +80,6 @@ struct ChartView: View {
                         .chartYScale(domain: 0...maxElement)
                 }
             }
-        }.frame(width: verticalSizeClass == .compact ? UIScreen.main.bounds.width/2 - 80 : UIScreen.main.bounds.width/2 - 40,
-                height: verticalSizeClass == .compact ? UIScreen.main.bounds.height/3 : UIScreen.main.bounds.width/2 - 40 )
+        }
     }
 }

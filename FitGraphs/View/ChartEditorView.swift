@@ -51,20 +51,50 @@ struct ChartEditorView: View {
     var store: StoreOf<ChartEditorReducer>
     var callback: () -> ()
     
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
     var body: some View {
         WithViewStore(store, observe: {$0}) { viewStore in
             VStack {
-                Text("Editor view")
-                TextField(
-                    "Edit name",
-                    text: viewStore.binding(
-                        get: \.title,
-                        send: ChartEditorReducer.Action.titleChanged
-                    ))
-                .multilineTextAlignment(.center)
-                .disableAutocorrection(true)
-                ChartView(chartItem: viewStore.state.chartItemToEdit)
-                EditHub(store: self.store)
+                if verticalSizeClass == .compact {
+                    HStack {
+                        EditHub(store: self.store)
+                        VStack {
+                            Text("Editor view")
+                            TextField(
+                                "Edit name",
+                                text: viewStore.binding(
+                                    get: \.title,
+                                    send: ChartEditorReducer.Action.titleChanged
+                                ))
+                            .multilineTextAlignment(.center)
+                            .disableAutocorrection(true)
+                            ChartView(chartItem: viewStore.state.chartItemToEdit)
+                                .frame(
+                                    width: UIScreen.main.bounds.width/2,
+                                    height: UIScreen.main.bounds.height/2
+                                )
+                        }
+                    }
+                } else {
+                    Text("Editor view")
+                    TextField(
+                        "Edit name",
+                        text: viewStore.binding(
+                            get: \.title,
+                            send: ChartEditorReducer.Action.titleChanged
+                        ))
+                    .multilineTextAlignment(.center)
+                    .disableAutocorrection(true)
+                    ChartView(chartItem: viewStore.state.chartItemToEdit)
+                        .frame(
+                            width: UIScreen.main.bounds.width/2,
+                            height: verticalSizeClass == .compact ? UIScreen.main.bounds.height/2 : UIScreen.main.bounds.height/4
+                        )
+                    EditHub(store: self.store)
+                }
+                
                 ChartMenu(store: self.store)
             }
             HStack {

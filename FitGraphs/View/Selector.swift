@@ -31,15 +31,15 @@ struct Selector: View {
                     switch type {
                     case "dimensions":
                         WrappingHStack(viewStore.cubeQuery.dimensions, id: \.self) { dim in
-                            Field(aggr: dim, action: { viewStore.send(ChartEditorReducer.Action.removeDimension($0))})
+                            Field(aggr: dim.name, action: { viewStore.send(ChartEditorReducer.Action.removeDimension($0))})
                         }
                     case "measures":
                         WrappingHStack(viewStore.cubeQuery.measures, id: \.self) { measure in
-                            Field(aggr: measure, action: { viewStore.send(ChartEditorReducer.Action.removeMeasure($0))})
+                            Field(aggr: measure.name, action: { viewStore.send(ChartEditorReducer.Action.removeMeasure($0))})
                         }
                     case "filters":
                         WrappingHStack(viewStore.cubeQuery.filters, id: \.self) { filter in
-                            Field(aggr: filter, action: { viewStore.send(ChartEditorReducer.Action.removeFilter($0))})
+                            Field(aggr: filter.name, action: { viewStore.send(ChartEditorReducer.Action.removeFilter($0))})
                         }
                     default:
                         EmptyView()
@@ -56,6 +56,9 @@ struct Selector: View {
                 })
                 .fontWeight(.bold)
                 .sheet(isPresented: $isPickerPresented) {
+                    Button("Close") {
+                        isPickerPresented = false
+                    }
                     FieldPicker(isPickerPresented: $isPickerPresented,
                                 type: type,
                                 store: self.store
@@ -69,13 +72,16 @@ struct Selector: View {
     }
 
     struct Field: View {
-        var aggr: CubeQuery.Aggregation
-        var action: (CubeQuery.Aggregation) -> ()
+        var aggr: String
+        var action: (String) -> ()
         
         var body: some View {
-            Button(aggr.name, action: {
+            HStack {
+                Text(aggr)
+                Button("X", action: {
                     action(aggr)
                 })
+            }
                 .padding(.horizontal)
                 .font(.system(size: 14))
                 .foregroundColor(.white)
@@ -89,8 +95,8 @@ struct Selector: View {
     }
     
     struct CheckboxField: View {
-        var aggr: CubeQuery.Aggregation
-        var action: (CubeQuery.Aggregation) -> ()
+        var aggr: String
+        var action: (String) -> ()
         var isChecked: Bool = false
         var body: some View {
             Button(action: {
@@ -103,7 +109,7 @@ struct Selector: View {
                         .cornerRadius(5)
                         .border(.gray)
                     Spacer()
-                    Text(aggr.name)
+                    Text(aggr)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
@@ -114,6 +120,7 @@ struct Selector: View {
 
     struct FieldPicker: View {
         @Binding var isPickerPresented: Bool
+        @State var isFilterSelectionPresented: Bool = false
         
         var type: String
         var store: StoreOf<ChartEditorReducer>
@@ -135,15 +142,25 @@ struct Selector: View {
                         switch type {
                         case "dimensions":
                             WrappingHStack(viewStore.cubeQuery.dimensions, id: \.self) { dim in
-                                Field(aggr: dim, action: { viewStore.send(ChartEditorReducer.Action.removeDimension($0))})
+                                Field(aggr: dim.name, action: { viewStore.send(ChartEditorReducer.Action.removeDimension($0))})
                             }
                         case "measures":
                             WrappingHStack(viewStore.cubeQuery.measures, id: \.self) { measure in
-                                Field(aggr: measure, action: { viewStore.send(ChartEditorReducer.Action.removeMeasure($0))})
+                                Field(aggr: measure.name, action: { viewStore.send(ChartEditorReducer.Action.removeMeasure($0))})
                             }
                         case "filters":
                             WrappingHStack(viewStore.cubeQuery.filters, id: \.self) { filter in
-                                Field(aggr: filter, action: { viewStore.send(ChartEditorReducer.Action.removeFilter($0))})
+                                Button {
+                                    viewStore.send(ChartEditorReducer.Action.openFilterSelection(filter.name))
+                                } label: {
+                                    Field(aggr: filter.name, action: { viewStore.send(ChartEditorReducer.Action.removeFilter($0))})
+
+                                }.sheet(isPresented: viewStore.binding(
+                                    get: \.isFilterSelectorOpen,
+                                    send: {ChartEditorReducer.Action.filterSelectorOpenChanged($0)})
+                                    ) {
+                                        Text(viewStore.filterValues.joined(separator: ","))
+                                }
                             }
                         default:
                             EmptyView()
@@ -162,8 +179,8 @@ struct Selector: View {
                         if type == "dimensions" {
                             ForEach(dimsToChose, id: \.self) { pick in
                                 let isChecked = viewStore.cubeQuery.dimensions.contains(pick)
-                                CheckboxField(aggr: pick, action: {
-                                    let action = isChecked ? ChartEditorReducer.Action.removeDimension($0) : ChartEditorReducer.Action.addDimension($0)
+                                CheckboxField(aggr: pick.name, action: {
+                                    let action = isChecked ? ChartEditorReducer.Action.removeDimension($0) : ChartEditorReducer.Action.addDimension(pick)
                                     viewStore.send(action)
                                 }, isChecked: isChecked)
                             }.frame(minWidth: 300)
@@ -171,12 +188,33 @@ struct Selector: View {
                         if type == "measures" {
                             ForEach(measuresToChose, id: \.self) { pick in
                                 let isChecked = viewStore.cubeQuery.measures.contains(pick)
-                                CheckboxField(aggr: pick, action: {
-                                    let action = isChecked ? ChartEditorReducer.Action.removeMeasure($0) : ChartEditorReducer.Action.addMeasure($0)
+                                CheckboxField(aggr: pick.name, action: {
+                                    let action = isChecked ? ChartEditorReducer.Action.removeMeasure($0) : ChartEditorReducer.Action.addMeasure(pick)
                                     
                                     viewStore.send(action)
                                 }, isChecked: isChecked)
                             }.frame(minWidth: 300)
+                        }
+                        if type == "filters" {
+                            ForEach(dimsToChose, id: \.self) { pick in
+                                Button {
+                                    viewStore.send(ChartEditorReducer.Action.openFilterSelection(pick.name))
+                                } label: {
+                                    CheckboxField(aggr: pick.name, action: {
+                                        self.isFilterSelectionPresented.toggle()
+                                        viewStore.send(ChartEditorReducer.Action.openFilterSelection($0))
+                                    })
+
+                                }.sheet(isPresented: viewStore.binding(
+                                    get: \.isFilterSelectorOpen,
+                                    send: {ChartEditorReducer.Action.filterSelectorOpenChanged($0)})
+                                    ) {
+                                        FilterValueSelectionView(store: self.store.scope(
+                                            state: \.filterValueSelection,
+                                            action: ChartEditorReducer.Action.filterValueSelection
+                                        ))
+                                }.presentationDetents([.medium])
+                            }
                         }
                     }
                 }

@@ -14,9 +14,16 @@ struct CubeQuery: Codable, Hashable {
         var expression: String
     }
     
+    struct Filter: Codable, Hashable, Equatable {
+        var name: String
+        var exclude: Bool = false
+        var values: [String] = []
+        var chosen: [String] = []
+    }
+    
     var dimensions: [Aggregation]
     var measures: [Aggregation]
-    var filters: [Aggregation]
+    var filters: [Filter]
     
     init() {
         self.dimensions = [

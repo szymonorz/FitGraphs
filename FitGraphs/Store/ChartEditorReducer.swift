@@ -14,13 +14,13 @@ struct ChartEditorReducer: Reducer {
         case typeChanged(String)
         
         case addDimension(CubeQuery.Aggregation)
-        case removeDimension(CubeQuery.Aggregation)
+        case removeDimension(String)
         
         case addMeasure(CubeQuery.Aggregation)
-        case removeMeasure(CubeQuery.Aggregation)
+        case removeMeasure(String)
         
-        case addFilter(CubeQuery.Aggregation)
-        case removeFilter(CubeQuery.Aggregation)
+        case addFilter(CubeQuery.Filter)
+        case removeFilter(String)
         
         case cubeQueryChanged(CubeQuery)
         
@@ -37,6 +37,9 @@ struct ChartEditorReducer: Reducer {
         case closeCreator
         case creatorOpenChanged(Bool)
         
+        case openFilterSelection(String)
+        case filterSelectorOpenChanged(Bool)
+        
         case queryCorrectChanged(Bool)
         
         case onSaveTapped
@@ -46,14 +49,18 @@ struct ChartEditorReducer: Reducer {
         enum Delegate: Equatable {
             case save(ChartData)
         }
+        
+        case filterValueSelection(FilterValueSelectionReducer.Action)
     }
     
     struct State: Equatable {
         var isEditorOpen: Bool = false
         var isCreatorOpen: Bool = false
+        var isFilterSelectorOpen: Bool = false
         var queryCorrect: Bool = false
         var title = "new"
         var type = "BAR"
+        var filterValues: [String] = []
         var cubeQuery: CubeQuery = CubeQuery()
         
         var chartDataToEdit: ChartData = ChartData(
@@ -67,12 +74,35 @@ struct ChartEditorReducer: Reducer {
             numOfSplits: 1,
             data: []
         )
+        
+        var filterValueSelection = FilterValueSelectionReducer.State(filter: CubeQuery.Filter(name: "foo"))
     }
     
     @Dependency(\.dismiss) var dismiss
     var body: some Reducer<State, Action> {
+        Scope(state: \.filterValueSelection, action: /Action.filterValueSelection) {
+            FilterValueSelectionReducer()
+        }
         Reduce { state, action in
             switch action {
+            case .openFilterSelection(let filter):
+                var filterValues: [String] = []
+                do {
+                    filterValues = try Cube.shared.getUniqueValues(columnName: filter)
+                } catch {
+                    debugPrint("\(error.localizedDescription)")
+                }
+                var cubeFilter: CubeQuery.Filter? = nil
+                if  let _cubeFilter = state.cubeQuery.filters.first(where: { $0.name == filter }) {
+                    cubeFilter = _cubeFilter
+                } else {
+                    cubeFilter = CubeQuery.Filter(name: filter, values: filterValues)
+                }
+                return .run { [_cubeFilter = cubeFilter!]
+                    send in
+                    await send(.filterValueSelection(.onFilterChanged(_cubeFilter)))
+                    await send(.filterSelectorOpenChanged(true))
+                }
             case .openEditor:
                 state.isEditorOpen = true
                 return .none
@@ -104,6 +134,9 @@ struct ChartEditorReducer: Reducer {
             case .creatorOpenChanged(let isCreatorOpen):
                 state.isCreatorOpen = isCreatorOpen
                 return .none
+            case .filterSelectorOpenChanged(let isFilterSelectorOpen):
+                state.isFilterSelectorOpen = isFilterSelectorOpen
+                return .none
             case .titleChanged(let title):
                 state.title = title
                 state.chartDataToEdit.title = title
@@ -122,7 +155,7 @@ struct ChartEditorReducer: Reducer {
                     await send(.cubeQueryChanged(cubeQuery))
                 }
             case .removeDimension(let dimension):
-                state.cubeQuery.dimensions.remove(at: state.cubeQuery.dimensions.firstIndex(of: dimension)!)
+                state.cubeQuery.dimensions.removeAll(where: { $0.name == dimension })
                 return .run { [cubeQuery = state.cubeQuery] send in
                     await send(.cubeQueryChanged(cubeQuery))
                 }
@@ -132,7 +165,7 @@ struct ChartEditorReducer: Reducer {
                     await send(.cubeQueryChanged(cubeQuery))
                 }
             case .removeMeasure(let measure):
-                state.cubeQuery.measures.remove(at: state.cubeQuery.measures.firstIndex(of: measure)!)
+                state.cubeQuery.measures.removeAll(where: { $0.name == measure })
                 return .run { [cubeQuery = state.cubeQuery] send in
                     await send(.cubeQueryChanged(cubeQuery))
                 }
@@ -142,7 +175,8 @@ struct ChartEditorReducer: Reducer {
                     await send(.cubeQueryChanged(cubeQuery))
                 }
             case .removeFilter(let filter):
-                state.cubeQuery.filters.remove(at: state.cubeQuery.filters.firstIndex(of: filter)!)
+                state.cubeQuery.filters.removeAll(where: { $0.name == filter })
+//                state.cubeQuery.filters.remove(at: state.cubeQuery.filters.firstIndex(of: filter)!)
                 return .run { [cubeQuery = state.cubeQuery] send in
                     await send(.cubeQueryChanged(cubeQuery))
                 }
@@ -195,7 +229,7 @@ struct ChartEditorReducer: Reducer {
                         chartItem.errorMsg = "\(chartDataCopy.type) chart accepts only one dimension"
                     } else if ["LINE", "AREA"].contains(chartDataCopy.type) && !chartDataCopy.query.dimensions.map { "\($0.name)" }.contains { Cube.timeDimensions.contains($0) } {
                         chartItem.data = []
-                        chartItem.errorMsg = "Line chart requires "
+                        chartItem.errorMsg = "\(chartDataCopy.type) chart requires time series"
                     } else {
                         debugPrint("MATH")
                         do {
@@ -226,6 +260,21 @@ struct ChartEditorReducer: Reducer {
                 }
             case .queryCorrectChanged(let correct):
                 state.queryCorrect = correct
+                return .none
+            case .filterValueSelection(.delegate(.apply(let filter))):
+                if let idx = state.cubeQuery.filters.lastIndex(where: {$0.name == filter.name}) {
+                    state.cubeQuery.filters[idx] = filter
+                } else {
+                    state.cubeQuery.filters.append(filter)
+                }
+                
+                return .run { 
+                    [query = state.cubeQuery]
+                    send in
+                    await send(.cubeQueryChanged(query))
+                    await send(.filterSelectorOpenChanged(false))
+                }
+            case .filterValueSelection(_):
                 return .none
             case .delegate(_):
                 return .none
