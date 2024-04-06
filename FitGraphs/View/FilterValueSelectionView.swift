@@ -13,23 +13,24 @@ struct FilterValueSelectionView: View {
     var store: StoreOf<FilterValueSelectionReducer>
     var body: some View {
         WithViewStore(store, observe: {$0}) { viewStore in
+            CheckboxField(text: "Exclude", action: {
+                viewStore.send(.isExclusionary(!viewStore.state.filter.exclude))
+            }, isChecked: viewStore.state.filter.exclude)
+            Divider()
             ScrollView {
                 ForEach(viewStore.state.filter.values, id: \.self) { val in
-                    Button {
+                    CheckboxField(text: val, action: {
                         viewStore.send(.onValueTapped(val))
-                    } label: {
-                        HStack{
-                            Text(val)
-                            if viewStore.state.filter.chosen.contains(val) {
-                                Text("X")
-                            }
-                        }
-                    }
+                    }, isChecked: viewStore.state.filter.chosen.contains(val))
                 }
             }
-            
-            Button("Apply") {
-                viewStore.send(.onApplyTapped)
+            HStack{
+                Button("Apply") {
+                    viewStore.send(.onApplyTapped)
+                }
+                Button("Close") {
+                    viewStore.send(.onCancelTapped)
+                }
             }
         }
     }

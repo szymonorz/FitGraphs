@@ -93,30 +93,6 @@ struct Selector: View {
                 )
         }
     }
-    
-    struct CheckboxField: View {
-        var aggr: String
-        var action: (String) -> ()
-        var isChecked: Bool = false
-        var body: some View {
-            Button(action: {
-                action(aggr)
-            }) {
-                HStack(alignment: .top, spacing: 10) {
-                   Rectangle()
-                        .fill(isChecked ? .gray : .white)
-                        .frame(width:20, height:20, alignment: .center)
-                        .cornerRadius(5)
-                        .border(.gray)
-                    Spacer()
-                    Text(aggr)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            }
-            .padding(20)
-            .foregroundColor(.black)
-        }
-    }
 
     struct FieldPicker: View {
         @Binding var isPickerPresented: Bool
@@ -159,7 +135,10 @@ struct Selector: View {
                                     get: \.isFilterSelectorOpen,
                                     send: {ChartEditorReducer.Action.filterSelectorOpenChanged($0)})
                                     ) {
-                                        Text(viewStore.filterValues.joined(separator: ","))
+                                        FilterValueSelectionView(store: self.store.scope(
+                                            state: \.filterValueSelection,
+                                            action: ChartEditorReducer.Action.filterValueSelection
+                                        ))
                                 }
                             }
                         default:
@@ -179,8 +158,8 @@ struct Selector: View {
                         if type == "dimensions" {
                             ForEach(dimsToChose, id: \.self) { pick in
                                 let isChecked = viewStore.cubeQuery.dimensions.contains(pick)
-                                CheckboxField(aggr: pick.name, action: {
-                                    let action = isChecked ? ChartEditorReducer.Action.removeDimension($0) : ChartEditorReducer.Action.addDimension(pick)
+                                CheckboxField(text: pick.name, action: {
+                                    let action = isChecked ? ChartEditorReducer.Action.removeDimension(pick.name) : ChartEditorReducer.Action.addDimension(pick)
                                     viewStore.send(action)
                                 }, isChecked: isChecked)
                             }.frame(minWidth: 300)
@@ -188,8 +167,8 @@ struct Selector: View {
                         if type == "measures" {
                             ForEach(measuresToChose, id: \.self) { pick in
                                 let isChecked = viewStore.cubeQuery.measures.contains(pick)
-                                CheckboxField(aggr: pick.name, action: {
-                                    let action = isChecked ? ChartEditorReducer.Action.removeMeasure($0) : ChartEditorReducer.Action.addMeasure(pick)
+                                CheckboxField(text: pick.name, action: {
+                                    let action = isChecked ? ChartEditorReducer.Action.removeMeasure(pick.name) : ChartEditorReducer.Action.addMeasure(pick)
                                     
                                     viewStore.send(action)
                                 }, isChecked: isChecked)
@@ -197,13 +176,14 @@ struct Selector: View {
                         }
                         if type == "filters" {
                             ForEach(dimsToChose, id: \.self) { pick in
+                                let isChecked = viewStore.cubeQuery.filters.contains(where: { $0.name == pick.name})
                                 Button {
                                     viewStore.send(ChartEditorReducer.Action.openFilterSelection(pick.name))
                                 } label: {
-                                    CheckboxField(aggr: pick.name, action: {
+                                    CheckboxField(text: pick.name, action: {
                                         self.isFilterSelectionPresented.toggle()
-                                        viewStore.send(ChartEditorReducer.Action.openFilterSelection($0))
-                                    })
+                                        viewStore.send(ChartEditorReducer.Action.openFilterSelection(pick.name))
+                                    }, isChecked: isChecked)
 
                                 }.sheet(isPresented: viewStore.binding(
                                     get: \.isFilterSelectorOpen,

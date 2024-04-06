@@ -22,11 +22,13 @@ class FilterValueSelectionReducer: Reducer {
             case apply(CubeQuery.Filter)
         }
         case onApplyTapped
+        case onCancelTapped
         case onValueTapped(String)
         case addValue(String)
         case removeValue(String)
     }
     
+    @Dependency(\.dismiss) var dismiss
     var body: some ReducerOf<FilterValueSelectionReducer> {
         Reduce { state, action in
             switch action {
@@ -56,6 +58,8 @@ class FilterValueSelectionReducer: Reducer {
                 return .run { send in
                     await send(.removeValue(choice))
                 }
+            case .onCancelTapped:
+                return .run { _ in await self.dismiss() }
             case .delegate:
                 return .none
             }
