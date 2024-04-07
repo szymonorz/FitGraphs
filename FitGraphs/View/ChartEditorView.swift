@@ -26,6 +26,10 @@ struct ChartCreatorView: View {
                     .multilineTextAlignment(.center)
                     .disableAutocorrection(true)
                     ChartView(chartItem: viewStore.state.chartItemToEdit)
+                        .frame(
+                            width: UIScreen.main.bounds.width/2,
+                            height: UIScreen.main.bounds.height/2
+                        )
                     EditHub(store: self.store)
                     ChartMenu(store: self.store)
                 }
