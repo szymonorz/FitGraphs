@@ -102,14 +102,6 @@ struct Selector: View {
         var store: StoreOf<ChartEditorReducer>
         
         //var toChose: [String] = Activity.CodingKeys.allCases.map { $0.stringValue }.filter { $0.typ}
-        var dimsToChose: [CubeQuery.Aggregation] = [
-            CubeQuery.Aggregation(name: "SportType", expression: "SportType"),
-            CubeQuery.Aggregation(name: "DateLocal", expression: "DateLocal"),
-            CubeQuery.Aggregation(name: "Weekday", expression: "Weekday")]
-        
-        var measuresToChose: [CubeQuery.Aggregation] = [
-            CubeQuery.Aggregation(name: "Activity", expression: "Activity")
-        ]
         
         var body: some View {
             WithViewStore(store, observe: { $0 }) { viewStore in
@@ -156,7 +148,7 @@ struct Selector: View {
                     
                     ScrollView {
                         if type == "dimensions" {
-                            ForEach(dimsToChose, id: \.self) { pick in
+                            ForEach(Cube.dimsToChose, id: \.self) { pick in
                                 let isChecked = viewStore.cubeQuery.dimensions.contains(pick)
                                 CheckboxField(text: pick.name, action: {
                                     let action = isChecked ? ChartEditorReducer.Action.removeDimension(pick.name) : ChartEditorReducer.Action.addDimension(pick)
@@ -165,7 +157,7 @@ struct Selector: View {
                             }.frame(minWidth: 300)
                         }
                         if type == "measures" {
-                            ForEach(measuresToChose, id: \.self) { pick in
+                            ForEach(Cube.measuresToChose, id: \.self) { pick in
                                 let isChecked = viewStore.cubeQuery.measures.contains(pick)
                                 CheckboxField(text: pick.name, action: {
                                     let action = isChecked ? ChartEditorReducer.Action.removeMeasure(pick.name) : ChartEditorReducer.Action.addMeasure(pick)
@@ -175,7 +167,7 @@ struct Selector: View {
                             }.frame(minWidth: 300)
                         }
                         if type == "filters" {
-                            ForEach(dimsToChose, id: \.self) { pick in
+                            ForEach(Cube.dimsToChose, id: \.self) { pick in
                                 let isChecked = viewStore.cubeQuery.filters.contains(where: { $0.name == pick.name})
                                 Button {
                                     viewStore.send(ChartEditorReducer.Action.openFilterSelection(pick.name))

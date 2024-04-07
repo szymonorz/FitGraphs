@@ -16,6 +16,25 @@ class Cube {
     static let shared = Cube()
     static let timeDimensions = ["Date", "DateLocal", "Month", "MonthLocal", "Year", "YearLocal"]
     
+    static let dimsToChose: [CubeQuery.Aggregation] = [
+        CubeQuery.Aggregation(name: "SportType", expression: "SportType"),
+        CubeQuery.Aggregation(name:"Type",expression: "Type"),
+        CubeQuery.Aggregation(name:"LocationCountry",expression: "LocationCountry"),
+        CubeQuery.Aggregation(name:"Date",expression: "DateLocal"),
+        CubeQuery.Aggregation(name:"Weekday",expression: "LocationCountry"),
+        CubeQuery.Aggregation(name:"Month",expression: "LocationCountry"),
+        CubeQuery.Aggregation(name:"Year",expression: "LocationCountry")]
+
+    static let measuresToChose: [CubeQuery.Aggregation] = [
+        CubeQuery.Aggregation(name: "Activity", expression: "SUM(Activity)"),
+        CubeQuery.Aggregation(name: "DeviceWatts", expression: "SUM(DeviceWatts)"),
+        CubeQuery.Aggregation(name: "MaxSpeed", expression: "SUM(MaxSpeed)"),
+        CubeQuery.Aggregation(name: "Kilojoules", expression: "SUM(Kilojoules)"),
+        CubeQuery.Aggregation(name: "MovingTime", expression: "SUM(MovingTime)"),
+        CubeQuery.Aggregation(name: "Distance", expression: "SUM(Distabce)"),
+        CubeQuery.Aggregation(name: "TotalElevationGain", expression: "SUM(TotalElevationGain)")
+    ]
+    
     private let olapCubeQuery = """
                 CREATE TABLE olap_activities AS(
                 SELECT
@@ -192,7 +211,7 @@ class Cube {
     
     func query(cubeQuery: CubeQuery) throws -> [(String, [ChartItem._ChartContent])] {
         let dimensionString = cubeQuery.dimensions.map { "CAST(\($0.expression) as VARCHAR) as \($0.name)" }.joined(separator: ",")
-        let measuresString = cubeQuery.measures.map { "CAST(SUM(\($0.expression)) as INT) as \($0.name)" }.joined(separator: ",")
+        let measuresString = cubeQuery.measures.map { "CAST(\($0.expression) as INT) as \($0.name)" }.joined(separator: ",")
         
         let groupByClause = cubeQuery.dimensions.map { $0.expression }.joined(separator: ",")
         
