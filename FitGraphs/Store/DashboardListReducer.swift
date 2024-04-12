@@ -14,12 +14,13 @@ class DashboardListReducer: Reducer {
     enum Action: Equatable {
         case dashboardsChanged([Dashboard])
         case onAppear
-        case saveToFirebase([Dashboard])
+        case save([Dashboard])
         case onDashboardTapped(Dashboard)
         case onDeleteTapped(Dashboard)
         case deleteDashboard(Dashboard)
         case addDashboardTapped
         case destination(PresentationAction<Destination.Action>)
+        case demoModeEnabledChanged(Bool)
         
         case dashboard(DashboardReducer.Action)
         case path(StackAction<DashboardReducer.State,DashboardReducer.Action>)
@@ -32,6 +33,7 @@ class DashboardListReducer: Reducer {
     struct State: Equatable {
         var dashboards: [Dashboard] = []
         var currentDashboard: Dashboard? = nil
+        var demoModeEnabled: Bool = false
         
         var dashboard = DashboardReducer.State()
         var path = StackState<DashboardReducer.State>()
@@ -49,9 +51,11 @@ class DashboardListReducer: Reducer {
                 state.dashboards = dashboards
                 return .none
             case .onAppear:
-                return .run { send in
+                return .run { 
+                    [demoModeEnabled = state.demoModeEnabled]
+                    send in
                     do {
-                        let athlete = try await self.firebaseClient.loadFromFirebase()
+                        let athlete = !demoModeEnabled ? try await self.firebaseClient.loadFromFirebase() : Athlete(id: 69)
                         await send(.dashboardsChanged(athlete?.dashboards ?? []))
                     } catch {
                         debugPrint("onAppear: \(error.localizedDescription)")
@@ -63,18 +67,22 @@ class DashboardListReducer: Reducer {
                 let dashboardsCopy = dashboards
                 return .run { send in
                     await send(.dashboardsChanged(dashboardsCopy))
-                    await send(.saveToFirebase(dashboardsCopy))
+                    await send(.save(dashboardsCopy))
                 }
-            case .saveToFirebase(let dashboards):
-                return .run { send in
+            case .save(let dashboards):
+                return .run { 
+                    [demoModeEnabled = state.demoModeEnabled]
+                    send in
                     do {
-                        var athlete: Athlete? = try await self.firebaseClient.loadFromFirebase()
-                        if athlete == nil {
-                            let userId: String? = UserDefaults.standard.string(forKey: "userId")
-                            athlete = Athlete(id: Int64(userId!)!, activities: [], dashboards: [])
+                        if !demoModeEnabled {
+                            var athlete: Athlete? = try await self.firebaseClient.loadFromFirebase()
+                            if athlete == nil {
+                                let userId: String? = UserDefaults.standard.string(forKey: "userId")
+                                athlete = Athlete(id: Int64(userId!)!, activities: [], dashboards: [])
+                            }
+                            athlete!.dashboards = dashboards
+                            try await self.firebaseClient.saveToFirebase(athlete!)
                         }
-                        athlete!.dashboards = dashboards
-                        try await self.firebaseClient.saveToFirebase(athlete!)
                     } catch {
                         debugPrint("saveToFirebase: \(error.localizedDescription)")
                     }
@@ -95,13 +103,16 @@ class DashboardListReducer: Reducer {
             case .destination(.presented(.addDashboard(.delegate(.save(let dashboard))))):
                 state.dashboards.append(dashboard)
                 return .run { [dashboards = state.dashboards] send in
-                    await send(.saveToFirebase(dashboards))
+                    await send(.save(dashboards))
                 }
             case .destination(.presented(.alert(.confirmDelete(let dashboard)))):
                 return .run { send in
                     await send(.deleteDashboard(dashboard))
                     }
             case .destination:
+                return .none
+            case .demoModeEnabledChanged(let demoModeEnabled):
+                state.demoModeEnabled = demoModeEnabled
                 return .none
             case .onDeleteTapped(let dashboard):
                 state.destination = .alert(
@@ -127,7 +138,7 @@ class DashboardListReducer: Reducer {
                     state.dashboards.append(dashboard)
                 }
                 return .run { [dashboards = state.dashboards] send in
-                    await send(.saveToFirebase(dashboards))
+                    await send(.save(dashboards))
                 }
             case .path(_):
                 return .none

@@ -10,16 +10,14 @@ import ComposableArchitecture
 
 struct RootReducer: Reducer {
     
-    @Dependency(\.stravaApi) var stravaApi
-    @Dependency(\.firebaseClient) var firebaseClient
-    
     enum Action: Equatable {
         case chartItems(ChartItemsReducer.Action)
         case dashboard(DashboardReducer.Action)
         case dashboardList(DashboardListReducer.Action)
         case chartEditor(ChartEditorReducer.Action)
         case settings(SettingsReducer.Action)
-        case googleAuth(GoogleAuthReducer.Action)
+        case login(LoginReducer.Action)
+        case demoModeEnabledChanged(Bool)
     }
     
     struct State: Equatable {
@@ -33,7 +31,9 @@ struct RootReducer: Reducer {
         
         var settings = SettingsReducer.State()
         
-        var googleAuth = GoogleAuthReducer.State()
+        var login = LoginReducer.State()
+        
+        var demoModeEnabled: Bool = false
         
     }
     
@@ -57,28 +57,46 @@ struct RootReducer: Reducer {
             SettingsReducer()
         }
         
-        Scope(state: \.googleAuth, action: /Action.googleAuth){
-            GoogleAuthReducer()
+        Scope(state: \.login, action: /Action.login){
+            LoginReducer()
         }
         
         Reduce { state, action in
             switch action {
-            case .chartItems(let _):
+            case .chartItems:
                 return .none
-            case .dashboardList(let _):
+            case .dashboardList:
                 return .none
-            case .dashboard(let _):
+            case .dashboard:
                 return .none
-            case .chartEditor(let _):
+            case .chartEditor:
                 return .none
             case .settings(.delegate(.logoutFromFirebase)):
                 return .run { send in
-                    await send(.googleAuth(.signOut))
+                    await send(.login(.googleAuth(.signOut)))
                 }
-            case .settings(let _):
+            case .settings:
                 return .none
-            case .googleAuth(let _):
+            case .login(.delegate(.demoMode)):
+                return .run {
+                    send in
+                    await send(.demoModeEnabledChanged(true))
+                }
+            case .login:
                 return .none
+            case .demoModeEnabledChanged(let demoModeEnabled):
+                state.demoModeEnabled = demoModeEnabled
+                do {
+                    try Cube.shared.loadDemoData()
+                } catch {
+                    debugPrint("[CRITICAL] Failed to load demo data.")
+                    return .none
+                }
+                return .run {
+                    send in
+                    await send(.settings(.demoModeEnabledChanged(demoModeEnabled)))
+                    await send(.dashboardList(.demoModeEnabledChanged(demoModeEnabled)))
+                }
             }
         }
     }

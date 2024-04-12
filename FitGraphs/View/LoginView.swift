@@ -12,9 +12,7 @@ import GoogleSignInSwift
 
 struct LoginView: View {
     
-    @Dependency(\.stravaApi) var stravaApi
-    
-    let store: StoreOf<GoogleAuthReducer>
+    let store: StoreOf<LoginReducer>
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -29,7 +27,14 @@ struct LoginView: View {
                     .fontWidth(.condensed)
                     .foregroundStyle(.black)
                 GoogleSignInButton {
-                    viewStore.send(GoogleAuthReducer.Action.signIn)
+                    viewStore.send(.googleAuth(.signIn))
+                }.buttonBorderShape(.capsule)
+                    .frame(width: 256)
+                    .padding(.top, 50)
+                Button {
+                    viewStore.send(.demo)
+                } label: {
+                    Text("Demo mode")
                 }.buttonBorderShape(.capsule)
                     .frame(width: 256)
                     .padding(.top, 50)
