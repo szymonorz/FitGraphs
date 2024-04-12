@@ -9,7 +9,11 @@
 /* Begin PBXBuildFile section */
 		012902F32A3DEA0A00DC5712 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 012902F22A3DEA0A00DC5712 /* Alamofire */; };
 		012903222A3E3DF600DC5712 /* OAuth2 in Frameworks */ = {isa = PBXBuildFile; productRef = 012903212A3E3DF600DC5712 /* OAuth2 */; };
+		013BF53C2B81054C00A9947D /* FilterValueSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF53B2B81054C00A9947D /* FilterValueSelectionView.swift */; };
+		013BF53E2B81134700A9947D /* FilterValueSelectionReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF53D2B81134700A9947D /* FilterValueSelectionReducer.swift */; };
+		013BF5402BC17C8B00A9947D /* CheckboxField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF53F2BC17C8B00A9947D /* CheckboxField.swift */; };
 		0166006E2A42EBEC00E5E2F8 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 0166006D2A42EBEC00E5E2F8 /* WrappingHStack */; };
+		019D1FB52B09323C0025CE15 /* CubeQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1FB42B09323C0025CE15 /* CubeQuery.swift */; };
 		01B7CD472AAA741E007902AD /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 01B7CD462AAA741E007902AD /* ComposableArchitecture */; };
 		01C2B42B2AC22B2600078B44 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 01C2B42A2AC22B2600078B44 /* FirebaseAnalytics */; };
 		01C2B42D2AC22B2600078B44 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 01C2B42C2AC22B2600078B44 /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -43,7 +47,7 @@
 		01DAB4F22A3D048500752073 /* DuckDB in Frameworks */ = {isa = PBXBuildFile; productRef = 01DAB4F12A3D048500752073 /* DuckDB */; };
 		01E3CDD52ADAD2CA001068D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01E3CD9A2ADAD2CA001068D3 /* Assets.xcassets */; };
 		01E3CDD62ADAD2CA001068D3 /* FitGraphsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CD9B2ADAD2CA001068D3 /* FitGraphsApp.swift */; };
-		01E3CDD72ADAD2CA001068D3 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CD9D2ADAD2CA001068D3 /* DataSource.swift */; };
+		01E3CDD72ADAD2CA001068D3 /* Cube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CD9D2ADAD2CA001068D3 /* Cube.swift */; };
 		01E3CDD82ADAD2CA001068D3 /* StravaAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDA02ADAD2CA001068D3 /* StravaAuth.swift */; };
 		01E3CDD92ADAD2CA001068D3 /* OAuth2RetryHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDA12ADAD2CA001068D3 /* OAuth2RetryHandler.swift */; };
 		01E3CDDA2ADAD2CA001068D3 /* FirebaseGoogleAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDA32ADAD2CA001068D3 /* FirebaseGoogleAuth.swift */; };
@@ -102,11 +106,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		013BF53B2B81054C00A9947D /* FilterValueSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterValueSelectionView.swift; sourceTree = "<group>"; };
+		013BF53D2B81134700A9947D /* FilterValueSelectionReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterValueSelectionReducer.swift; sourceTree = "<group>"; };
+		013BF53F2BC17C8B00A9947D /* CheckboxField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxField.swift; sourceTree = "<group>"; };
+		019D1FB42B09323C0025CE15 /* CubeQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeQuery.swift; sourceTree = "<group>"; };
 		01DF42F829F545790066F88F /* FitGraphs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitGraphs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01E3CD992ADAD2CA001068D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		01E3CD9A2ADAD2CA001068D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		01E3CD9B2ADAD2CA001068D3 /* FitGraphsApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FitGraphsApp.swift; sourceTree = "<group>"; };
-		01E3CD9D2ADAD2CA001068D3 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
+		01E3CD9D2ADAD2CA001068D3 /* Cube.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cube.swift; sourceTree = "<group>"; };
 		01E3CDA02ADAD2CA001068D3 /* StravaAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StravaAuth.swift; sourceTree = "<group>"; };
 		01E3CDA12ADAD2CA001068D3 /* OAuth2RetryHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2RetryHandler.swift; sourceTree = "<group>"; };
 		01E3CDA32ADAD2CA001068D3 /* FirebaseGoogleAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseGoogleAuth.swift; sourceTree = "<group>"; };
@@ -208,7 +216,7 @@
 			children = (
 				01E3CD9A2ADAD2CA001068D3 /* Assets.xcassets */,
 				01E3CD9E2ADAD2CA001068D3 /* Auth */,
-				01E3CD9C2ADAD2CA001068D3 /* DataTransformer */,
+				01E3CD9C2ADAD2CA001068D3 /* Query */,
 				01E3CDA42ADAD2CA001068D3 /* Dependency */,
 				01E3CD9B2ADAD2CA001068D3 /* FitGraphsApp.swift */,
 				01E3CD992ADAD2CA001068D3 /* GoogleService-Info.plist */,
@@ -239,12 +247,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		01E3CD9C2ADAD2CA001068D3 /* DataTransformer */ = {
+		01E3CD9C2ADAD2CA001068D3 /* Query */ = {
 			isa = PBXGroup;
 			children = (
-				01E3CD9D2ADAD2CA001068D3 /* DataSource.swift */,
+				01E3CD9D2ADAD2CA001068D3 /* Cube.swift */,
+				019D1FB42B09323C0025CE15 /* CubeQuery.swift */,
 			);
-			path = DataTransformer;
+			path = Query;
 			sourceTree = "<group>";
 		};
 		01E3CD9E2ADAD2CA001068D3 /* Auth */ = {
@@ -296,6 +305,8 @@
 				01E3CDB02ADAD2CA001068D3 /* RootView.swift */,
 				01E3CDB12ADAD2CA001068D3 /* EditHub.swift */,
 				01E3CDB22ADAD2CA001068D3 /* ContentView.swift */,
+				013BF53B2B81054C00A9947D /* FilterValueSelectionView.swift */,
+				013BF53F2BC17C8B00A9947D /* CheckboxField.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -332,6 +343,7 @@
 				01E3CDC52ADAD2CA001068D3 /* StravaAuthReducer.swift */,
 				01E3CDC62ADAD2CA001068D3 /* AddDashboardReducer.swift */,
 				01E3CDC72ADAD2CA001068D3 /* SettingsReducer.swift */,
+				013BF53D2B81134700A9947D /* FilterValueSelectionReducer.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -486,9 +498,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				013BF5402BC17C8B00A9947D /* CheckboxField.swift in Sources */,
 				01E3CE062ADAD6DF001068D3 /* GoogleService-Info.plist in Sources */,
 				01E3CDF82ADAD2CB001068D3 /* AddDashboardReducer.swift in Sources */,
-				01E3CDD72ADAD2CA001068D3 /* DataSource.swift in Sources */,
+				01E3CDD72ADAD2CA001068D3 /* Cube.swift in Sources */,
 				01E3CDE22ADAD2CA001068D3 /* ChartView.swift in Sources */,
 				01E3CDE42ADAD2CA001068D3 /* Selector.swift in Sources */,
 				01E3CDD82ADAD2CA001068D3 /* StravaAuth.swift in Sources */,
@@ -512,11 +525,14 @@
 				01E3CDDD2ADAD2CA001068D3 /* StravaApi.swift in Sources */,
 				01E3CDE12ADAD2CA001068D3 /* ChartEditorView.swift in Sources */,
 				01E3CDD62ADAD2CA001068D3 /* FitGraphsApp.swift in Sources */,
+				019D1FB52B09323C0025CE15 /* CubeQuery.swift in Sources */,
 				01E3CDF12ADAD2CB001068D3 /* DashboardReducer.swift in Sources */,
 				01E3CDEC2ADAD2CA001068D3 /* ChartItem.swift in Sources */,
 				01E3CDFC2ADAD2CB001068D3 /* ChartContentEntity+CoreDataClass.swift in Sources */,
 				01E3CDFF2ADAD2CB001068D3 /* ChartItemEntity+CoreDataProperties.swift in Sources */,
+				013BF53C2B81054C00A9947D /* FilterValueSelectionView.swift in Sources */,
 				01E3CDF52ADAD2CB001068D3 /* RootReducer.swift in Sources */,
+				013BF53E2B81134700A9947D /* FilterValueSelectionReducer.swift in Sources */,
 				01E3CDE72ADAD2CA001068D3 /* ContentView.swift in Sources */,
 				01E3CE002ADAD2CB001068D3 /* FirebaseDataManager.swift in Sources */,
 				01E3CDE62ADAD2CA001068D3 /* EditHub.swift in Sources */,

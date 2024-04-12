@@ -11,43 +11,75 @@ import Charts
 struct ChartView: View {
     
     var chartItem: ChartItem
-    var chartWidth: CGFloat
     
     var body: some View {
         VStack {
             if let errorMsg = chartItem.errorMsg {
                 Text(errorMsg)
-            } else if chartItem.contents.isEmpty {
+            } else if chartItem.data.isEmpty {
                 Text("No data to show")
             } else {
-                let maxElement = chartItem.contents.max { $0.value < $1.value}
-                Chart {
-                    ForEach(Array(chartItem.contents.enumerated()), id: \.element) { index, content in
-                        if(chartItem.type == "BAR") {
-                            BarMark(
-                                x: .value("x", content.key),
-                                y: .value("y", content.value)
-                            )
-                        }else if(chartItem.type == "AREA") {
+                var maxElement: Decimal = -1;
+                let _ = chartItem.data.forEach {
+                    data in
+                    let newMaxElement = data.contents.max { $0.value < $1.value }?.value ?? 1
+                    maxElement = newMaxElement > maxElement ? newMaxElement : maxElement
+                }
+                if(chartItem.type == "BAR") {
+                    if chartItem.numOfSplits > 1 {
+                        Chart(chartItem.data, id: \.dataType) { data in
+                            ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
+                                BarMark(
+                                    x: .value("x", content.key),
+                                    y: .value("y", content.value)
+                                )
+                            }.foregroundStyle(by: .value("type", data.dataType))
+                                .position(by: .value("type", data.dataType))
+                        }.drawingGroup()
+                            .chartYScale(domain: 0...maxElement)
+                    } else {
+                        Chart(chartItem.data, id: \.dataType) { data in
+                            ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
+                                BarMark(
+                                    x: .value("x", content.key),
+                                    y: .value("y", content.value)
+                                )
+                            }
+                        }.drawingGroup()
+                            .chartYScale(domain: 0...maxElement)
+                    }
+
+                }else if(chartItem.type == "AREA") {
+                    Chart(chartItem.data, id: \.dataType) { data in
+                        ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
                             AreaMark(
                                 x: .value("x", content.key),
                                 y: .value("y", content.value)
                             )
-                        }else if(chartItem.type == "LINE") {
+                        }
+                    }.drawingGroup()
+                        .chartYScale(domain: 0...maxElement)
+                }else if(chartItem.type == "LINE") {
+                    Chart(chartItem.data, id: \.dataType) { data in
+                        ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
                             LineMark(
                                 x: .value("x", content.key),
                                 y: .value("y", content.value)
                             )
-                        }else if(chartItem.type == "PIE") {
+                        }
+                    }.drawingGroup()
+                        .chartYScale(domain: 0...maxElement)
+                }else if(chartItem.type == "PIE") {
+                    Chart(chartItem.data, id: \.dataType) { data in
+                        ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
                             SectorMark(
                                 angle: .value("value", content.value)
                             ).foregroundStyle(by: .value("k", content.key))
                         }
-                    }
+                    }.drawingGroup()
+                        .chartYScale(domain: 0...maxElement)
                 }
-                .drawingGroup()
-                .chartYScale(domain: 0...maxElement!.value)
             }
-        }.frame(width: chartWidth, height: chartWidth)
+        }
     }
 }

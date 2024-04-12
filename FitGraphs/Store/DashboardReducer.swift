@@ -73,10 +73,10 @@ class DashboardReducer: Reducer {
                 return .run { send in
                     await send(.chartItems(.loadItems))
                 }
-            case .chartItemTapped(let chartItem):
+            case .chartItemTapped(let chartData):
                 state.chartEditor.isEditorOpen = true
                 return .run { send in
-                    await send(.chartEditor(.chartToEditChanged(chartItem)))
+                    await send(.chartEditor(.chartToEditChanged(chartData)))
                 }
             case .deleteChart(let chart):
                 state.charts.remove(at: state.charts.firstIndex(of: chart)!)

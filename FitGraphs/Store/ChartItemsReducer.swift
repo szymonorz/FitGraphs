@@ -42,17 +42,17 @@ class ChartItemsReducer: Reducer {
                 }
             case .loadItems:
                 state.chartItems = []
-                debugPrint(state.chartData)
                 for data in state.chartData {
                     var chartItem = ChartItem(
                             name: data.title,
                             type: data.type,
-                            contents: []
+                            numOfSplits: data.query.dimensions.count,
+                            data: []
                         )
                     
                     do {
-                        let contents = try DataSource.shared.query(dimensions: data.dimensions, measures: data.measures)
-                        chartItem.contents = contents
+                        let data = try Cube.shared.query(cubeQuery: data.query)
+                        chartItem.data = data
                     } catch {
                         chartItem.errorMsg = error.localizedDescription
                     }

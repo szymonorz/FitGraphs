@@ -14,7 +14,7 @@ struct FitGraphsApp: App {
     
     init(){
         self.store = Store(initialState: RootReducer.State()){
-            RootReducer()._printChanges()
+            RootReducer()
         }
     }
     
