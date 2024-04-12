@@ -21,9 +21,9 @@ class Cube {
         CubeQuery.Aggregation(name:"Type",expression: "Type"),
         CubeQuery.Aggregation(name:"LocationCountry",expression: "LocationCountry"),
         CubeQuery.Aggregation(name:"Date",expression: "DateLocal"),
-        CubeQuery.Aggregation(name:"Weekday",expression: "LocationCountry"),
-        CubeQuery.Aggregation(name:"Month",expression: "LocationCountry"),
-        CubeQuery.Aggregation(name:"Year",expression: "LocationCountry")]
+        CubeQuery.Aggregation(name:"Weekday",expression: "WeekdayLocal"),
+        CubeQuery.Aggregation(name:"Month",expression: "MonthLocal"),
+        CubeQuery.Aggregation(name:"Year",expression: "YearLocal")]
 
     static let measuresToChose: [CubeQuery.Aggregation] = [
         CubeQuery.Aggregation(name: "Activity", expression: "SUM(Activity)"),
@@ -114,7 +114,7 @@ class Cube {
                             SELECT * FROM read_json('\(filePath.path)', \(dbArgs))
                     );
                     \(self.olapCubeQuery)
-
+                    DROP TABLE activities;
                 """)
             } catch {
                 debugPrint("Create table failed: \(error) at filePath: \(filePath.path)")
@@ -184,6 +184,7 @@ class Cube {
                 );
                 DROP TABLE olap_activities;
                 \(self.olapCubeQuery)
+                DROP TABLE activities;
             """)
             continueAfter(true)
         } catch {

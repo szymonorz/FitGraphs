@@ -37,9 +37,6 @@ extension StravaApi: DependencyKey {
                     switch response.result {
                     case .success(let data):
                         let activities = try! JSONDecoder().decode([Activity].self, from: data)
-                        for a in activities {
-                            debugPrint(a)
-                        }
                         continuation.resume(returning: activities)
                     case .failure(let error):
                         debugPrint("[ERROR]: \(error.localizedDescription)")
