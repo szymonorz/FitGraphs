@@ -55,7 +55,6 @@
 		01E3CDD92ADAD2CA001068D3 /* OAuth2RetryHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDA12ADAD2CA001068D3 /* OAuth2RetryHandler.swift */; };
 		01E3CDDA2ADAD2CA001068D3 /* FirebaseGoogleAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDA32ADAD2CA001068D3 /* FirebaseGoogleAuth.swift */; };
 		01E3CDDB2ADAD2CA001068D3 /* FirebaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDA52ADAD2CA001068D3 /* FirebaseClient.swift */; };
-		01E3CDDC2ADAD2CA001068D3 /* ChartItemsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDA62ADAD2CA001068D3 /* ChartItemsClient.swift */; };
 		01E3CDDD2ADAD2CA001068D3 /* StravaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDA72ADAD2CA001068D3 /* StravaApi.swift */; };
 		01E3CDDE2ADAD2CA001068D3 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDA92ADAD2CA001068D3 /* DashboardView.swift */; };
 		01E3CDDF2ADAD2CA001068D3 /* DashboardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDAA2ADAD2CA001068D3 /* DashboardListView.swift */; };
@@ -125,7 +124,6 @@
 		01E3CDA12ADAD2CA001068D3 /* OAuth2RetryHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2RetryHandler.swift; sourceTree = "<group>"; };
 		01E3CDA32ADAD2CA001068D3 /* FirebaseGoogleAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseGoogleAuth.swift; sourceTree = "<group>"; };
 		01E3CDA52ADAD2CA001068D3 /* FirebaseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseClient.swift; sourceTree = "<group>"; };
-		01E3CDA62ADAD2CA001068D3 /* ChartItemsClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartItemsClient.swift; sourceTree = "<group>"; };
 		01E3CDA72ADAD2CA001068D3 /* StravaApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StravaApi.swift; sourceTree = "<group>"; };
 		01E3CDA92ADAD2CA001068D3 /* DashboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		01E3CDAA2ADAD2CA001068D3 /* DashboardListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardListView.swift; sourceTree = "<group>"; };
@@ -302,7 +300,6 @@
 			isa = PBXGroup;
 			children = (
 				01E3CDA52ADAD2CA001068D3 /* FirebaseClient.swift */,
-				01E3CDA62ADAD2CA001068D3 /* ChartItemsClient.swift */,
 				01E3CDA72ADAD2CA001068D3 /* StravaApi.swift */,
 			);
 			path = Dependency;
@@ -527,7 +524,6 @@
 				01E3CDDF2ADAD2CA001068D3 /* DashboardListView.swift in Sources */,
 				01E3CDEE2ADAD2CA001068D3 /* Activity.swift in Sources */,
 				01E3CDED2ADAD2CA001068D3 /* Athlete.swift in Sources */,
-				01E3CDDC2ADAD2CA001068D3 /* ChartItemsClient.swift in Sources */,
 				01E3CDDE2ADAD2CA001068D3 /* DashboardView.swift in Sources */,
 				01E3CDE52ADAD2CA001068D3 /* RootView.swift in Sources */,
 				013BF5422BC9B72200A9947D /* LoginReducer.swift in Sources */,

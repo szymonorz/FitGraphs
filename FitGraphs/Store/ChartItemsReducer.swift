@@ -9,11 +9,8 @@ import Foundation
 import ComposableArchitecture
 
 class ChartItemsReducer: Reducer {
-    @Dependency(\.chartItemsClient) var chartItemsClient
-    
     enum Action: Equatable {
         case loadItems
-        case onDeleteButtonTapped(ChartItem)
         
         case chartEditor(ChartEditorReducer.Action)
 
@@ -32,14 +29,6 @@ class ChartItemsReducer: Reducer {
         }
         Reduce { state, action in
             switch action {
-            case .onDeleteButtonTapped(let chartItem):
-                return .run { send in
-                    do {
-                        try await self.chartItemsClient.removeChartItem(chartItem)
-                    } catch {
-                        debugPrint("\(error.localizedDescription)")
-                    }
-                }
             case .loadItems:
                 state.chartItems = []
                 for data in state.chartData {

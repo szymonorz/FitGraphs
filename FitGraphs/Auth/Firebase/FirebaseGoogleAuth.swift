@@ -20,13 +20,17 @@ struct FirebaseGoogleAuth {
         GIDSignIn.sharedInstance.configuration = config
     }
     
+    enum ClientError: Error {
+        case userIdMissing
+    }
+    
     func getUserId() throws -> String {
         if let currentUser = Auth.auth().currentUser {
             return currentUser.uid
         }
         
         // Should absolutely never happen, since getUserId() is only called after Sign In
-        throw ChartItemsClient.ClientError.userIdMissing
+        throw ClientError.userIdMissing
     }
     
     func signInWithGoogle() async -> Bool {
