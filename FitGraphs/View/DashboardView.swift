@@ -44,6 +44,7 @@ struct DashboardView: View {
                             } label: {
                                 GroupBox(chartItem.name) {
                                     ChartView(chartItem: chartItem)
+                                        .chartLegend(.hidden)
                                         .sheet(isPresented: viewStore.binding(
                                             get: \.chartEditor.isEditorOpen,
                                             send: { DashboardReducer.Action.chartEditor(.editorOpenChanged($0))})) {

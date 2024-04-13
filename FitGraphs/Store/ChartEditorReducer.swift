@@ -176,7 +176,6 @@ struct ChartEditorReducer: Reducer {
                 }
             case .removeFilter(let filter):
                 state.cubeQuery.filters.removeAll(where: { $0.name == filter })
-//                state.cubeQuery.filters.remove(at: state.cubeQuery.filters.firstIndex(of: filter)!)
                 return .run { [cubeQuery = state.cubeQuery] send in
                     await send(.cubeQueryChanged(cubeQuery))
                 }
@@ -227,11 +226,13 @@ struct ChartEditorReducer: Reducer {
                     } else if ["PIE", "LINE", "AREA"].contains(chartDataCopy.type) && chartDataCopy.query.dimensions.count > 1 {
                         chartItem.data = []
                         chartItem.errorMsg = "\(chartDataCopy.type) chart accepts only one dimension"
-                    } else if ["LINE", "AREA"].contains(chartDataCopy.type) && !chartDataCopy.query.dimensions.map { "\($0.name)" }.contains { Cube.timeDimensions.contains($0) } {
+                    } else if ["LINE", "AREA"].contains(chartDataCopy.type) && !chartDataCopy.query.dimensions.map({ "\($0.name)" }).contains(where: { Cube.timeDimensions.contains($0) }) {
                         chartItem.data = []
                         chartItem.errorMsg = "\(chartDataCopy.type) chart requires time series"
+                    } else if chartItem.type == "PIE" && !chartDataCopy.query.dimensions.map({ "\($0.name)" }).contains(where:{ Cube.timeDimensions.contains($0) }) {
+                        chartItem.data = []
+                        chartItem.errorMsg = "\(chartDataCopy.type) chart doesnt support time series dimensions"
                     } else {
-                        debugPrint("MATH")
                         do {
                             chartItem.data = try Cube.shared.query(cubeQuery: chartDataCopy.query)
                             await send(.queryCorrectChanged(true))
