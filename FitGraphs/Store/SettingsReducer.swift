@@ -16,6 +16,8 @@ class SettingsReducer: Reducer {
     struct State: Equatable {
         @PresentationState var alert: AlertState<Action.Alert>?
         var stravaAuth = StravaAuthReducer.State()
+        var loadErrorVisible: Bool = false
+        var demoModeEnabled: Bool = false
     }
     
     enum Action: Equatable {
@@ -23,12 +25,16 @@ class SettingsReducer: Reducer {
         case logoutTapped
         case alert(PresentationAction<Alert>)
         case fetchFromStrava
+        case exitDemo
+        case demoModeEnabledChanged(Bool)
+        case loadErrorVisibleChanged(Bool)
         enum Alert: Equatable {
             case confirmLogout
         }
         case delegate(Delegate)
         enum Delegate: Equatable {
             case logoutFromFirebase
+            case exitDemo
         }
     }
     
@@ -52,6 +58,9 @@ class SettingsReducer: Reducer {
                     await send(.stravaAuth(.logout))
                     await send(.delegate(.logoutFromFirebase))
                 }
+            case .loadErrorVisibleChanged(let loadErrorVisible):
+                state.loadErrorVisible = loadErrorVisible
+                return .none
             case .fetchFromStrava:
                 return .run {
                     send in
@@ -65,10 +74,24 @@ class SettingsReducer: Reducer {
                         athlete?.activities = activities
                         try await self.firebaseClient.saveToFirebase(athlete!)
                         try self.firebaseClient.saveToDevice(JSONEncoder().encode(activities))
+                        var reloaded = false
+                        try Cube.shared.reload {
+                            _reloaded in
+                            reloaded = _reloaded
+                        }
+                        await send(.loadErrorVisibleChanged(reloaded))
                     } catch {
                         debugPrint("\(error)")
                     }
                 }
+            case .exitDemo:
+                return .run {
+                    send in
+                    await send(.delegate(.exitDemo))
+                }
+            case .demoModeEnabledChanged(let demoModeEnabled):
+                state.demoModeEnabled = demoModeEnabled
+                return .none
             case .alert:
                 return .none
             case .stravaAuth:

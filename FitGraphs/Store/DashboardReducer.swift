@@ -12,7 +12,6 @@ import Charts
 class DashboardReducer: Reducer {
     
     @Dependency(\.firebaseClient) var firebaseClient
-    @Dependency(\.stravaApi) var stravaApi
     
     enum Action: Equatable {
         case loadCharts

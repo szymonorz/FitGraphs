@@ -15,9 +15,16 @@ struct SettingsView: View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack(spacing: 0) {
                 List {
+                    if viewStore.demoModeEnabled {
+                        Text("You are in demo mode. Features that require internet connection and online services are disabled.")
+                        Button("Exit Demo mode") {
+                            viewStore.send(.exitDemo)
+                        }
+                    }
                     Button("Sign out from FitGraphs", action: {
                         viewStore.send(.logoutTapped)
                     }).frame(width: 193, height: 48)
+                        .disabled(viewStore.demoModeEnabled)
                     
                     Button(action: {
                         StravaAuth.shared.oauth.authorize() { authParameters, error in
@@ -42,19 +49,19 @@ struct SettingsView: View {
                         }
                     }) {
                         Image("StravaButton")
-                    }.disabled(viewStore.stravaAuth.isAuthorized)
+                    }.disabled(viewStore.stravaAuth.isAuthorized || viewStore.demoModeEnabled)
                     
                     Button("Fetch data from Strava", action: {
                         viewStore.send(.fetchFromStrava)
                     })
                     .frame(width: 193, height: 48)
-                    .disabled(!viewStore.stravaAuth.isAuthorized)
+                    .disabled(!viewStore.stravaAuth.isAuthorized || viewStore.demoModeEnabled)
                     
                     Button("Sign out from Strava", action: {
                         viewStore.send(.stravaAuth(.logout))
                     })
                     .frame(width: 193, height: 48)
-                    .disabled(!viewStore.stravaAuth.isAuthorized)
+                    .disabled(!viewStore.stravaAuth.isAuthorized || viewStore.demoModeEnabled)
                     
                 }.alert(store: self.store.scope(
                     state: \.$alert,

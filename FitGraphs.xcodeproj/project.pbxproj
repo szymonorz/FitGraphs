@@ -12,6 +12,8 @@
 		013BF53C2B81054C00A9947D /* FilterValueSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF53B2B81054C00A9947D /* FilterValueSelectionView.swift */; };
 		013BF53E2B81134700A9947D /* FilterValueSelectionReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF53D2B81134700A9947D /* FilterValueSelectionReducer.swift */; };
 		013BF5402BC17C8B00A9947D /* CheckboxField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF53F2BC17C8B00A9947D /* CheckboxField.swift */; };
+		013BF5422BC9B72200A9947D /* LoginReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF5412BC9B72200A9947D /* LoginReducer.swift */; };
+		013BF5462BCA031100A9947D /* activities_demo.json in Resources */ = {isa = PBXBuildFile; fileRef = 013BF5452BCA031100A9947D /* activities_demo.json */; };
 		0166006E2A42EBEC00E5E2F8 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 0166006D2A42EBEC00E5E2F8 /* WrappingHStack */; };
 		019D1FB52B09323C0025CE15 /* CubeQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1FB42B09323C0025CE15 /* CubeQuery.swift */; };
 		01B7CD472AAA741E007902AD /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 01B7CD462AAA741E007902AD /* ComposableArchitecture */; };
@@ -109,6 +111,8 @@
 		013BF53B2B81054C00A9947D /* FilterValueSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterValueSelectionView.swift; sourceTree = "<group>"; };
 		013BF53D2B81134700A9947D /* FilterValueSelectionReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterValueSelectionReducer.swift; sourceTree = "<group>"; };
 		013BF53F2BC17C8B00A9947D /* CheckboxField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxField.swift; sourceTree = "<group>"; };
+		013BF5412BC9B72200A9947D /* LoginReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginReducer.swift; sourceTree = "<group>"; };
+		013BF5452BCA031100A9947D /* activities_demo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = activities_demo.json; path = scripts/activities_demo.json; sourceTree = "<group>"; };
 		019D1FB42B09323C0025CE15 /* CubeQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeQuery.swift; sourceTree = "<group>"; };
 		01DF42F829F545790066F88F /* FitGraphs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitGraphs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01E3CD992ADAD2CA001068D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -233,6 +237,7 @@
 		01DF42EF29F545790066F88F = {
 			isa = PBXGroup;
 			children = (
+				013BF5452BCA031100A9947D /* activities_demo.json */,
 				0136B6CC2ADAC9DD00CCAF61 /* FitGraphs */,
 				01DF42F929F545790066F88F /* Products */,
 				0129030F2A3E324C00DC5712 /* Frameworks */,
@@ -344,6 +349,7 @@
 				01E3CDC62ADAD2CA001068D3 /* AddDashboardReducer.swift */,
 				01E3CDC72ADAD2CA001068D3 /* SettingsReducer.swift */,
 				013BF53D2B81134700A9947D /* FilterValueSelectionReducer.swift */,
+				013BF5412BC9B72200A9947D /* LoginReducer.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -486,6 +492,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				013BF5462BCA031100A9947D /* activities_demo.json in Resources */,
 				01E3CDF02ADAD2CB001068D3 /* Preview Assets.xcassets in Resources */,
 				01E3CDD52ADAD2CA001068D3 /* Assets.xcassets in Resources */,
 			);
@@ -512,6 +519,7 @@
 				01E3CDDC2ADAD2CA001068D3 /* ChartItemsClient.swift in Sources */,
 				01E3CDDE2ADAD2CA001068D3 /* DashboardView.swift in Sources */,
 				01E3CDE52ADAD2CA001068D3 /* RootView.swift in Sources */,
+				013BF5422BC9B72200A9947D /* LoginReducer.swift in Sources */,
 				01E3CDF32ADAD2CB001068D3 /* GoogleAuthReducer.swift in Sources */,
 				01E3CDE92ADAD2CA001068D3 /* ChartData.swift in Sources */,
 				01E3CDD92ADAD2CA001068D3 /* OAuth2RetryHandler.swift in Sources */,

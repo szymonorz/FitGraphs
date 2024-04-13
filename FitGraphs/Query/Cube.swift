@@ -18,7 +18,6 @@ class Cube {
     
     static let dimsToChose: [CubeQuery.Aggregation] = [
         CubeQuery.Aggregation(name: "SportType", expression: "SportType"),
-        CubeQuery.Aggregation(name:"Type",expression: "Type"),
         CubeQuery.Aggregation(name:"LocationCountry",expression: "LocationCountry"),
         CubeQuery.Aggregation(name:"Date",expression: "DateLocal"),
         CubeQuery.Aggregation(name:"Weekday",expression: "WeekdayLocal"),
@@ -39,7 +38,6 @@ class Cube {
                 CREATE TABLE olap_activities AS(
                 SELECT
                     sport_type as SportType,
-                    type as Type,
                     location_country as LocationCountry,
                     start_date as Date,
                     dayname(start_date::DATE) as Weekday,
@@ -86,7 +84,6 @@ class Cube {
             var filePath: URL
             let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
             filePath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json")
-            debugPrint(filePath.path)
             if !fileManager.fileExists(atPath: filePath.path) {
                 debugPrint("File doesn't exist. Creating empty file so DataSource doesn't shrimp itself...... ")
                 if let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
@@ -128,11 +125,11 @@ class Cube {
     }
     
     // Create a backup in case shit goes down
-    private func backup() throws {
+    private func backup(demoMode: Bool = false) throws {
         let fileManager = FileManager.default
         let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-        let filePath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json")
-        let backupPath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json.backup")
+        let filePath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activities_demo.json" : "activities.json")
+        let backupPath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activities_demo.backup.json" : "activities.backup.json")
         do {
             if fileManager.fileExists(atPath: backupPath.path) {
                 try fileManager.removeItem(at: backupPath)
@@ -146,11 +143,11 @@ class Cube {
     
     // Rollback to the most recent backup
     // If it breaks then it is basically over and I'm an awful developer (true)
-    private func rollback() throws {
+    private func rollback(demoMode: Bool = false) throws {
         let fileManager = FileManager.default
         let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-        let filePath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json")
-        let backupPath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json.backup")
+        let filePath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activities_demo.json" : "activities.json")
+        let backupPath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activities_demo.backup.json" : "activities.backup.json")
         
         if fileManager.fileExists(atPath: filePath.path) {
             do {
@@ -167,12 +164,12 @@ class Cube {
     // should only be called after fetching new data
     // drops table and creates a new one
     // It is safe to do so since all data is kept inside JSON file
-    func reload(with continueAfter: @escaping (Bool) -> ()) throws {
+    func reload(demoMode: Bool = false, with continueAfter: @escaping (Bool) -> ()) throws {
         do {
             try backup()
             let fileManager = FileManager.default
             let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-            let filePath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json")
+            let filePath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activities_demo.json" : "activities.json")
             let activityColumns: String = Activity.generateDuckDBSchema()
             let dbArgs: String = "columns=\(activityColumns)"
             // conn.execute is useless since duckdb doesn't return reason in case it errors
@@ -189,9 +186,26 @@ class Cube {
             continueAfter(true)
         } catch {
             try! rollback()
-            debugPrint("Failed to relaod table: activities \(error.localizedDescription)")
+            debugPrint("Failed to reload table: activities \(error)")
             continueAfter(false)
         }
+    }
+    
+    func loadDemoData() throws {
+        let fileManager = FileManager.default
+        let bundlePath = Bundle.main.path(forResource: "activities_demo", ofType: "json")!
+        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let destinationPath = documentsDirectory.appendingPathComponent("data").appendingPathComponent("activities_demo.json")
+        if !fileManager.fileExists(atPath: destinationPath.path) {
+                do {
+                    try fileManager.copyItem(atPath: bundlePath, toPath: destinationPath.path)
+                    print("File copied")
+                } catch let error {
+                    print("Error copying file: \(error.localizedDescription)")
+                }
+            }
+        
+        try reload(demoMode: true, with: {_ in })
     }
     
     func getUniqueValues(columnName: String) throws -> [String] {
