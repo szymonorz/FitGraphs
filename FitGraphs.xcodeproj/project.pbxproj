@@ -81,12 +81,6 @@
 		01E3CDF72ADAD2CB001068D3 /* StravaAuthReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDC52ADAD2CA001068D3 /* StravaAuthReducer.swift */; };
 		01E3CDF82ADAD2CB001068D3 /* AddDashboardReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDC62ADAD2CA001068D3 /* AddDashboardReducer.swift */; };
 		01E3CDF92ADAD2CB001068D3 /* SettingsReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDC72ADAD2CA001068D3 /* SettingsReducer.swift */; };
-		01E3CDFA2ADAD2CB001068D3 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDCA2ADAD2CA001068D3 /* CoreDataManager.swift */; };
-		01E3CDFB2ADAD2CB001068D3 /* FitGraphs.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDCB2ADAD2CA001068D3 /* FitGraphs.xcdatamodeld */; };
-		01E3CDFC2ADAD2CB001068D3 /* ChartContentEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDCD2ADAD2CA001068D3 /* ChartContentEntity+CoreDataClass.swift */; };
-		01E3CDFD2ADAD2CB001068D3 /* ChartItemEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDCE2ADAD2CA001068D3 /* ChartItemEntity+CoreDataClass.swift */; };
-		01E3CDFE2ADAD2CB001068D3 /* ChartContentEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDCF2ADAD2CA001068D3 /* ChartContentEntity+CoreDataProperties.swift */; };
-		01E3CDFF2ADAD2CB001068D3 /* ChartItemEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDD02ADAD2CA001068D3 /* ChartItemEntity+CoreDataProperties.swift */; };
 		01E3CE002ADAD2CB001068D3 /* FirebaseDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDD22ADAD2CA001068D3 /* FirebaseDataManager.swift */; };
 		01E3CE012ADAD2CB001068D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDD32ADAD2CA001068D3 /* AppDelegate.swift */; };
 		01E3CE032ADAD52B001068D3 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 01E3CE022ADAD52B001068D3 /* GoogleSignIn */; };
@@ -151,12 +145,6 @@
 		01E3CDC52ADAD2CA001068D3 /* StravaAuthReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StravaAuthReducer.swift; sourceTree = "<group>"; };
 		01E3CDC62ADAD2CA001068D3 /* AddDashboardReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDashboardReducer.swift; sourceTree = "<group>"; };
 		01E3CDC72ADAD2CA001068D3 /* SettingsReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsReducer.swift; sourceTree = "<group>"; };
-		01E3CDCA2ADAD2CA001068D3 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		01E3CDCC2ADAD2CA001068D3 /* ChartItemEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ChartItemEntity.xcdatamodel; sourceTree = "<group>"; };
-		01E3CDCD2ADAD2CA001068D3 /* ChartContentEntity+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChartContentEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		01E3CDCE2ADAD2CA001068D3 /* ChartItemEntity+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChartItemEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		01E3CDCF2ADAD2CA001068D3 /* ChartContentEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChartContentEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		01E3CDD02ADAD2CA001068D3 /* ChartItemEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChartItemEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		01E3CDD22ADAD2CA001068D3 /* FirebaseDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseDataManager.swift; sourceTree = "<group>"; };
 		01E3CDD32ADAD2CA001068D3 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -365,23 +353,9 @@
 		01E3CDC82ADAD2CA001068D3 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				01E3CDC92ADAD2CA001068D3 /* CoreData */,
 				01E3CDD12ADAD2CA001068D3 /* Firebase */,
 			);
 			path = Storage;
-			sourceTree = "<group>";
-		};
-		01E3CDC92ADAD2CA001068D3 /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-				01E3CDCA2ADAD2CA001068D3 /* CoreDataManager.swift */,
-				01E3CDCB2ADAD2CA001068D3 /* FitGraphs.xcdatamodeld */,
-				01E3CDCD2ADAD2CA001068D3 /* ChartContentEntity+CoreDataClass.swift */,
-				01E3CDCE2ADAD2CA001068D3 /* ChartItemEntity+CoreDataClass.swift */,
-				01E3CDCF2ADAD2CA001068D3 /* ChartContentEntity+CoreDataProperties.swift */,
-				01E3CDD02ADAD2CA001068D3 /* ChartItemEntity+CoreDataProperties.swift */,
-			);
-			path = CoreData;
 			sourceTree = "<group>";
 		};
 		01E3CDD12ADAD2CA001068D3 /* Firebase */ = {
@@ -531,11 +505,9 @@
 				01E3CDF32ADAD2CB001068D3 /* GoogleAuthReducer.swift in Sources */,
 				01E3CDE92ADAD2CA001068D3 /* ChartData.swift in Sources */,
 				01E3CDD92ADAD2CA001068D3 /* OAuth2RetryHandler.swift in Sources */,
-				01E3CDFE2ADAD2CB001068D3 /* ChartContentEntity+CoreDataProperties.swift in Sources */,
 				01E3CDE32ADAD2CA001068D3 /* LoginView.swift in Sources */,
 				01E3CDF62ADAD2CB001068D3 /* ChartEditorReducer.swift in Sources */,
 				01E3CE012ADAD2CB001068D3 /* AppDelegate.swift in Sources */,
-				01E3CDFB2ADAD2CB001068D3 /* FitGraphs.xcdatamodeld in Sources */,
 				01E3CDF92ADAD2CB001068D3 /* SettingsReducer.swift in Sources */,
 				01E3CDF22ADAD2CB001068D3 /* ChartItemsReducer.swift in Sources */,
 				01E3CDDD2ADAD2CA001068D3 /* StravaApi.swift in Sources */,
@@ -544,8 +516,6 @@
 				019D1FB52B09323C0025CE15 /* CubeQuery.swift in Sources */,
 				01E3CDF12ADAD2CB001068D3 /* DashboardReducer.swift in Sources */,
 				01E3CDEC2ADAD2CA001068D3 /* ChartItem.swift in Sources */,
-				01E3CDFC2ADAD2CB001068D3 /* ChartContentEntity+CoreDataClass.swift in Sources */,
-				01E3CDFF2ADAD2CB001068D3 /* ChartItemEntity+CoreDataProperties.swift in Sources */,
 				013BF53C2B81054C00A9947D /* FilterValueSelectionView.swift in Sources */,
 				01E3CDF52ADAD2CB001068D3 /* RootReducer.swift in Sources */,
 				013BF53E2B81134700A9947D /* FilterValueSelectionReducer.swift in Sources */,
@@ -556,8 +526,6 @@
 				01E3CDF42ADAD2CB001068D3 /* DashboardListReducer.swift in Sources */,
 				01E3CDEB2ADAD2CA001068D3 /* Dashboard.swift in Sources */,
 				01E3CDE02ADAD2CA001068D3 /* SettingsView.swift in Sources */,
-				01E3CDFA2ADAD2CB001068D3 /* CoreDataManager.swift in Sources */,
-				01E3CDFD2ADAD2CB001068D3 /* ChartItemEntity+CoreDataClass.swift in Sources */,
 				01E3CDF72ADAD2CB001068D3 /* StravaAuthReducer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1012,19 +980,6 @@
 			productName = GoogleSignInSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		01E3CDCB2ADAD2CA001068D3 /* FitGraphs.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				01E3CDCC2ADAD2CA001068D3 /* ChartItemEntity.xcdatamodel */,
-			);
-			currentVersion = 01E3CDCC2ADAD2CA001068D3 /* ChartItemEntity.xcdatamodel */;
-			path = FitGraphs.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 01DF42F029F545790066F88F /* Project object */;
 }
