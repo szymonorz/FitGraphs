@@ -98,6 +98,13 @@ struct RootReducer: Reducer {
                         debugPrint("[CRITICAL] Failed to load demo data.")
                         return .none
                     }
+                } else {
+                    do {
+                        try Cube.shared.loadFromFilesystem()
+                    } catch {
+                        debugPrint("[CRITICAL] Failed to load data from fs \(error)")
+                        return .none
+                    }
                 }
                 return .run {
                     send in

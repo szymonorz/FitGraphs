@@ -12,6 +12,7 @@ import TabularData
 class Cube {
     var db: Database? = nil
     var conn: Connection? = nil
+    var exists: Bool? = nil
     
     static let shared = Cube()
     static let timeDimensions = ["Date", "DateLocal"]
@@ -75,53 +76,71 @@ class Cube {
     // I have no idea what I'm doing/want to do
     // probably a TODO: Refactor when I know what to do
     init() {
+        db = try? Database(store: .inMemory)
+        conn = try? db!.connect()
+    }
+    
+    func loadFromFilesystem() throws {
+        
         let fileManager = FileManager.default
-       
-        do {
-            db = try? Database(store: .inMemory)
-            conn = try? db!.connect()
-            
-            var filePath: URL
-            let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-            filePath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json")
-            if !fileManager.fileExists(atPath: filePath.path) {
-                debugPrint("File doesn't exist. Creating empty file so DataSource doesn't shrimp itself...... ")
-                if let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
-                    let dataPth = dir.appendingPathComponent("data")
-                    
-                    do {
-                        try fileManager.createDirectory(atPath: dataPth.path(), withIntermediateDirectories: true)
-                    } catch let error as NSError{
-                        debugPrint("Failed to create directory at \(dataPth.absoluteString): \(error.localizedDescription)")
-                    }
-                    
-                    do {
-                        try "[]".write(toFile: filePath.path, atomically: false, encoding: .utf8)
-                    } catch {
-                        debugPrint("Failed to save file: \(error.localizedDescription)")
-                    }
+        var filePath: URL
+        let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
+        filePath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json")
+        if !fileManager.fileExists(atPath: filePath.path) {
+            debugPrint("File doesn't exist. Creating empty file so DataSource doesn't shrimp itself...... ")
+            if let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
+                let dataPth = dir.appendingPathComponent("data")
+                
+                do {
+                    try fileManager.createDirectory(atPath: dataPth.path(), withIntermediateDirectories: true)
+                } catch let error as NSError{
+                    debugPrint("Failed to create directory at \(dataPth.absoluteString): \(error.localizedDescription)")
+                }
+                
+                do {
+                    try "[]".write(toFile: filePath.path, atomically: false, encoding: .utf8)
+                } catch {
+                    debugPrint("Failed to save file: \(error.localizedDescription)")
                 }
             }
-            
-            do {
-                let activityColumns: String = Activity.generateDuckDBSchema()
-                let dbArgs: String = "columns=\(activityColumns)"
-                try conn!.query("""
-                    CREATE TABLE activities AS (
-                            SELECT * FROM read_json('\(filePath.path)', \(dbArgs))
-                    );
-                    \(self.olapCubeQuery)
-                    DROP TABLE activities;
-                """)
-            } catch {
-                debugPrint("Create table failed: \(error) at filePath: \(filePath.path)")
-                // This should literally never happen
-                try fileManager.removeItem(atPath: filePath.path)
-                throw error
-            }
-        } catch {
-            debugPrint("Whoops")
         }
+        do {
+            try load(path: filePath.path)
+        } catch {
+            debugPrint("Create table failed: \(error) at filePath: \(filePath.path)")
+            // This should literally never happen
+            try fileManager.removeItem(atPath: filePath.path)
+            throw error
+        }
+    }
+    
+    func tableExists() -> Bool {
+        debugPrint("[INFO] Checking if olap_activities exists")
+        if exists != nil {
+            return exists!
+        }
+        do {
+            try conn!.query("SELECT * FROM olap_activities LIMIT 1;")
+            exists = true
+            return true
+        } catch {
+            debugPrint("[INFO] olap_activities doesn't exist")
+            exists = false
+            return false
+        }
+    }
+    
+    // Loads data from given path and computes olap cube
+    func load(path: String) throws {
+        let activityColumns: String = Activity.generateDuckDBSchema()
+        let dbArgs: String = "columns=\(activityColumns)"
+        try conn!.query("""
+            CREATE TABLE activities AS (
+                    SELECT * FROM read_json('\(path)', \(dbArgs))
+            );
+            \(self.olapCubeQuery)
+            DROP TABLE activities;
+        """)
     }
     
     // Create a backup in case shit goes down
