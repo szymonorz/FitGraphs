@@ -41,6 +41,9 @@ def generate_data(n):
     ride_distance = 10
     swim_distance = 5
 
+    # Simulating some variability in performance metrics
+    base_speed = {'Run': 11/3.6, 'Ride': 25/3.6, 'Swim': 2/3.6}  # in km/h
+    base_cadence = {'Run': 80, 'Ride': 90, 'Swim': 60}
     activities = []
     for i in range(n):
         activity = Activity()
@@ -60,9 +63,6 @@ def generate_data(n):
         activity.start_date_local = (d1 + timedelta(days=i)).strftime("%Y-%m-%d %H:%M:%S")
         activity.start_date = activity.start_date_local
 
-        # Simulating some variability in performance metrics
-        base_speed = {'Run': 11, 'Ride': 25, 'Swim': 2}  # in km/h
-        base_cadence = {'Run': 80, 'Ride': 90, 'Swim': 60}
         activity.moving_time = int(activity.distance / base_speed[activity.type] * 3600)  # in seconds
         activity.elapsed_time = int(activity.moving_time * uniform(1.1, 1.3))  # adding some random stops or breaks
         activity.total_elevation_gain = int(gauss(20, 10) if activity.type in ['Run', 'Ride'] else 0)
