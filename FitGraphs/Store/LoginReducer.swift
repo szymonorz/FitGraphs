@@ -17,7 +17,6 @@ struct LoginReducer: Reducer {
         enum Delegate: Equatable {
             case demoMode
         }
-        
     }
     
     struct State: Equatable {

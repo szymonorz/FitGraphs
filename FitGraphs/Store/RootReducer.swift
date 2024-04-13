@@ -75,6 +75,11 @@ struct RootReducer: Reducer {
                 return .run { send in
                     await send(.login(.googleAuth(.signOut)))
                 }
+            case .settings(.delegate(.exitDemo)):
+                return .run {
+                    send in
+                    await send(.demoModeEnabledChanged(false))
+                }
             case .settings:
                 return .none
             case .login(.delegate(.demoMode)):
@@ -86,11 +91,13 @@ struct RootReducer: Reducer {
                 return .none
             case .demoModeEnabledChanged(let demoModeEnabled):
                 state.demoModeEnabled = demoModeEnabled
-                do {
-                    try Cube.shared.loadDemoData()
-                } catch {
-                    debugPrint("[CRITICAL] Failed to load demo data.")
-                    return .none
+                if demoModeEnabled {
+                    do {
+                        try Cube.shared.loadDemoData()
+                    } catch {
+                        debugPrint("[CRITICAL] Failed to load demo data.")
+                        return .none
+                    }
                 }
                 return .run {
                     send in

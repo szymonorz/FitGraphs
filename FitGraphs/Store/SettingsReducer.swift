@@ -34,6 +34,7 @@ class SettingsReducer: Reducer {
         case delegate(Delegate)
         enum Delegate: Equatable {
             case logoutFromFirebase
+            case exitDemo
         }
     }
     
@@ -86,7 +87,7 @@ class SettingsReducer: Reducer {
             case .exitDemo:
                 return .run {
                     send in
-                    await send(.demoModeEnabledChanged(false))
+                    await send(.delegate(.exitDemo))
                 }
             case .demoModeEnabledChanged(let demoModeEnabled):
                 state.demoModeEnabled = demoModeEnabled
