@@ -80,5 +80,5 @@ def generate_data(n):
 
 data = generate_data(360)
 
-with open("acitivties_demo.json", "w", encoding="utf-8") as f:
+with open("activties_demo.json", "w", encoding="utf-8") as f:
     json.dump(data, f, default=lambda o: o.__dict__)

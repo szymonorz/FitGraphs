@@ -84,7 +84,6 @@ class Cube {
             var filePath: URL
             let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
             filePath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json")
-            debugPrint(filePath.path)
             if !fileManager.fileExists(atPath: filePath.path) {
                 debugPrint("File doesn't exist. Creating empty file so DataSource doesn't shrimp itself...... ")
                 if let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
@@ -129,8 +128,8 @@ class Cube {
     private func backup(demoMode: Bool = false) throws {
         let fileManager = FileManager.default
         let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-        let filePath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activites_demo.json" : "activities.json")
-        let backupPath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activites_demo.backup.json" : "activities.backup.json")
+        let filePath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activities_demo.json" : "activities.json")
+        let backupPath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activities_demo.backup.json" : "activities.backup.json")
         do {
             if fileManager.fileExists(atPath: backupPath.path) {
                 try fileManager.removeItem(at: backupPath)
@@ -147,8 +146,8 @@ class Cube {
     private func rollback(demoMode: Bool = false) throws {
         let fileManager = FileManager.default
         let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-        let filePath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activites_demo.json" : "activities.json")
-        let backupPath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activites_demo.backup.json" : "activities.backup.json")
+        let filePath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activities_demo.json" : "activities.json")
+        let backupPath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activities_demo.backup.json" : "activities.backup.json")
         
         if fileManager.fileExists(atPath: filePath.path) {
             do {
@@ -170,7 +169,7 @@ class Cube {
             try backup()
             let fileManager = FileManager.default
             let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-            let filePath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activites_demo.json" : "activities.json")
+            let filePath = dir!.appendingPathComponent("data").appendingPathComponent(demoMode ? "activities_demo.json" : "activities.json")
             let activityColumns: String = Activity.generateDuckDBSchema()
             let dbArgs: String = "columns=\(activityColumns)"
             // conn.execute is useless since duckdb doesn't return reason in case it errors
@@ -187,12 +186,25 @@ class Cube {
             continueAfter(true)
         } catch {
             try! rollback()
-            debugPrint("Failed to relaod table: activities \(error.localizedDescription)")
+            debugPrint("Failed to reload table: activities \(error)")
             continueAfter(false)
         }
     }
     
     func loadDemoData() throws {
+        let fileManager = FileManager.default
+        let bundlePath = Bundle.main.path(forResource: "activities_demo", ofType: "json")!
+        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let destinationPath = documentsDirectory.appendingPathComponent("data").appendingPathComponent("activities_demo.json")
+        if !fileManager.fileExists(atPath: destinationPath.path) {
+                do {
+                    try fileManager.copyItem(atPath: bundlePath, toPath: destinationPath.path)
+                    print("File copied")
+                } catch let error {
+                    print("Error copying file: \(error.localizedDescription)")
+                }
+            }
+        
         try reload(demoMode: true, with: {_ in })
     }
     
