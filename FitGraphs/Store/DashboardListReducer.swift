@@ -52,10 +52,13 @@ class DashboardListReducer: Reducer {
                 return .none
             case .onAppear:
                 return .run { 
-                    [demoModeEnabled = state.demoModeEnabled]
+                    [
+                        demoModeEnabled = state.demoModeEnabled,
+                        _dashboards = state.dashboards
+                    ]
                     send in
                     do {
-                        let athlete = !demoModeEnabled ? try await self.firebaseClient.loadFromFirebase() : Athlete(id: 69)
+                        let athlete = !demoModeEnabled ? try await self.firebaseClient.loadFromFirebase() : Athlete(id: 69, dashboards: _dashboards)
                         await send(.dashboardsChanged(athlete?.dashboards ?? []))
                     } catch {
                         debugPrint("onAppear: \(error.localizedDescription)")
