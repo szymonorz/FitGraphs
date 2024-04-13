@@ -223,9 +223,7 @@ class Cube {
         return result[0].cast(to: String.self).map { $0 ?? "" }
     }
     
-
-    
-    func query(cubeQuery: CubeQuery) throws -> [(String, [ChartItem._ChartContent])] {
+    func generateSQL(cubeQuery: CubeQuery) -> String {
         let dimensionString = cubeQuery.dimensions.map { "CAST(\($0.expression) as VARCHAR) as \($0.name)" }.joined(separator: ",")
         let measuresString = cubeQuery.measures.map { "CAST(\($0.expression) as INT) as \($0.name)" }.joined(separator: ",")
         
@@ -243,7 +241,7 @@ class Cube {
                 }
                 
                 if filter.name == "Date" {
-                    _whereIN += " BETWEEN \' \(filter.chosen[0]) \' and \'\(filter.chosen[1])\' )"
+                    _whereIN += " BETWEEN \'\(filter.chosen[0])\' and \'\(filter.chosen[1])\' )"
                 } else {
                     _whereIN += " IN ( \(filter.chosen.map{ "\'" + $0 + "\'" }.joined(separator: ",")) ) )"
                 }
@@ -254,7 +252,11 @@ class Cube {
         }
 
         
-        let queryString = "SELECT \(dimensionString), \(measuresString) FROM olap_activities \(whereClause) GROUP BY \(groupByClause)"
+        return "SELECT \(dimensionString), \(measuresString) FROM olap_activities \(whereClause) GROUP BY \(groupByClause)"
+    }
+    
+    func query(cubeQuery: CubeQuery) throws -> [(String, [ChartItem._ChartContent])] {
+        let queryString = generateSQL(cubeQuery: cubeQuery)
         let result: ResultSet
         do {
             result = try conn!.query(queryString);

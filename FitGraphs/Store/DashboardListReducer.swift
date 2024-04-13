@@ -116,6 +116,9 @@ class DashboardListReducer: Reducer {
                 return .none
             case .demoModeEnabledChanged(let demoModeEnabled):
                 state.demoModeEnabled = demoModeEnabled
+                if demoModeEnabled == true {
+                    state.dashboards = []
+                }
                 return .none
             case .onDeleteTapped(let dashboard):
                 state.destination = .alert(

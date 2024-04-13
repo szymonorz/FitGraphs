@@ -27,6 +27,7 @@ struct GoogleAuthReducer: Reducer {
             case .signIn:
                 return .run { send in
                     let authorized = await FirebaseGoogleAuth.shared.signInWithGoogle()
+                    try Cube.shared.reload { _ in }
                     await send(.authorized(authorized))
                 }
             case .signOut:
