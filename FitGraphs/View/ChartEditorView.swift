@@ -55,51 +55,26 @@ struct ChartEditorView: View {
     var store: StoreOf<ChartEditorReducer>
     var callback: () -> ()
     
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
     var body: some View {
         WithViewStore(store, observe: {$0}) { viewStore in
             VStack {
-                if verticalSizeClass == .compact {
-                    HStack {
-                        EditHub(store: self.store)
-                        VStack {
-                            Text("Editor view")
-                            TextField(
-                                "Edit name",
-                                text: viewStore.binding(
-                                    get: \.title,
-                                    send: ChartEditorReducer.Action.titleChanged
-                                ))
-                            .multilineTextAlignment(.center)
-                            .disableAutocorrection(true)
-                            ChartView(chartItem: viewStore.state.chartItemToEdit)
-                                .frame(
-                                    width: UIScreen.main.bounds.width - 100,
-                                    height: UIScreen.main.bounds.height/2
-                                )
-                        }
-                    }
-                } else {
-                    Text("Editor view")
-                    TextField(
-                        "Edit name",
-                        text: viewStore.binding(
-                            get: \.title,
-                            send: ChartEditorReducer.Action.titleChanged
-                        ))
-                    .multilineTextAlignment(.center)
-                    .disableAutocorrection(true)
-                    ChartView(chartItem: viewStore.state.chartItemToEdit)
-                        .frame(
-                            width: UIScreen.main.bounds.width - 100,
-                            height: verticalSizeClass == .compact ? UIScreen.main.bounds.height/2 : UIScreen.main.bounds.height/4
-                        )
-                    EditHub(store: self.store)
-                }
-                
-                ChartMenu(store: self.store)
+                Text("Editor view")
+                TextField(
+                    "Edit name",
+                    text: viewStore.binding(
+                        get: \.title,
+                        send: ChartEditorReducer.Action.titleChanged
+                    ))
+                .multilineTextAlignment(.center)
+                .disableAutocorrection(true)
+                ChartView(chartItem: viewStore.state.chartItemToEdit)
+                    .frame(
+                        width: UIScreen.main.bounds.width - 100,
+                        height: UIScreen.main.bounds.height/2
+                    )
+                EditHub(store: self.store)
+            
+            ChartMenu(store: self.store)
             }
             HStack {
                 Button("Save", action: {

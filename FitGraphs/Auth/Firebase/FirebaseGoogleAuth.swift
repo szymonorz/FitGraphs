@@ -59,7 +59,6 @@ struct FirebaseGoogleAuth {
                         return
                     }
                      
-                     debugPrint(user.uid)
                      continuation.resume(returning: true)
                 }
             }

@@ -13,10 +13,6 @@ struct DashboardView: View {
     
     @State var presentModal: Bool = false
     
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
-    
     @Dependency(\.stravaApi) var stravaApi
     
     let store: StoreOf<DashboardReducer>
@@ -57,8 +53,8 @@ struct DashboardView: View {
                                                 )
                                             }
                                 }.frame(
-                                    width: verticalSizeClass == .compact ? UIScreen.main.bounds.width/2 - 80 : UIScreen.main.bounds.width/2 - 40,
-                                    height: verticalSizeClass == .compact ? UIScreen.main.bounds.height/3 : UIScreen.main.bounds.width/2 - 40 )
+                                    width:  UIScreen.main.bounds.width/2 - 40,
+                                    height: UIScreen.main.bounds.width/2 - 40 )
                             } primaryAction: {
                                 let chartData = viewStore.state.charts[index]
                                 viewStore.send(.chartItemTapped(chartData))

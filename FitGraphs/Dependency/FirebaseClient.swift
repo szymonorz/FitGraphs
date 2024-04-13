@@ -32,7 +32,6 @@ extension FirebaseClient: DependencyKey {
                 let fileUrl = dataPth.appendingPathComponent("activities.json")
                 
                 do {
-                    debugPrint(data)
                     try data.write(to: fileUrl)
                 } catch {
                     debugPrint("Failed to save file: \(error.localizedDescription)")
