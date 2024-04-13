@@ -20,10 +20,12 @@ struct ChartView: View {
                 Text("No data to show")
             } else {
                 var maxElement: Decimal = -1;
+                var padding: Decimal = 0
                 let _ = chartItem.data.forEach {
                     data in
                     let newMaxElement = data.contents.max { $0.value < $1.value }?.value ?? 1
                     maxElement = newMaxElement > maxElement ? newMaxElement : maxElement
+                    padding = Decimal((maxElement as NSDecimalNumber).doubleValue * 10)
                 }
                 if(chartItem.type == "BAR") {
                     if chartItem.numOfSplits > 1 {
@@ -58,7 +60,7 @@ struct ChartView: View {
                             )
                         }
                     }.drawingGroup()
-                        .chartYScale(domain: 0...maxElement)
+                        .chartYScale(domain: 0...(maxElement + padding))
                 }else if(chartItem.type == "LINE") {
                     Chart(chartItem.data, id: \.dataType) { data in
                         ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in
@@ -68,7 +70,7 @@ struct ChartView: View {
                             )
                         }
                     }.drawingGroup()
-                        .chartYScale(domain: 0...maxElement)
+                        .chartYScale(domain: 0...(maxElement+padding))
                 }else if(chartItem.type == "PIE") {
                     Chart(chartItem.data, id: \.dataType) { data in
                         ForEach(Array(data.contents.enumerated()), id: \.element) { index, content in

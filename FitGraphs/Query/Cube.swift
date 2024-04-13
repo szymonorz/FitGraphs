@@ -220,7 +220,6 @@ class Cube {
         }
         
         let df = DataFrame(columns: [TabularData.Column(result[0].cast(to: String.self)).eraseToAnyColumn()])
-        debugPrint(df)
         return result[0].cast(to: String.self).map { $0 ?? "" }
     }
     
@@ -248,9 +247,6 @@ class Cube {
             whereClause = "WHERE \(conditions.joined(separator: " AND "))"
         }
 
-        
-        print(whereClause)
-//        whereClause = ""
         
         let queryString = "SELECT \(dimensionString), \(measuresString) FROM olap_activities \(whereClause) GROUP BY \(groupByClause)"
         let result: ResultSet
@@ -306,8 +302,13 @@ class Cube {
             grouped[dim, default: []].append(chartContent)
         }
         
-        return grouped.map {
-            ($0.key, $0.value.sorted())
-        }.sorted(by: { $0.1.max()! < $1.1.max()! })
+        // TODO: Needs to be sorted. Sorting depends dimension.
+        
+        let final = grouped.map {
+            ($0.key, $0.value)
+        }
+        
+        
+        return final
     }
 }

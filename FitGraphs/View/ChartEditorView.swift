@@ -27,7 +27,7 @@ struct ChartCreatorView: View {
                     .disableAutocorrection(true)
                     ChartView(chartItem: viewStore.state.chartItemToEdit)
                         .frame(
-                            width: UIScreen.main.bounds.width/2,
+                            width: UIScreen.main.bounds.width - 100,
                             height: UIScreen.main.bounds.height/2
                         )
                     EditHub(store: self.store)
@@ -76,7 +76,7 @@ struct ChartEditorView: View {
                             .disableAutocorrection(true)
                             ChartView(chartItem: viewStore.state.chartItemToEdit)
                                 .frame(
-                                    width: UIScreen.main.bounds.width/2,
+                                    width: UIScreen.main.bounds.width - 100,
                                     height: UIScreen.main.bounds.height/2
                                 )
                         }
@@ -93,7 +93,7 @@ struct ChartEditorView: View {
                     .disableAutocorrection(true)
                     ChartView(chartItem: viewStore.state.chartItemToEdit)
                         .frame(
-                            width: UIScreen.main.bounds.width/2,
+                            width: UIScreen.main.bounds.width - 100,
                             height: verticalSizeClass == .compact ? UIScreen.main.bounds.height/2 : UIScreen.main.bounds.height/4
                         )
                     EditHub(store: self.store)
