@@ -223,62 +223,7 @@ class Cube {
         return result[0].cast(to: String.self).map { $0 ?? "" }
     }
     
-    private let weekDayNumbers = [
-        "Sunday": 0,
-        "Monday": 1,
-        "Tuesday": 2,
-        "Wednesday": 3,
-        "Thursday": 4,
-        "Friday": 5,
-        "Saturday": 6,
-    ]
-    
-    private let monthNumbers = [
-        "January": 0,
-        "February": 1,
-        "March": 2,
-        "April": 3,
-        "May": 4,
-        "June": 5,
-        "July": 6,
-        "August": 7,
-        "September": 8,
-        "October": 9,
-        "November": 10,
-        "December": 11,
-    ]
-    
-    private func sortWeekdays(first: (String, [ChartItem._ChartContent]), second: (String, [ChartItem._ChartContent])) -> Bool {
-        return (weekDayNumbers[first.0] ?? 7) < (weekDayNumbers[second.0] ?? 7);
-    }
-    
-    private func sortWeekdays(first: ChartItem._ChartContent, second: ChartItem._ChartContent) -> Bool {
-        return (weekDayNumbers[first.key] ?? 7) < (weekDayNumbers[second.key] ?? 7);
-    }
-    
-    private func sortMonths(first: (String, [ChartItem._ChartContent]), second: (String, [ChartItem._ChartContent])) -> Bool {
-        return (monthNumbers[first.0] ?? 12) < (monthNumbers[second.0] ?? 12);
-    }
-    
-    private func sortMonths(first: ChartItem._ChartContent, second: ChartItem._ChartContent) -> Bool {
-        return (monthNumbers[first.key] ?? 12) < (monthNumbers[second.key] ?? 12);
-    }
-    
-    private func sortDate(first: (String, [ChartItem._ChartContent]), second: (String, [ChartItem._ChartContent])) -> Bool {
-        var dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let d1 = dateFormatter.date(from: String(first.0.prefix(10)))!
-        let d2 = dateFormatter.date(from: String(second.0.prefix(10)))!	
-        return d1.compare(d2) == .orderedAscending
-    }
-    
-    private func sortDate(first: ChartItem._ChartContent, second: ChartItem._ChartContent) -> Bool {
-        var dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let d1 = dateFormatter.date(from: String(first.key.prefix(10)))!
-        let d2 = dateFormatter.date(from: String(second.key.prefix(10)))!
-        return d1.compare(d2) == .orderedAscending
-    }
+
     
     func query(cubeQuery: CubeQuery) throws -> [(String, [ChartItem._ChartContent])] {
         let dimensionString = cubeQuery.dimensions.map { "CAST(\($0.expression) as VARCHAR) as \($0.name)" }.joined(separator: ",")
@@ -290,15 +235,19 @@ class Cube {
         var conditions: [String] = []
         var _whereIN: String = ""
         if cubeQuery.filters.count > 0 {
-            _whereIN = ""
             cubeQuery.filters.forEach {
                 filter in
-                _whereIN += filter.name
+                _whereIN = " ( " + filter.name
                 if filter.exclude {
                     _whereIN += " NOT "
                 }
                 
-                _whereIN += " IN ( \(filter.chosen.map{ "\'" + $0 + "\'" }.joined(separator: ",")) )"
+                if filter.name == "Date" {
+                    _whereIN += " BETWEEN \' \(filter.chosen[0]) \' and \'\(filter.chosen[1])\' )"
+                } else {
+                    _whereIN += " IN ( \(filter.chosen.map{ "\'" + $0 + "\'" }.joined(separator: ",")) ) )"
+                }
+                
                 conditions.append(_whereIN)
             }
             whereClause = "WHERE \(conditions.joined(separator: " AND "))"
@@ -359,7 +308,6 @@ class Cube {
             grouped[dim, default: []].append(chartContent)
         }
         
-        // TODO: Needs to be sorted. Sorting depends dimension.
         let flatDimensions = cubeQuery.dimensions.map{ $0.name }
         
         let final = grouped.map {
@@ -368,20 +316,20 @@ class Cube {
         
         if flatDimensions.contains(where: {["Date", "DateLocal"].contains($0)}) {
             return grouped.map {
-                ($0.key, $0.value.sorted(by: sortDate))
-            }.sorted(by: sortDate)
+                ($0.key, $0.value.sorted(by: Comparators.compareDates))
+            }.sorted(by: Comparators.compareDates)
         }
         
         if flatDimensions.contains(where: {["Month", "MonthLocal"].contains($0)}) {
             return grouped.map {
-                ($0.key, $0.value.sorted(by: sortMonths))
-            }.sorted(by: sortMonths)
+                ($0.key, $0.value.sorted(by: Comparators.compareMonths))
+            }.sorted(by: Comparators.compareMonths)
         }
         
         if flatDimensions.contains(where: {["Weekday", "WeekdayLocal"].contains($0)}) {
             return grouped.map {
-                ($0.key, $0.value.sorted(by: sortWeekdays))
-            }.sorted(by: sortWeekdays)
+                ($0.key, $0.value.sorted(by: Comparators.compareWeekdays))
+            }.sorted(by: Comparators.compareWeekdays)
         }
         
         return final.sorted(by: { $0.0.compare($1.0) == .orderedAscending})

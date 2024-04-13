@@ -275,6 +275,11 @@ struct ChartEditorReducer: Reducer {
                     await send(.cubeQueryChanged(query))
                     await send(.filterSelectorOpenChanged(false))
                 }
+            case .filterValueSelection(.delegate(.close)):
+                return .run {
+                    send in
+                    await send(.filterSelectorOpenChanged(false))
+                }
             case .filterValueSelection(_):
                 return .none
             case .delegate(_):

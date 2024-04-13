@@ -14,6 +14,7 @@
 		013BF5402BC17C8B00A9947D /* CheckboxField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF53F2BC17C8B00A9947D /* CheckboxField.swift */; };
 		013BF5422BC9B72200A9947D /* LoginReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF5412BC9B72200A9947D /* LoginReducer.swift */; };
 		013BF5462BCA031100A9947D /* activities_demo.json in Resources */ = {isa = PBXBuildFile; fileRef = 013BF5452BCA031100A9947D /* activities_demo.json */; };
+		013BF5492BCAA31D00A9947D /* Comparators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF5482BCAA31D00A9947D /* Comparators.swift */; };
 		0166006E2A42EBEC00E5E2F8 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 0166006D2A42EBEC00E5E2F8 /* WrappingHStack */; };
 		019D1FB52B09323C0025CE15 /* CubeQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1FB42B09323C0025CE15 /* CubeQuery.swift */; };
 		01B7CD472AAA741E007902AD /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 01B7CD462AAA741E007902AD /* ComposableArchitecture */; };
@@ -113,6 +114,7 @@
 		013BF53F2BC17C8B00A9947D /* CheckboxField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxField.swift; sourceTree = "<group>"; };
 		013BF5412BC9B72200A9947D /* LoginReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginReducer.swift; sourceTree = "<group>"; };
 		013BF5452BCA031100A9947D /* activities_demo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = activities_demo.json; path = scripts/activities_demo.json; sourceTree = "<group>"; };
+		013BF5482BCAA31D00A9947D /* Comparators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparators.swift; sourceTree = "<group>"; };
 		019D1FB42B09323C0025CE15 /* CubeQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeQuery.swift; sourceTree = "<group>"; };
 		01DF42F829F545790066F88F /* FitGraphs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitGraphs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01E3CD992ADAD2CA001068D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 		0136B6CC2ADAC9DD00CCAF61 /* FitGraphs */ = {
 			isa = PBXGroup;
 			children = (
+				013BF5472BCAA30800A9947D /* Utils */,
 				01E3CD9A2ADAD2CA001068D3 /* Assets.xcassets */,
 				01E3CD9E2ADAD2CA001068D3 /* Auth */,
 				01E3CD9C2ADAD2CA001068D3 /* Query */,
@@ -232,6 +235,14 @@
 				01E3CDA82ADAD2CA001068D3 /* View */,
 			);
 			path = FitGraphs;
+			sourceTree = "<group>";
+		};
+		013BF5472BCAA30800A9947D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				013BF5482BCAA31D00A9947D /* Comparators.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		01DF42EF29F545790066F88F = {
@@ -520,6 +531,7 @@
 				01E3CDDE2ADAD2CA001068D3 /* DashboardView.swift in Sources */,
 				01E3CDE52ADAD2CA001068D3 /* RootView.swift in Sources */,
 				013BF5422BC9B72200A9947D /* LoginReducer.swift in Sources */,
+				013BF5492BCAA31D00A9947D /* Comparators.swift in Sources */,
 				01E3CDF32ADAD2CB001068D3 /* GoogleAuthReducer.swift in Sources */,
 				01E3CDE92ADAD2CA001068D3 /* ChartData.swift in Sources */,
 				01E3CDD92ADAD2CA001068D3 /* OAuth2RetryHandler.swift in Sources */,

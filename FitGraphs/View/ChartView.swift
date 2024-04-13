@@ -27,7 +27,9 @@ struct ChartView: View {
                     let newMinElement = data.contents.min { $0.value < $1.value }?.value ?? 0
                     maxElement = newMaxElement > maxElement ? newMaxElement : maxElement
                     minElement = newMinElement < minElement ? newMinElement : minElement
-                    
+                    if minElement == maxElement {
+                        minElement = 0
+                    }
                 }
                 if(chartItem.type == "BAR") {
                     if chartItem.numOfSplits > 1 {
