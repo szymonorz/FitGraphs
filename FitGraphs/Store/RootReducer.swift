@@ -11,8 +11,6 @@ import ComposableArchitecture
 struct RootReducer: Reducer {
     
     enum Action: Equatable {
-        case chartItems(ChartItemsReducer.Action)
-        case dashboard(DashboardReducer.Action)
         case dashboardList(DashboardListReducer.Action)
         case chartEditor(ChartEditorReducer.Action)
         case settings(SettingsReducer.Action)
@@ -21,9 +19,6 @@ struct RootReducer: Reducer {
     }
     
     struct State: Equatable {
-        var chartItems = ChartItemsReducer.State()
-        
-        var dashboard = DashboardReducer.State()
         
         var dashboardList = DashboardListReducer.State()
         
@@ -38,15 +33,8 @@ struct RootReducer: Reducer {
     }
     
     var body: some Reducer<State,Action> {
-        Scope(state: \.chartItems, action: /Action.chartItems) {
-            ChartItemsReducer()
-        }
         Scope(state: \.dashboardList, action: /Action.dashboardList){
             DashboardListReducer()
-        }
-        
-        Scope(state: \.dashboard, action: /Action.dashboard) {
-            DashboardReducer()
         }
         
         Scope(state: \.chartEditor, action: /Action.chartEditor) {
@@ -63,11 +51,7 @@ struct RootReducer: Reducer {
         
         Reduce { state, action in
             switch action {
-            case .chartItems:
-                return .none
             case .dashboardList:
-                return .none
-            case .dashboard:
                 return .none
             case .chartEditor:
                 return .none

@@ -15,6 +15,8 @@
 		013BF5422BC9B72200A9947D /* LoginReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF5412BC9B72200A9947D /* LoginReducer.swift */; };
 		013BF5462BCA031100A9947D /* activities_demo.json in Resources */ = {isa = PBXBuildFile; fileRef = 013BF5452BCA031100A9947D /* activities_demo.json */; };
 		013BF5492BCAA31D00A9947D /* Comparators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF5482BCAA31D00A9947D /* Comparators.swift */; };
+		013BF54B2BCBFC8400A9947D /* ChartCreatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF54A2BCBFC8400A9947D /* ChartCreatorView.swift */; };
+		013BF54D2BCBFCCE00A9947D /* ChartMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF54C2BCBFCCE00A9947D /* ChartMenu.swift */; };
 		0166006E2A42EBEC00E5E2F8 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 0166006D2A42EBEC00E5E2F8 /* WrappingHStack */; };
 		019D1FB52B09323C0025CE15 /* CubeQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1FB42B09323C0025CE15 /* CubeQuery.swift */; };
 		01B7CD472AAA741E007902AD /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 01B7CD462AAA741E007902AD /* ComposableArchitecture */; };
@@ -64,7 +66,7 @@
 		01E3CDE32ADAD2CA001068D3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDAE2ADAD2CA001068D3 /* LoginView.swift */; };
 		01E3CDE42ADAD2CA001068D3 /* Selector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDAF2ADAD2CA001068D3 /* Selector.swift */; };
 		01E3CDE52ADAD2CA001068D3 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDB02ADAD2CA001068D3 /* RootView.swift */; };
-		01E3CDE62ADAD2CA001068D3 /* EditHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDB12ADAD2CA001068D3 /* EditHub.swift */; };
+		01E3CDE62ADAD2CA001068D3 /* QueryBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDB12ADAD2CA001068D3 /* QueryBuilderView.swift */; };
 		01E3CDE72ADAD2CA001068D3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDB22ADAD2CA001068D3 /* ContentView.swift */; };
 		01E3CDE92ADAD2CA001068D3 /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDB52ADAD2CA001068D3 /* ChartData.swift */; };
 		01E3CDEB2ADAD2CA001068D3 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CDB72ADAD2CA001068D3 /* Dashboard.swift */; };
@@ -108,6 +110,8 @@
 		013BF5412BC9B72200A9947D /* LoginReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginReducer.swift; sourceTree = "<group>"; };
 		013BF5452BCA031100A9947D /* activities_demo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = activities_demo.json; path = scripts/activities_demo.json; sourceTree = "<group>"; };
 		013BF5482BCAA31D00A9947D /* Comparators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparators.swift; sourceTree = "<group>"; };
+		013BF54A2BCBFC8400A9947D /* ChartCreatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartCreatorView.swift; sourceTree = "<group>"; };
+		013BF54C2BCBFCCE00A9947D /* ChartMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartMenu.swift; sourceTree = "<group>"; };
 		019D1FB42B09323C0025CE15 /* CubeQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeQuery.swift; sourceTree = "<group>"; };
 		01DF42F829F545790066F88F /* FitGraphs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitGraphs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01E3CD992ADAD2CA001068D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -127,7 +131,7 @@
 		01E3CDAE2ADAD2CA001068D3 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		01E3CDAF2ADAD2CA001068D3 /* Selector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Selector.swift; sourceTree = "<group>"; };
 		01E3CDB02ADAD2CA001068D3 /* RootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
-		01E3CDB12ADAD2CA001068D3 /* EditHub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHub.swift; sourceTree = "<group>"; };
+		01E3CDB12ADAD2CA001068D3 /* QueryBuilderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryBuilderView.swift; sourceTree = "<group>"; };
 		01E3CDB22ADAD2CA001068D3 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		01E3CDB32ADAD2CA001068D3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01E3CDB52ADAD2CA001068D3 /* ChartData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
@@ -304,10 +308,12 @@
 				01E3CDAE2ADAD2CA001068D3 /* LoginView.swift */,
 				01E3CDAF2ADAD2CA001068D3 /* Selector.swift */,
 				01E3CDB02ADAD2CA001068D3 /* RootView.swift */,
-				01E3CDB12ADAD2CA001068D3 /* EditHub.swift */,
+				01E3CDB12ADAD2CA001068D3 /* QueryBuilderView.swift */,
 				01E3CDB22ADAD2CA001068D3 /* ContentView.swift */,
 				013BF53B2B81054C00A9947D /* FilterValueSelectionView.swift */,
 				013BF53F2BC17C8B00A9947D /* CheckboxField.swift */,
+				013BF54A2BCBFC8400A9947D /* ChartCreatorView.swift */,
+				013BF54C2BCBFCCE00A9947D /* ChartMenu.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -488,6 +494,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				013BF5402BC17C8B00A9947D /* CheckboxField.swift in Sources */,
+				013BF54D2BCBFCCE00A9947D /* ChartMenu.swift in Sources */,
 				01E3CE062ADAD6DF001068D3 /* GoogleService-Info.plist in Sources */,
 				01E3CDF82ADAD2CB001068D3 /* AddDashboardReducer.swift in Sources */,
 				01E3CDD72ADAD2CA001068D3 /* Cube.swift in Sources */,
@@ -503,6 +510,7 @@
 				013BF5422BC9B72200A9947D /* LoginReducer.swift in Sources */,
 				013BF5492BCAA31D00A9947D /* Comparators.swift in Sources */,
 				01E3CDF32ADAD2CB001068D3 /* GoogleAuthReducer.swift in Sources */,
+				013BF54B2BCBFC8400A9947D /* ChartCreatorView.swift in Sources */,
 				01E3CDE92ADAD2CA001068D3 /* ChartData.swift in Sources */,
 				01E3CDD92ADAD2CA001068D3 /* OAuth2RetryHandler.swift in Sources */,
 				01E3CDE32ADAD2CA001068D3 /* LoginView.swift in Sources */,
@@ -521,7 +529,7 @@
 				013BF53E2B81134700A9947D /* FilterValueSelectionReducer.swift in Sources */,
 				01E3CDE72ADAD2CA001068D3 /* ContentView.swift in Sources */,
 				01E3CE002ADAD2CB001068D3 /* FirebaseDataManager.swift in Sources */,
-				01E3CDE62ADAD2CA001068D3 /* EditHub.swift in Sources */,
+				01E3CDE62ADAD2CA001068D3 /* QueryBuilderView.swift in Sources */,
 				01E3CDDB2ADAD2CA001068D3 /* FirebaseClient.swift in Sources */,
 				01E3CDF42ADAD2CB001068D3 /* DashboardListReducer.swift in Sources */,
 				01E3CDEB2ADAD2CA001068D3 /* Dashboard.swift in Sources */,

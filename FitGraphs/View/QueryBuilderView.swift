@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct EditHub: View {
+struct QueryBuilderView: View {
     
     var store: StoreOf<ChartEditorReducer>
     
