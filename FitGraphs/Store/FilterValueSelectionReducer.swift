@@ -12,14 +12,21 @@ class FilterValueSelectionReducer: Reducer {
     
     struct State: Equatable {
         var filter: CubeQuery.Filter
+        var startDate: Date = Date.distantPast
+        var endDate: Date = Date.distantFuture
     }
     
     enum Action: Equatable {
         case isExclusionary(Bool)
         case delegate(Delegate)
+        case startDateChanged(Date)
+        case endDateChanged(Date)
+        case updateDateRange([String])
+        case updateDateRangeFilter
         case onFilterChanged(CubeQuery.Filter)
         enum Delegate: Equatable {
             case apply(CubeQuery.Filter)
+            case close
         }
         case onApplyTapped
         case onCancelTapped
@@ -28,7 +35,6 @@ class FilterValueSelectionReducer: Reducer {
         case removeValue(String)
     }
     
-    @Dependency(\.dismiss) var dismiss
     var body: some ReducerOf<FilterValueSelectionReducer> {
         Reduce { state, action in
             switch action {
@@ -40,8 +46,47 @@ class FilterValueSelectionReducer: Reducer {
                     send in
                     await send(.delegate(.apply(filter)))
                 }
+            case .startDateChanged(let startDate):
+                state.startDate = startDate
+                return .run {
+                    send in
+                    await send(.updateDateRangeFilter)
+                }
+            case .endDateChanged(let endDate):
+                state.endDate = endDate
+                return .run {
+                    send in
+                    await send(.updateDateRangeFilter)
+                }
+            case .updateDateRangeFilter:
+                var df = DateFormatter()
+                df.dateFormat = "yyyy-MM-dd"
+                state.filter.chosen = [df.string(from:state.startDate), df.string(from:state.endDate)]
+                return .none
+            case .updateDateRange(let values):
+                if values.isEmpty {
+                    return .none
+                }
+                let v = values.sorted(by: Comparators.compareDates)
+                let startDateString = v.first!
+                let endDateString = v.last!
+                var dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                let d1 = dateFormatter.date(from: String(startDateString.prefix(10)))!
+                let d2 = dateFormatter.date(from: String(endDateString.prefix(10)))!
+                state.startDate = d1
+                state.endDate = d2
+                state.filter.chosen = [dateFormatter.string(from:state.startDate), dateFormatter.string(from:state.endDate)]
+                return .none
+                
             case .onFilterChanged(let filter):
                 state.filter = filter
+                if filter.name == "Date" {
+                    return .run {
+                        send in
+                        await send(.updateDateRange(filter.values))
+                    }
+                }
                 return .none
             case .addValue(let c):
                 state.filter.chosen.append(c)
@@ -59,7 +104,10 @@ class FilterValueSelectionReducer: Reducer {
                     await send(.removeValue(choice))
                 }
             case .onCancelTapped:
-                return .run { _ in await self.dismiss() }
+                return .run {
+                    send in
+                    await send(.delegate(.close))
+                }
             case .delegate:
                 return .none
             }

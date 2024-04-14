@@ -57,6 +57,13 @@ class DashboardListReducer: Reducer {
                         _dashboards = state.dashboards
                     ]
                     send in
+                    if !demoModeEnabled && !Cube.shared.tableExists() {
+                        do {
+                            try Cube.shared.loadFromFilesystem()
+                        } catch {
+                            debugPrint("[CRITICAL] Failed to load data from fs: \(error)")
+                        }
+                    }
                     do {
                         let athlete = !demoModeEnabled ? try await self.firebaseClient.loadFromFirebase() : Athlete(id: 69, dashboards: _dashboards)
                         await send(.dashboardsChanged(athlete?.dashboards ?? []))
@@ -116,6 +123,9 @@ class DashboardListReducer: Reducer {
                 return .none
             case .demoModeEnabledChanged(let demoModeEnabled):
                 state.demoModeEnabled = demoModeEnabled
+                if demoModeEnabled == true {
+                    state.dashboards = []
+                }
                 return .none
             case .onDeleteTapped(let dashboard):
                 state.destination = .alert(

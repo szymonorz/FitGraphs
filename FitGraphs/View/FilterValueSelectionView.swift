@@ -17,20 +17,43 @@ struct FilterValueSelectionView: View {
                 viewStore.send(.isExclusionary(!viewStore.state.filter.exclude))
             }, isChecked: viewStore.state.filter.exclude)
             Divider()
-            ScrollView {
-                ForEach(viewStore.state.filter.values, id: \.self) { val in
-                    CheckboxField(text: val, action: {
-                        viewStore.send(.onValueTapped(val))
-                    }, isChecked: viewStore.state.filter.chosen.contains(val))
+            if viewStore.state.filter.name != "Date" {
+                ScrollView {
+                    ForEach(viewStore.state.filter.values, id: \.self) { val in
+                        CheckboxField(text: val, action: {
+                            viewStore.send(.onValueTapped(val))
+                        }, isChecked: viewStore.state.filter.chosen.contains(val))
+                    }
+                }
+            } else {
+                VStack {
+                    DatePicker(
+                        "Start date",
+                        selection: viewStore.binding(
+                            get: \.startDate,
+                            send: {FilterValueSelectionReducer.Action.startDateChanged($0)}
+                        ),
+                        displayedComponents: [.date]
+                    )
+                    
+                    DatePicker(
+                        "End date",
+                        selection: viewStore.binding(
+                            get: \.endDate,
+                            send: {FilterValueSelectionReducer.Action.endDateChanged($0)}
+                        ),
+                        displayedComponents: [.date]
+                    )
                 }
             }
             HStack{
                 Button("Apply") {
                     viewStore.send(.onApplyTapped)
-                }
+                }.foregroundStyle(.blue)
+                
                 Button("Close") {
                     viewStore.send(.onCancelTapped)
-                }
+                }.foregroundStyle(.red)
             }
         }
     }

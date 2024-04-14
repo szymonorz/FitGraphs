@@ -13,10 +13,6 @@ struct DashboardView: View {
     
     @State var presentModal: Bool = false
     
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
-    
     @Dependency(\.stravaApi) var stravaApi
     
     let store: StoreOf<DashboardReducer>
@@ -44,6 +40,7 @@ struct DashboardView: View {
                             } label: {
                                 GroupBox(chartItem.name) {
                                     ChartView(chartItem: chartItem)
+                                        .chartLegend(.hidden)
                                         .sheet(isPresented: viewStore.binding(
                                             get: \.chartEditor.isEditorOpen,
                                             send: { DashboardReducer.Action.chartEditor(.editorOpenChanged($0))})) {
@@ -56,8 +53,8 @@ struct DashboardView: View {
                                                 )
                                             }
                                 }.frame(
-                                    width: verticalSizeClass == .compact ? UIScreen.main.bounds.width/2 - 80 : UIScreen.main.bounds.width/2 - 40,
-                                    height: verticalSizeClass == .compact ? UIScreen.main.bounds.height/3 : UIScreen.main.bounds.width/2 - 40 )
+                                    width:  UIScreen.main.bounds.width/2 - 40,
+                                    height: UIScreen.main.bounds.width/2 - 40 )
                             } primaryAction: {
                                 let chartData = viewStore.state.charts[index]
                                 viewStore.send(.chartItemTapped(chartData))
@@ -86,18 +83,28 @@ struct DashboardView: View {
                 }.toolbar {
                     ToolbarItem {
                         HStack {
-                            TextField(
-                                "Dashboard name",
-                                text: viewStore.binding(
-                                    get: \.title,
-                                    send: DashboardReducer.Action.titleChanged
+                            VStack {
+                                TextField(
+                                    "Dashboard name",
+                                    text: viewStore.binding(
+                                        get: \.title,
+                                        send: DashboardReducer.Action.titleChanged
+                                    )
                                 )
-                            )
-                            .multilineTextAlignment(.center)
-                            .disableAutocorrection(true)
+                                .multilineTextAlignment(.center)
+                                .disableAutocorrection(true)
+                                Rectangle()
+                                    .frame(height: 1)
+                                    .foregroundColor(.black)
+                                    .padding(.leading, 16)
+                                    .padding(.trailing, 16)
+                            }
 
-                            Button("Save") {
+                            Button  {
                                 viewStore.send(.onSaveTapped)
+                            } label : {
+                                Text("Save")
+                                    .foregroundStyle(.blue)
                             }
                         }
                         

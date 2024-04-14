@@ -12,9 +12,10 @@ import TabularData
 class Cube {
     var db: Database? = nil
     var conn: Connection? = nil
+    var exists: Bool? = nil
     
     static let shared = Cube()
-    static let timeDimensions = ["Date", "DateLocal", "Month", "MonthLocal", "Year", "YearLocal"]
+    static let timeDimensions = ["Date", "DateLocal"]
     
     static let dimsToChose: [CubeQuery.Aggregation] = [
         CubeQuery.Aggregation(name: "SportType", expression: "SportType"),
@@ -30,7 +31,7 @@ class Cube {
         CubeQuery.Aggregation(name: "MaxSpeed", expression: "SUM(MaxSpeed)"),
         CubeQuery.Aggregation(name: "Kilojoules", expression: "SUM(Kilojoules)"),
         CubeQuery.Aggregation(name: "MovingTime", expression: "SUM(MovingTime)"),
-        CubeQuery.Aggregation(name: "Distance", expression: "SUM(Distabce)"),
+        CubeQuery.Aggregation(name: "Distance", expression: "SUM(Distance)"),
         CubeQuery.Aggregation(name: "TotalElevationGain", expression: "SUM(TotalElevationGain)")
     ]
     
@@ -75,53 +76,71 @@ class Cube {
     // I have no idea what I'm doing/want to do
     // probably a TODO: Refactor when I know what to do
     init() {
+        db = try? Database(store: .inMemory)
+        conn = try? db!.connect()
+    }
+    
+    func loadFromFilesystem() throws {
+        
         let fileManager = FileManager.default
-       
-        do {
-            db = try? Database(store: .inMemory)
-            conn = try? db!.connect()
-            
-            var filePath: URL
-            let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-            filePath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json")
-            if !fileManager.fileExists(atPath: filePath.path) {
-                debugPrint("File doesn't exist. Creating empty file so DataSource doesn't shrimp itself...... ")
-                if let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
-                    let dataPth = dir.appendingPathComponent("data")
-                    
-                    do {
-                        try fileManager.createDirectory(atPath: dataPth.path(), withIntermediateDirectories: true)
-                    } catch let error as NSError{
-                        debugPrint("Failed to create directory at \(dataPth.absoluteString): \(error.localizedDescription)")
-                    }
-                    
-                    do {
-                        try "[]".write(toFile: filePath.path, atomically: false, encoding: .utf8)
-                    } catch {
-                        debugPrint("Failed to save file: \(error.localizedDescription)")
-                    }
+        var filePath: URL
+        let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
+        filePath = dir!.appendingPathComponent("data").appendingPathComponent("activities.json")
+        if !fileManager.fileExists(atPath: filePath.path) {
+            debugPrint("File doesn't exist. Creating empty file so DataSource doesn't shrimp itself...... ")
+            if let dir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
+                let dataPth = dir.appendingPathComponent("data")
+                
+                do {
+                    try fileManager.createDirectory(atPath: dataPth.path(), withIntermediateDirectories: true)
+                } catch let error as NSError{
+                    debugPrint("Failed to create directory at \(dataPth.absoluteString): \(error.localizedDescription)")
+                }
+                
+                do {
+                    try "[]".write(toFile: filePath.path, atomically: false, encoding: .utf8)
+                } catch {
+                    debugPrint("Failed to save file: \(error.localizedDescription)")
                 }
             }
-            
-            do {
-                let activityColumns: String = Activity.generateDuckDBSchema()
-                let dbArgs: String = "columns=\(activityColumns)"
-                try conn!.query("""
-                    CREATE TABLE activities AS (
-                            SELECT * FROM read_json('\(filePath.path)', \(dbArgs))
-                    );
-                    \(self.olapCubeQuery)
-                    DROP TABLE activities;
-                """)
-            } catch {
-                debugPrint("Create table failed: \(error) at filePath: \(filePath.path)")
-                // This should literally never happen
-                try fileManager.removeItem(atPath: filePath.path)
-                throw error
-            }
-        } catch {
-            debugPrint("Whoops")
         }
+        do {
+            try load(path: filePath.path)
+        } catch {
+            debugPrint("Create table failed: \(error) at filePath: \(filePath.path)")
+            // This should literally never happen
+            try fileManager.removeItem(atPath: filePath.path)
+            throw error
+        }
+    }
+    
+    func tableExists() -> Bool {
+        debugPrint("[INFO] Checking if olap_activities exists")
+        if exists != nil {
+            return exists!
+        }
+        do {
+            try conn!.query("SELECT * FROM olap_activities LIMIT 1;")
+            exists = true
+            return true
+        } catch {
+            debugPrint("[INFO] olap_activities doesn't exist")
+            exists = false
+            return false
+        }
+    }
+    
+    // Loads data from given path and computes olap cube
+    func load(path: String) throws {
+        let activityColumns: String = Activity.generateDuckDBSchema()
+        let dbArgs: String = "columns=\(activityColumns)"
+        try conn!.query("""
+            CREATE TABLE activities AS (
+                    SELECT * FROM read_json('\(path)', \(dbArgs))
+            );
+            \(self.olapCubeQuery)
+            DROP TABLE activities;
+        """)
     }
     
     // Create a backup in case shit goes down
@@ -220,11 +239,10 @@ class Cube {
         }
         
         let df = DataFrame(columns: [TabularData.Column(result[0].cast(to: String.self)).eraseToAnyColumn()])
-        debugPrint(df)
         return result[0].cast(to: String.self).map { $0 ?? "" }
     }
     
-    func query(cubeQuery: CubeQuery) throws -> [(String, [ChartItem._ChartContent])] {
+    func generateSQL(cubeQuery: CubeQuery) -> String {
         let dimensionString = cubeQuery.dimensions.map { "CAST(\($0.expression) as VARCHAR) as \($0.name)" }.joined(separator: ",")
         let measuresString = cubeQuery.measures.map { "CAST(\($0.expression) as INT) as \($0.name)" }.joined(separator: ",")
         
@@ -234,25 +252,30 @@ class Cube {
         var conditions: [String] = []
         var _whereIN: String = ""
         if cubeQuery.filters.count > 0 {
-            _whereIN = ""
             cubeQuery.filters.forEach {
                 filter in
-                _whereIN += filter.name
+                _whereIN = " ( " + filter.name
                 if filter.exclude {
                     _whereIN += " NOT "
                 }
                 
-                _whereIN += " IN ( \(filter.chosen.map{ "\'" + $0 + "\'" }.joined(separator: ",")) )"
+                if filter.name == "Date" {
+                    _whereIN += " BETWEEN \'\(filter.chosen[0])\' and \'\(filter.chosen[1])\' )"
+                } else {
+                    _whereIN += " IN ( \(filter.chosen.map{ "\'" + $0 + "\'" }.joined(separator: ",")) ) )"
+                }
+                
                 conditions.append(_whereIN)
             }
             whereClause = "WHERE \(conditions.joined(separator: " AND "))"
         }
 
         
-        print(whereClause)
-//        whereClause = ""
-        
-        let queryString = "SELECT \(dimensionString), \(measuresString) FROM olap_activities \(whereClause) GROUP BY \(groupByClause)"
+        return "SELECT \(dimensionString), \(measuresString) FROM olap_activities \(whereClause) GROUP BY \(groupByClause)"
+    }
+    
+    func query(cubeQuery: CubeQuery) throws -> [(String, [ChartItem._ChartContent])] {
+        let queryString = generateSQL(cubeQuery: cubeQuery)
         let result: ResultSet
         do {
             result = try conn!.query(queryString);
@@ -306,8 +329,30 @@ class Cube {
             grouped[dim, default: []].append(chartContent)
         }
         
-        return grouped.map {
-            ($0.key, $0.value.sorted())
-        }.sorted(by: { $0.1.max()! < $1.1.max()! })
+        let flatDimensions = cubeQuery.dimensions.map{ $0.name }
+        
+        let final = grouped.map {
+            ($0.key, $0.value)
+        }
+        
+        if flatDimensions.contains(where: {["Date", "DateLocal"].contains($0)}) {
+            return grouped.map {
+                ($0.key, $0.value.sorted(by: Comparators.compareDates))
+            }.sorted(by: Comparators.compareDates)
+        }
+        
+        if flatDimensions.contains(where: {["Month", "MonthLocal"].contains($0)}) {
+            return grouped.map {
+                ($0.key, $0.value.sorted(by: Comparators.compareMonths))
+            }.sorted(by: Comparators.compareMonths)
+        }
+        
+        if flatDimensions.contains(where: {["Weekday", "WeekdayLocal"].contains($0)}) {
+            return grouped.map {
+                ($0.key, $0.value.sorted(by: Comparators.compareWeekdays))
+            }.sorted(by: Comparators.compareWeekdays)
+        }
+        
+        return final.sorted(by: { $0.0.compare($1.0) == .orderedAscending})
     }
 }
