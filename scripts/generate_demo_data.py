@@ -37,9 +37,9 @@ def generate_data(n):
 
     name_choices_prefixes = ["Evening", "Afternoon", "Morning"]
     sport_type_choices = ["Ride", "Swim", "Run"]
-    run_distance = 7
-    ride_distance = 10
-    swim_distance = 5
+    run_distance = 7000
+    ride_distance = 10000
+    swim_distance = 500
 
     # Simulating some variability in performance metrics
     base_speed = {'Run': 11/3.6, 'Ride': 25/3.6, 'Swim': 2/3.6}  # in km/h
@@ -52,11 +52,11 @@ def generate_data(n):
 
         if i % 30 == 0:
             if activity.type == "Run":
-                run_distance += 2
+                run_distance += 2000
             if activity.type == "Ride":
-                ride_distance += 5
+                ride_distance += 5000
             if activity.type == "Swim":
-                swim_distance += 1
+                swim_distance += 50
 
         activity.distance = {'Run': run_distance, 'Ride': ride_distance, 'Swim': swim_distance}[activity.type]
         activity.name = f"{choice(name_choices_prefixes)} {activity.type}"
@@ -65,7 +65,8 @@ def generate_data(n):
 
         activity.moving_time = int(activity.distance / base_speed[activity.type] * 3600)  # in seconds
         activity.elapsed_time = int(activity.moving_time * uniform(1.1, 1.3))  # adding some random stops or breaks
-        activity.total_elevation_gain = int(gauss(20, 10) if activity.type in ['Run', 'Ride'] else 0)
+        activity.total_elevation_gain = int(gauss(500, 100) if activity.type in ['Run', 'Ride'] else 0)
+        activity.total_elevation_gain = int(activity.total_elevation_gain if activity.total_elevation_gain >= 0 else 0)
         activity.average_speed = gauss(base_speed[activity.type], base_speed[activity.type] * 0.1)
         activity.max_speed = activity.average_speed * uniform(1.1, 1.3)
         activity.average_cadence = gauss(base_cadence[activity.type], 5)
@@ -80,5 +81,5 @@ def generate_data(n):
 
 data = generate_data(360)
 
-with open("activties_demo.json", "w", encoding="utf-8") as f:
+with open("activities_demo.json", "w", encoding="utf-8") as f:
     json.dump(data, f, default=lambda o: o.__dict__)
