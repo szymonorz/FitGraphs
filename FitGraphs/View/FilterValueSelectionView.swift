@@ -49,10 +49,11 @@ struct FilterValueSelectionView: View {
             HStack{
                 Button("Apply") {
                     viewStore.send(.onApplyTapped)
-                }
+                }.foregroundStyle(.blue)
+                
                 Button("Close") {
                     viewStore.send(.onCancelTapped)
-                }
+                }.foregroundStyle(.red)
             }
         }
     }

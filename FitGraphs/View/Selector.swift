@@ -56,9 +56,6 @@ struct Selector: View {
                 })
                 .fontWeight(.bold)
                 .sheet(isPresented: $isPickerPresented) {
-                    Button("Close") {
-                        isPickerPresented = false
-                    }
                     FieldPicker(isPickerPresented: $isPickerPresented,
                                 type: type,
                                 store: self.store

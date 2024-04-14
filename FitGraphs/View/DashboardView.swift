@@ -83,18 +83,28 @@ struct DashboardView: View {
                 }.toolbar {
                     ToolbarItem {
                         HStack {
-                            TextField(
-                                "Dashboard name",
-                                text: viewStore.binding(
-                                    get: \.title,
-                                    send: DashboardReducer.Action.titleChanged
+                            VStack {
+                                TextField(
+                                    "Dashboard name",
+                                    text: viewStore.binding(
+                                        get: \.title,
+                                        send: DashboardReducer.Action.titleChanged
+                                    )
                                 )
-                            )
-                            .multilineTextAlignment(.center)
-                            .disableAutocorrection(true)
+                                .multilineTextAlignment(.center)
+                                .disableAutocorrection(true)
+                                Rectangle()
+                                    .frame(height: 1)
+                                    .foregroundColor(.black)
+                                    .padding(.leading, 16)
+                                    .padding(.trailing, 16)
+                            }
 
-                            Button("Save") {
+                            Button  {
                                 viewStore.send(.onSaveTapped)
+                            } label : {
+                                Text("Save")
+                                    .foregroundStyle(.blue)
                             }
                         }
                         
