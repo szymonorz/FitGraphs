@@ -9,6 +9,11 @@ import Foundation
 
 struct CubeQuery: Codable, Hashable {
     
+    enum QueryErrors: Error {
+        case emptyDimensions
+        case emptyMeasures
+    }
+    
     struct Aggregation: Codable, Hashable, Equatable {
         var name: String
         var expression: String
@@ -45,5 +50,16 @@ extension CubeQuery {
         hasher.combine(dimensions)
         hasher.combine(measures)
         hasher.combine(filters)
+    }
+}
+
+extension CubeQuery.QueryErrors: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .emptyDimensions:
+            return "No dimensions provided"
+        case .emptyMeasures:
+            return "No measures provided"
+        }
     }
 }

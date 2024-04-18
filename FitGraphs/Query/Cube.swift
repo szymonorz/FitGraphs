@@ -242,7 +242,15 @@ class Cube {
         return result[0].cast(to: String.self).map { $0 ?? "" }
     }
     
-    func generateSQL(cubeQuery: CubeQuery) -> String {
+    
+    static func generateSQL(cubeQuery: CubeQuery) throws -> String {
+        if cubeQuery.dimensions.isEmpty {
+            throw CubeQuery.QueryErrors.emptyDimensions
+        }
+        if cubeQuery.measures.isEmpty {
+            throw CubeQuery.QueryErrors.emptyMeasures
+        }
+        
         let dimensionString = cubeQuery.dimensions.map { "CAST(\($0.expression) as VARCHAR) as \($0.name)" }.joined(separator: ",")
         let measuresString = cubeQuery.measures.map { "CAST(\($0.expression) as INT) as \($0.name)" }.joined(separator: ",")
         
@@ -256,7 +264,7 @@ class Cube {
                 filter in
                 _whereIN = " ( " + filter.name
                 if filter.exclude {
-                    _whereIN += " NOT "
+                    _whereIN += " NOT"
                 }
                 
                 if filter.name == "Date" {
@@ -275,7 +283,7 @@ class Cube {
     }
     
     func query(cubeQuery: CubeQuery) throws -> [(String, [ChartItem._ChartContent])] {
-        let queryString = generateSQL(cubeQuery: cubeQuery)
+        let queryString = try Cube.generateSQL(cubeQuery: cubeQuery)
         let result: ResultSet
         do {
             result = try conn!.query(queryString);
