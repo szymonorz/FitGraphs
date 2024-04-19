@@ -17,6 +17,7 @@
 		013BF5492BCAA31D00A9947D /* Comparators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF5482BCAA31D00A9947D /* Comparators.swift */; };
 		013BF54B2BCBFC8400A9947D /* ChartCreatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF54A2BCBFC8400A9947D /* ChartCreatorView.swift */; };
 		013BF54D2BCBFCCE00A9947D /* ChartMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF54C2BCBFCCE00A9947D /* ChartMenu.swift */; };
+		013BF55C2BD1D4B100A9947D /* CubeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013BF55B2BD1D4B100A9947D /* CubeTest.swift */; };
 		0166006E2A42EBEC00E5E2F8 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 0166006D2A42EBEC00E5E2F8 /* WrappingHStack */; };
 		019D1FB52B09323C0025CE15 /* CubeQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1FB42B09323C0025CE15 /* CubeQuery.swift */; };
 		01B7CD472AAA741E007902AD /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 01B7CD462AAA741E007902AD /* ComposableArchitecture */; };
@@ -90,6 +91,16 @@
 		01E3CE062ADAD6DF001068D3 /* GoogleService-Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = 01E3CD992ADAD2CA001068D3 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		013BF5562BD1D46D00A9947D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 01DF42F029F545790066F88F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 01DF42F729F545790066F88F;
+			remoteInfo = FitGraphs;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		012903132A3E332300DC5712 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -112,6 +123,8 @@
 		013BF5482BCAA31D00A9947D /* Comparators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparators.swift; sourceTree = "<group>"; };
 		013BF54A2BCBFC8400A9947D /* ChartCreatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartCreatorView.swift; sourceTree = "<group>"; };
 		013BF54C2BCBFCCE00A9947D /* ChartMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartMenu.swift; sourceTree = "<group>"; };
+		013BF5522BD1D46D00A9947D /* FitGraphsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FitGraphsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		013BF55B2BD1D4B100A9947D /* CubeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeTest.swift; sourceTree = "<group>"; };
 		019D1FB42B09323C0025CE15 /* CubeQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeQuery.swift; sourceTree = "<group>"; };
 		01DF42F829F545790066F88F /* FitGraphs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitGraphs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01E3CD992ADAD2CA001068D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -154,6 +167,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		013BF54F2BD1D46D00A9947D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		01DF42F529F545790066F88F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -235,11 +255,20 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		013BF5532BD1D46D00A9947D /* FitGraphsTests */ = {
+			isa = PBXGroup;
+			children = (
+				013BF55B2BD1D4B100A9947D /* CubeTest.swift */,
+			);
+			path = FitGraphsTests;
+			sourceTree = "<group>";
+		};
 		01DF42EF29F545790066F88F = {
 			isa = PBXGroup;
 			children = (
 				013BF5452BCA031100A9947D /* activities_demo.json */,
 				0136B6CC2ADAC9DD00CCAF61 /* FitGraphs */,
+				013BF5532BD1D46D00A9947D /* FitGraphsTests */,
 				01DF42F929F545790066F88F /* Products */,
 				0129030F2A3E324C00DC5712 /* Frameworks */,
 			);
@@ -249,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				01DF42F829F545790066F88F /* FitGraphs.app */,
+				013BF5522BD1D46D00A9947D /* FitGraphsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -376,6 +406,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		013BF5512BD1D46D00A9947D /* FitGraphsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 013BF55A2BD1D46D00A9947D /* Build configuration list for PBXNativeTarget "FitGraphsTests" */;
+			buildPhases = (
+				013BF54E2BD1D46D00A9947D /* Sources */,
+				013BF54F2BD1D46D00A9947D /* Frameworks */,
+				013BF5502BD1D46D00A9947D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				013BF5572BD1D46D00A9947D /* PBXTargetDependency */,
+			);
+			name = FitGraphsTests;
+			productName = FitGraphsTests;
+			productReference = 013BF5522BD1D46D00A9947D /* FitGraphsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		01DF42F729F545790066F88F /* FitGraphs */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 01DF430629F5457B0066F88F /* Build configuration list for PBXNativeTarget "FitGraphs" */;
@@ -439,9 +487,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
+					013BF5512BD1D46D00A9947D = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 01DF42F729F545790066F88F;
+					};
 					01DF42F729F545790066F88F = {
 						CreatedOnToolsVersion = 14.2;
 						LastSwiftMigration = 1500;
@@ -471,11 +523,19 @@
 			projectRoot = "";
 			targets = (
 				01DF42F729F545790066F88F /* FitGraphs */,
+				013BF5512BD1D46D00A9947D /* FitGraphsTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		013BF5502BD1D46D00A9947D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		01DF42F629F545790066F88F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -489,6 +549,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		013BF54E2BD1D46D00A9947D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				013BF55C2BD1D4B100A9947D /* CubeTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		01DF42F429F545790066F88F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -540,7 +608,58 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		013BF5572BD1D46D00A9947D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 01DF42F729F545790066F88F /* FitGraphs */;
+			targetProxy = 013BF5562BD1D46D00A9947D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		013BF5582BD1D46D00A9947D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.szyorz.FitGraphsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitGraphs.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FitGraphs";
+			};
+			name = Debug;
+		};
+		013BF5592BD1D46D00A9947D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.szyorz.FitGraphsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitGraphs.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FitGraphs";
+			};
+			name = Release;
+		};
 		01DF430429F5457B0066F88F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -727,6 +846,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		013BF55A2BD1D46D00A9947D /* Build configuration list for PBXNativeTarget "FitGraphsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				013BF5582BD1D46D00A9947D /* Debug */,
+				013BF5592BD1D46D00A9947D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		01DF42F329F545790066F88F /* Build configuration list for PBXProject "FitGraphs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -11,6 +11,40 @@ import ComposableArchitecture
 class DashboardListReducer: Reducer {
     @Dependency(\.firebaseClient) var firebaseClient
     
+    var demoDashboardList: [Dashboard] = [
+        Dashboard(
+            name: "Moje osiagniecia",
+            data: [
+                ChartData(
+                    title: "Bieganie w roku",
+                    type: "BAR",
+                    query: CubeQuery(
+                        dimensions: [CubeQuery.Aggregation(name: "Month", expression: "MonthLocal")],
+                        measures: [CubeQuery.Aggregation(name: "Activity", expression: "SUM(Activity)")],
+                        filters: [CubeQuery.Filter(name: "SportType", exclude: false,  values: ["Run", "Swim", "Ride"], chosen: ["Run"])]
+                    )
+                ),
+                ChartData(
+                    title: "Dystans jazdy w pierwszym kwartale",
+                    type: "LINE",
+                    query: CubeQuery(
+                        dimensions: [CubeQuery.Aggregation(name: "Date", expression: "DateLocal")],
+                        measures: [CubeQuery.Aggregation(name: "Distnace", expression: "SUM(Distance)")],
+                        filters: [CubeQuery.Filter(name: "Date", exclude: false,  values: [], chosen: ["2023-01-01", "2023-03-30"])]
+                    )
+                ),
+                ChartData(
+                    title: "Rozkład aktywności",
+                    type: "PIE",
+                    query: CubeQuery(
+                        dimensions: [CubeQuery.Aggregation(name: "SportType", expression: "SportType")],
+                        measures: [CubeQuery.Aggregation(name: "Activity", expression: "SUM(Activity)")]
+                    )
+                )
+            ]
+        )
+    ]
+    
     enum Action: Equatable {
         case dashboardsChanged([Dashboard])
         case onAppear
@@ -54,7 +88,7 @@ class DashboardListReducer: Reducer {
                 return .run { 
                     [
                         demoModeEnabled = state.demoModeEnabled,
-                        _dashboards = state.dashboards
+                        _dashboards = self.demoDashboardList
                     ]
                     send in
                     if !demoModeEnabled && !Cube.shared.tableExists() {

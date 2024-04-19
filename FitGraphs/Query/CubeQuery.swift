@@ -9,9 +9,24 @@ import Foundation
 
 struct CubeQuery: Codable, Hashable {
     
+    enum QueryErrors: Error {
+        case emptyDimensions
+        case emptyMeasures
+    }
+    
     struct Aggregation: Codable, Hashable, Equatable {
         var name: String
         var expression: String
+        
+        init(name: String) {
+            self.name = name
+            self.expression = name
+        }
+        
+        init(name: String, expression: String) {
+            self.name = name
+            self.expression = expression
+        }
     }
     
     struct Filter: Codable, Hashable, Equatable {
@@ -25,12 +40,14 @@ struct CubeQuery: Codable, Hashable {
     var measures: [Aggregation]
     var filters: [Filter]
     
-    init() {
-        self.dimensions = [
-        ]
-        self.measures = [
-        ]
-        self.filters = []
+    init(
+        dimensions: [CubeQuery.Aggregation] = [],
+        measures: [CubeQuery.Aggregation] = [],
+        filters: [CubeQuery.Filter] = []
+    ) {
+        self.dimensions = dimensions
+        self.measures = measures
+        self.filters = filters
     }
 }
 
@@ -45,5 +62,16 @@ extension CubeQuery {
         hasher.combine(dimensions)
         hasher.combine(measures)
         hasher.combine(filters)
+    }
+}
+
+extension CubeQuery.QueryErrors: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .emptyDimensions:
+            return "No dimensions provided"
+        case .emptyMeasures:
+            return "No measures provided"
+        }
     }
 }
