@@ -19,7 +19,7 @@ struct ContentView: View {
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             Image("StravaLogo")
-            if viewStore.login.googleAuth.isAuthorized || viewStore.demoModeEnabled {
+            if viewStore.login.googleAuth.isAuthorized || viewStore.dashboardList.demoModeEnabled {
                 MainView(store: self.store)
             } else {
                 LoginView(store: self.store.scope(

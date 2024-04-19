@@ -229,7 +229,7 @@ struct ChartEditorReducer: Reducer {
                     } else if ["LINE", "AREA"].contains(chartDataCopy.type) && !chartDataCopy.query.dimensions.map({ "\($0.name)" }).contains(where: { Cube.timeDimensions.contains($0) }) {
                         chartItem.data = []
                         chartItem.errorMsg = "\(chartDataCopy.type) chart requires time series"
-                    } else if chartItem.type == "PIE" && !chartDataCopy.query.dimensions.map({ "\($0.name)" }).contains(where:{ Cube.timeDimensions.contains($0) }) {
+                    } else if chartItem.type == "PIE" && chartDataCopy.query.dimensions.map({ "\($0.name)" }).contains(where:{ Cube.timeDimensions.contains($0) }) {
                         chartItem.data = []
                         chartItem.errorMsg = "\(chartDataCopy.type) chart doesnt support time series dimensions"
                     } else {
