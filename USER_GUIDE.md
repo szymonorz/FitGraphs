@@ -21,7 +21,9 @@ Należy nacisnąć na przycisk `Sign In with Google` i udzielić aplikacji na ko
 
 ## Pobieranie danych ze Strava
 
-Po zalogowanie na dole ekranu aplikacji są widoczne dwa widoki `Dashboards` i `Settings`. Należy przejść do `Settings` i nacisnąć w przycisk `Sign in with Strava`. Aplikacja przekieruje 
+Po zalogowanie na dole ekranu aplikacji są widoczne dwa widoki `Dashboards` i `Settings`. Należy przejść do `Settings` i nacisnąć w przycisk `Sign in with Strava`. Aplikacja przekieruje do serwisu Strava gdzie należy się zalogować swoim kontem.
+
+Po zalogowaniu należy pobrać dane odnośnie swoich aktywności klikając przycisk `Fetch from Strava`.
 
 ## Tworzenie dashboardów
 
@@ -41,3 +43,8 @@ Po zakończeniu operacji należy zapisać wykres naciskająć przycisk `Save`. W
 ## Tryb Demo
 
 Użytkownik ma możliwość przetestować aplikację bez wymogu posiadania konta naciskając w przycisk `Demo Mode` na panelu logowania. Ma tam już przygotowany jeden dashboard z trzema wykresami. Dane dla trybu demo zawierają zakres aktywności z 2023 roku.
+
+## Wylogowanie
+
+Można się kolejno ze Strava oraz aplikacji FitGraphs w widoku `Settings`.
+Wylogowanie z `FitGraphs` powoduje również deautoruzację w Strava.
