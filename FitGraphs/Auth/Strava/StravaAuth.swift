@@ -22,6 +22,7 @@ struct StravaAuth {
             "authorize_uri": "https://www.strava.com/oauth/authorize",
             "token_uri": "https://www.strava.com/oauth/token",
             "redirect_uris": ["fitgraphs://callback"],
+            "registration_uri": "https://www.strava.com/oauth/register",
             "response_type": "code",
             "scope": "activity:read",
             "grant_type": "authorization_code",

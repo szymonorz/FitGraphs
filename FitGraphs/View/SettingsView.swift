@@ -51,17 +51,21 @@ struct SettingsView: View {
                         Image("StravaButton")
                     }.disabled(viewStore.stravaAuth.isAuthorized || viewStore.demoModeEnabled)
                     
-                    Button("Fetch data from Strava", action: {
-                        viewStore.send(.fetchFromStrava)
-                    })
-                    .frame(width: 193, height: 48)
-                    .disabled(!viewStore.stravaAuth.isAuthorized || viewStore.demoModeEnabled)
+         
                     
-                    Button("Sign out from Strava", action: {
-                        viewStore.send(.stravaAuth(.logout))
-                    })
-                    .frame(width: 193, height: 48)
-                    .disabled(!viewStore.stravaAuth.isAuthorized || viewStore.demoModeEnabled)
+                    if viewStore.stravaAuth.isAuthorized {
+                        Button("Fetch data from Strava", action: {
+                            viewStore.send(.fetchFromStrava)
+                        })
+                        .frame(width: 193, height: 48)
+                        .disabled(viewStore.demoModeEnabled)
+                        
+                        Button("Sign out from Strava", action: {
+                            viewStore.send(.stravaAuth(.logout))
+                        })
+                        .frame(width: 193, height: 48)
+                        .disabled(viewStore.demoModeEnabled)
+                    }
                     
                 }.alert(store: self.store.scope(
                     state: \.$alert,
